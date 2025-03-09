@@ -8,8 +8,8 @@ export default defineConfig({
   build: {
     lib: {
       entry: path.resolve(__dirname, "src/index.ts"),
-      name: "TrialUI",
-      fileName: (format) => `trial-ui.${format}.js`,
+      name: "TenurinUI",
+      fileName: (format) => `tenurin-ui.${format}.js`,
     },
     rollupOptions: {
       external: ["react", "react-dom"],
