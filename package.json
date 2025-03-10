@@ -2,14 +2,89 @@
   "name": "tenurin-ui",
   "version": "1.0.0",
   "type": "module",
-  "main": "dist/tenurin-ui.cjs.js",
-  "module": "dist/tenurin-ui.es.js",
-  "types": "dist/index.d.ts",
-  "exports": {
-    ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/tenurin-ui.es.js",
-      "require": "./dist/tenurin-ui.cjs.js"
+  "exports": { 
+    "./styles": {
+      "import": "./dist/index.css"
+    },
+    "./alert": {
+      "types": "./dist/components/ui/alert.d.ts",
+      "import": "./dist/components/ui/alert.es.js",
+      "require": "./dist/components/ui/alert.cjs.js"
+    },
+    "./avatar": {
+      "types": "./dist/components/ui/avatar.d.ts",
+      "import": "./dist/components/ui/avatar.es.js",
+      "require": "./dist/components/ui/avatar.cjs.js"
+    },
+    "./breadcrumb": {
+      "types": "./dist/components/ui/breadcrumb.d.ts",
+      "import": "./dist/components/ui/breadcrumb.es.js",
+      "require": "./dist/components/ui/breadcrumb.cjs.js"
+    },
+    "./button": {
+      "types": "./dist/components/ui/button.d.ts",
+      "import": "./dist/components/ui/button.es.js",
+      "require": "./dist/components/ui/button.cjs.js"
+    },
+    "./card": {
+      "types": "./dist/components/ui/card.d.ts",
+      "import": "./dist/components/ui/card.es.js",
+      "require": "./dist/components/ui/card.cjs.js"
+    },
+    "./collapsible": {
+      "types": "./dist/components/ui/collapsible.d.ts",
+      "import": "./dist/components/ui/collapsible.es.js",
+      "require": "./dist/components/ui/collapsible.cjs.js"
+    },
+    "./dropdown-menu": {
+      "types": "./dist/components/ui/dropdown-menu.d.ts",
+      "import": "./dist/components/ui/dropdown-menu.es.js",
+      "require": "./dist/components/ui/dropdown-menu.cjs.js"
+    },
+    "./input": {
+      "types": "./dist/components/ui/input.d.ts",
+      "import": "./dist/components/ui/input.es.js",
+      "require": "./dist/components/ui/input.cjs.js"
+    },
+    "./label": {
+      "types": "./dist/components/ui/label.d.ts",
+      "import": "./dist/components/ui/label.es.js",
+      "require": "./dist/components/ui/label.cjs.js"
+    },
+    "./select": {
+      "types": "./dist/components/ui/select.d.ts",
+      "import": "./dist/components/ui/select.es.js",
+      "require": "./dist/components/ui/select.cjs.js"
+    },
+    "./separator": {
+      "types": "./dist/components/ui/separator.d.ts",
+      "import": "./dist/components/ui/separator.es.js",
+      "require": "./dist/components/ui/separator.cjs.js"
+    },
+    "./sheet": {
+      "types": "./dist/components/ui/sheet.d.ts",
+      "import": "./dist/components/ui/sheet.es.js",
+      "require": "./dist/components/ui/sheet.cjs.js"
+    },
+    "./sidebar": {
+      "types": "./dist/components/ui/sidebar.d.ts",
+      "import": "./dist/components/ui/sidebar.es.js",
+      "require": "./dist/components/ui/sidebar.cjs.js"
+    },
+    "./skeleton": {
+      "types": "./dist/components/ui/skeleton.d.ts",
+      "import": "./dist/components/ui/skeleton.es.js",
+      "require": "./dist/components/ui/skeleton.cjs.js"
+    },
+    "./sonner": {
+      "types": "./dist/components/ui/sonner.d.ts",
+      "import": "./dist/components/ui/sonner.es.js",
+      "require": "./dist/components/ui/sonner.cjs.js"
+    },
+    "./tooltip": {
+      "types": "./dist/components/ui/tooltip.d.ts",
+      "import": "./dist/components/ui/tooltip.es.js",
+      "require": "./dist/components/ui/tooltip.cjs.js"
     }
   },
   "files": [
