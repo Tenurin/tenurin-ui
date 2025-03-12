@@ -24,6 +24,7 @@ export default defineConfig({
         sidebar: path.resolve(__dirname, "src/components/ui/sidebar.tsx"),
         skeleton: path.resolve(__dirname, "src/components/ui/skeleton.tsx"),
         sonner: path.resolve(__dirname, "src/components/ui/sonner.tsx"),
+        table: path.resolve(__dirname, "src/components/ui/table.tsx"),
         tooltip: path.resolve(__dirname, "src/components/ui/tooltip.tsx"),
       },
       name: "TenurinUI",
