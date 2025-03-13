@@ -9,12 +9,14 @@ export default defineConfig({
     lib: {
       entry: {
         index: path.resolve(__dirname, "src/index.ts"),
+        "alert-dialog": path.resolve(__dirname, "src/components/ui/alert-dialog.tsx"),
         alert: path.resolve(__dirname, "src/components/ui/alert.tsx"),
         avatar: path.resolve(__dirname, "src/components/ui/avatar.tsx"),
         breadcrumb: path.resolve(__dirname, "src/components/ui/breadcrumb.tsx"),
         button: path.resolve(__dirname, "src/components/ui/button.tsx"),
         card: path.resolve(__dirname, "src/components/ui/card.tsx"),
         collapsible: path.resolve(__dirname, "src/components/ui/collapsible.tsx"),
+        dialog: path.resolve(__dirname, "src/components/ui/dialog.tsx"),
         "dropdown-menu": path.resolve(__dirname, "src/components/ui/dropdown-menu.tsx"),
         input: path.resolve(__dirname, "src/components/ui/input.tsx"),
         label: path.resolve(__dirname, "src/components/ui/label.tsx"),

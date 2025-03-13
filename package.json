@@ -6,6 +6,11 @@
     "./styles": {
       "import": "./dist/index.css"
     },
+    "./alert-dialog": {
+      "types": "./dist/components/ui/alert-dialog.d.ts",
+      "import": "./dist/components/ui/alert-dialog.es.js",
+      "require": "./dist/components/ui/alert-dialog.cjs.js"
+    },
     "./alert": {
       "types": "./dist/components/ui/alert.d.ts",
       "import": "./dist/components/ui/alert.es.js",
@@ -35,6 +40,11 @@
       "types": "./dist/components/ui/collapsible.d.ts",
       "import": "./dist/components/ui/collapsible.es.js",
       "require": "./dist/components/ui/collapsible.cjs.js"
+    },
+    "./dialog": {
+      "types": "./dist/components/ui/dialog.d.ts",
+      "import": "./dist/components/ui/dialog.es.js",
+      "require": "./dist/components/ui/dialog.cjs.js"
     },
     "./dropdown-menu": {
       "types": "./dist/components/ui/dropdown-menu.d.ts",
@@ -111,6 +121,7 @@
     "vite-plugin-lib-inject-css": "^2.2.1"
   },
   "dependencies": {
+    "@radix-ui/react-alert-dialog": "^1.1.6",
     "@radix-ui/react-avatar": "^1.1.3",
     "@radix-ui/react-collapsible": "^1.1.3",
     "@radix-ui/react-dialog": "^1.1.6",
