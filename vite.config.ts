@@ -21,6 +21,7 @@ export default defineConfig({
         "input-otp": path.resolve(__dirname, "src/components/ui/input-otp.tsx"),
         input: path.resolve(__dirname, "src/components/ui/input.tsx"),
         label: path.resolve(__dirname, "src/components/ui/label.tsx"),
+        popover: path.resolve(__dirname, "src/components/ui/popover.tsx"),
         progress: path.resolve(__dirname, "src/components/ui/progress.tsx"),
         "radio-group": path.resolve(__dirname, "src/components/ui/radio-group.tsx"),
         select: path.resolve(__dirname, "src/components/ui/select.tsx"),
