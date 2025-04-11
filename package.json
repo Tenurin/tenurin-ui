@@ -66,6 +66,16 @@
       "import": "./dist/components/ui/label.es.js",
       "require": "./dist/components/ui/label.cjs.js"
     },
+    "./menubar": {
+      "types": "./dist/components/ui/menubar.d.ts",
+      "import": "./dist/components/ui/menubar.es.js",
+      "require": "./dist/components/ui/menubar.cjs.js"
+    },
+    "./navigation-menu": {
+      "types": "./dist/components/ui/navigation-menu.d.ts",
+      "import": "./dist/components/ui/navigation-menu.es.js",
+      "require": "./dist/components/ui/navigation-menu.cjs.js"
+    },
     "./popover": {
       "types": "./dist/components/ui/popover.d.ts",
       "import": "./dist/components/ui/popover.es.js",
@@ -80,6 +90,11 @@
       "types": "./dist/components/ui/radio-group.d.ts",
       "import": "./dist/components/ui/radio-group.es.js",
       "require": "./dist/components/ui/radio-group.cjs.js"
+    },
+    "./scroll-area": {
+      "types": "./dist/components/ui/scroll-area.d.ts",
+      "import": "./dist/components/ui/scroll-area.es.js",
+      "require": "./dist/components/ui/scroll-area.cjs.js"
     },
     "./select": {
       "types": "./dist/components/ui/select.d.ts",
@@ -111,10 +126,20 @@
       "import": "./dist/components/ui/sonner.es.js",
       "require": "./dist/components/ui/sonner.cjs.js"
     },
+    "./switch": {
+      "types": "./dist/components/ui/switch.d.ts",
+      "import": "./dist/components/ui/switch.es.js",
+      "require": "./dist/components/ui/switch.cjs.js"
+    },
     "./table": {
       "types": "./dist/components/ui/table.d.ts",
       "import": "./dist/components/ui/table.es.js",
       "require": "./dist/components/ui/table.cjs.js"
+    },
+    "./tabs": {
+      "types": "./dist/components/ui/tabs.d.ts",
+      "import": "./dist/components/ui/tabs.es.js",
+      "require": "./dist/components/ui/tabs.cjs.js"
     },
     "./textarea": {
       "types": "./dist/components/ui/textarea.d.ts",
@@ -152,12 +177,17 @@
     "@radix-ui/react-dialog": "^1.1.6",
     "@radix-ui/react-dropdown-menu": "^2.1.6",
     "@radix-ui/react-label": "^2.1.2",
+    "@radix-ui/react-menubar": "^1.1.7",
+    "@radix-ui/react-navigation-menu": "^1.2.6",
     "@radix-ui/react-popover": "^1.1.6",
     "@radix-ui/react-progress": "^1.1.2",
     "@radix-ui/react-radio-group": "^1.2.3",
+    "@radix-ui/react-scroll-area": "^1.2.4",
     "@radix-ui/react-select": "^2.1.6",
     "@radix-ui/react-separator": "^1.1.2",
     "@radix-ui/react-slot": "^1.1.2",
+    "@radix-ui/react-switch": "^1.1.4",
+    "@radix-ui/react-tabs": "^1.1.4",
     "@radix-ui/react-tooltip": "^1.1.8",
     "@tailwindcss/vite": "^4.0.12",
     "class-variance-authority": "^0.7.1",
