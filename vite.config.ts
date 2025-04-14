@@ -9,6 +9,7 @@ export default defineConfig({
     lib: {
       entry: {
         index: path.resolve(__dirname, "src/index.ts"),
+        accordion: path.resolve(__dirname, "src/components/ui/accordion.tsx"),
         "alert-dialog": path.resolve(__dirname, "src/components/ui/alert-dialog.tsx"),
         alert: path.resolve(__dirname, "src/components/ui/alert.tsx"),
         avatar: path.resolve(__dirname, "src/components/ui/avatar.tsx"),
