@@ -36,6 +36,11 @@
       "import": "./dist/components/ui/button.es.js",
       "require": "./dist/components/ui/button.cjs.js"
     },
+    "./calendar": {
+      "types": "./dist/components/ui/calendar.d.ts",
+      "import": "./dist/components/ui/calendar.es.js",
+      "require": "./dist/components/ui/calendar.cjs.js"
+    },
     "./card": {
       "types": "./dist/components/ui/card.d.ts",
       "import": "./dist/components/ui/card.es.js",
@@ -191,17 +196,19 @@
     "@radix-ui/react-scroll-area": "^1.2.4",
     "@radix-ui/react-select": "^2.1.6",
     "@radix-ui/react-separator": "^1.1.2",
-    "@radix-ui/react-slot": "^1.1.2",
+    "@radix-ui/react-slot": "^1.2.0",
     "@radix-ui/react-switch": "^1.1.4",
     "@radix-ui/react-tabs": "^1.1.4",
     "@radix-ui/react-tooltip": "^1.1.8",
     "@tailwindcss/vite": "^4.0.12",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "date-fns": "^3.6.0",
     "input-otp": "^1.4.2",
     "lucide-react": "^0.479.0",
     "next-themes": "^0.4.6",
     "react": "^19.0.0",
+    "react-day-picker": "^8.10.1",
     "sonner": "^2.0.1",
     "tailwind-merge": "^3.0.2",
     "tailwindcss": "^4.0.12",
