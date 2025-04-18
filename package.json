@@ -160,6 +160,11 @@
       "types": "./dist/components/ui/tooltip.d.ts",
       "import": "./dist/components/ui/tooltip.es.js",
       "require": "./dist/components/ui/tooltip.cjs.js"
+    },
+    "./utils": {
+      "types": "./dist/lib/utils.d.ts",
+      "import": "./dist/lib/utils.es.js",
+      "require": "./dist/lib/utils.cjs.js"
     }
   },
   "files": [

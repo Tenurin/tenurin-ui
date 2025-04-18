@@ -58,11 +58,14 @@ export default defineConfig({
         tabs: path.resolve(__dirname, 'src/components/ui/tabs.tsx'),
         textarea: path.resolve(__dirname, 'src/components/ui/textarea.tsx'),
         tooltip: path.resolve(__dirname, 'src/components/ui/tooltip.tsx'),
+        utils: path.resolve(__dirname, 'src/lib/utils.ts'),
       },
       name: 'TenurinUI',
       formats: ['es', 'cjs'],
-      fileName: (format, entryName) =>
-        `components/ui/${entryName}.${format}.js`,
+      fileName: (format, entryName) => {
+        const basePath = entryName === 'utils' ? 'lib' : 'components/ui';
+        return `${basePath}/${entryName}.${format}.js`;
+      },
     },
     rollupOptions: {
       external: ['react', 'react-dom'],
@@ -80,7 +83,7 @@ export default defineConfig({
       entryRoot: 'src',
       outDir: 'dist',
       tsconfigPath: './tsconfig.json',
-      include: ['src/components/ui'],
+      include: ['src/components/ui', 'src/lib/utils.ts'],
     }),
     libInjectCss(),
   ],
