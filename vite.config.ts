@@ -16,6 +16,7 @@ export default defineConfig({
         ),
         alert: path.resolve(__dirname, 'src/components/ui/alert.tsx'),
         avatar: path.resolve(__dirname, 'src/components/ui/avatar.tsx'),
+        badge: path.resolve(__dirname, 'src/components/ui/badge.tsx'),
         breadcrumb: path.resolve(__dirname, 'src/components/ui/breadcrumb.tsx'),
         button: path.resolve(__dirname, 'src/components/ui/button.tsx'),
         calendar: path.resolve(__dirname, 'src/components/ui/calendar.tsx'),

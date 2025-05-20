@@ -1,15 +1,15 @@
-import * as React from "react"
-import { Command as CommandPrimitive } from "cmdk"
-import { SearchIcon } from "lucide-react"
+import * as React from 'react';
+import { Command as CommandPrimitive } from 'cmdk';
+import { SearchIcon } from 'lucide-react';
 
-import { cn } from "src/lib/utils"
+import { cn } from '../../lib/utils';
 import {
   Dialog,
   DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTitle,
-} from "src/components/ui/dialog"
+} from './dialog';
 
 function Command({
   className,
@@ -19,22 +19,22 @@ function Command({
     <CommandPrimitive
       data-slot="command"
       className={cn(
-        "bg-white text-neutral-950 flex h-full w-full flex-col overflow-hidden rounded-md dark:bg-neutral-950 dark:text-neutral-50",
+        'bg-white text-neutral-950 flex h-full w-full flex-col overflow-hidden rounded-md dark:bg-neutral-950 dark:text-neutral-50',
         className
       )}
       {...props}
     />
-  )
+  );
 }
 
 function CommandDialog({
-  title = "Command Palette",
-  description = "Search for a command to run...",
+  title = 'Command Palette',
+  description = 'Search for a command to run...',
   children,
   ...props
 }: React.ComponentProps<typeof Dialog> & {
-  title?: string
-  description?: string
+  title?: string;
+  description?: string;
 }) {
   return (
     <Dialog {...props}>
@@ -48,7 +48,7 @@ function CommandDialog({
         </Command>
       </DialogContent>
     </Dialog>
-  )
+  );
 }
 
 function CommandInput({
@@ -64,13 +64,13 @@ function CommandInput({
       <CommandPrimitive.Input
         data-slot="command-input"
         className={cn(
-          "placeholder:text-neutral-500 flex h-10 w-full rounded-md bg-transparent py-3 text-sm outline-hidden disabled:cursor-not-allowed disabled:opacity-50 dark:placeholder:text-neutral-400",
+          'placeholder:text-neutral-500 flex h-10 w-full rounded-md bg-transparent py-3 text-sm outline-hidden disabled:cursor-not-allowed disabled:opacity-50 dark:placeholder:text-neutral-400',
           className
         )}
         {...props}
       />
     </div>
-  )
+  );
 }
 
 function CommandList({
@@ -81,12 +81,12 @@ function CommandList({
     <CommandPrimitive.List
       data-slot="command-list"
       className={cn(
-        "max-h-[300px] scroll-py-1 overflow-x-hidden overflow-y-auto",
+        'max-h-[300px] scroll-py-1 overflow-x-hidden overflow-y-auto',
         className
       )}
       {...props}
     />
-  )
+  );
 }
 
 function CommandEmpty({
@@ -98,7 +98,7 @@ function CommandEmpty({
       className="py-6 text-center text-sm"
       {...props}
     />
-  )
+  );
 }
 
 function CommandGroup({
@@ -109,12 +109,12 @@ function CommandGroup({
     <CommandPrimitive.Group
       data-slot="command-group"
       className={cn(
-        "text-neutral-950 [&_[cmdk-group-heading]]:text-neutral-500 overflow-hidden p-1 [&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:py-1.5 [&_[cmdk-group-heading]]:text-xs [&_[cmdk-group-heading]]:font-medium dark:text-neutral-50 dark:[&_[cmdk-group-heading]]:text-neutral-400",
+        'text-neutral-950 [&_[cmdk-group-heading]]:text-neutral-500 overflow-hidden p-1 [&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:py-1.5 [&_[cmdk-group-heading]]:text-xs [&_[cmdk-group-heading]]:font-medium dark:text-neutral-50 dark:[&_[cmdk-group-heading]]:text-neutral-400',
         className
       )}
       {...props}
     />
-  )
+  );
 }
 
 function CommandSeparator({
@@ -124,10 +124,10 @@ function CommandSeparator({
   return (
     <CommandPrimitive.Separator
       data-slot="command-separator"
-      className={cn("bg-neutral-200 -mx-1 h-px dark:bg-neutral-800", className)}
+      className={cn('bg-neutral-200 -mx-1 h-px dark:bg-neutral-800', className)}
       {...props}
     />
-  )
+  );
 }
 
 function CommandItem({
@@ -143,23 +143,23 @@ function CommandItem({
       )}
       {...props}
     />
-  )
+  );
 }
 
 function CommandShortcut({
   className,
   ...props
-}: React.ComponentProps<"span">) {
+}: React.ComponentProps<'span'>) {
   return (
     <span
       data-slot="command-shortcut"
       className={cn(
-        "text-neutral-500 ml-auto text-xs tracking-widest dark:text-neutral-400",
+        'text-neutral-500 ml-auto text-xs tracking-widest dark:text-neutral-400',
         className
       )}
       {...props}
     />
-  )
+  );
 }
 
 export {
@@ -172,4 +172,4 @@ export {
   CommandItem,
   CommandShortcut,
   CommandSeparator,
-}
+};
