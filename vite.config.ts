@@ -24,6 +24,7 @@ export default defineConfig({
           __dirname,
           'src/components/ui/collapsible.tsx'
         ),
+        command: path.resolve(__dirname, 'src/components/ui/command.tsx'),
         dialog: path.resolve(__dirname, 'src/components/ui/dialog.tsx'),
         'dropdown-menu': path.resolve(
           __dirname,
