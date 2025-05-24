@@ -31,6 +31,10 @@ export default defineConfig({
           __dirname,
           'src/components/ui/dropdown-menu.tsx'
         ),
+        'hover-card': path.resolve(
+          __dirname,
+          'src/components/ui/hover-card.tsx'
+        ),
         'input-otp': path.resolve(__dirname, 'src/components/ui/input-otp.tsx'),
         input: path.resolve(__dirname, 'src/components/ui/input.tsx'),
         label: path.resolve(__dirname, 'src/components/ui/label.tsx'),
