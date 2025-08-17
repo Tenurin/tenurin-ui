@@ -21,6 +21,7 @@ export default defineConfig({
         button: path.resolve(__dirname, 'src/components/ui/button.tsx'),
         calendar: path.resolve(__dirname, 'src/components/ui/calendar.tsx'),
         card: path.resolve(__dirname, 'src/components/ui/card.tsx'),
+        checkbox: path.resolve(__dirname, 'src/components/ui/checkbox.tsx'),
         collapsible: path.resolve(
           __dirname,
           'src/components/ui/collapsible.tsx'

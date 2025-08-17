@@ -51,6 +51,11 @@
       "import": "./dist/components/ui/card.es.js",
       "require": "./dist/components/ui/card.cjs.js"
     },
+    "./checkbox": {
+      "types": "./dist/components/ui/checkbox.d.ts",
+      "import": "./dist/components/ui/checkbox.es.js",
+      "require": "./dist/components/ui/checkbox.cjs.js"
+    },
     "./collapsible": {
       "types": "./dist/components/ui/collapsible.d.ts",
       "import": "./dist/components/ui/collapsible.es.js",
@@ -204,6 +209,7 @@
     "@radix-ui/react-accordion": "^1.2.11",
     "@radix-ui/react-alert-dialog": "^1.1.14",
     "@radix-ui/react-avatar": "^1.1.10",
+    "@radix-ui/react-checkbox": "^1.3.3",
     "@radix-ui/react-collapsible": "^1.1.11",
     "@radix-ui/react-dialog": "^1.1.14",
     "@radix-ui/react-dropdown-menu": "^2.1.15",
