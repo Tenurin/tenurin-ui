@@ -64,6 +64,7 @@ export default defineConfig({
         table: path.resolve(__dirname, 'src/components/ui/table.tsx'),
         tabs: path.resolve(__dirname, 'src/components/ui/tabs.tsx'),
         textarea: path.resolve(__dirname, 'src/components/ui/textarea.tsx'),
+        texteditor: path.resolve(__dirname, 'src/components/ui/texteditor.tsx'),
         tooltip: path.resolve(__dirname, 'src/components/ui/tooltip.tsx'),
         utils: path.resolve(__dirname, 'src/lib/utils.ts'),
       },
