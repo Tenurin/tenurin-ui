@@ -27,6 +27,10 @@ export default defineConfig({
           'src/components/ui/collapsible.tsx'
         ),
         command: path.resolve(__dirname, 'src/components/ui/command.tsx'),
+        'datetime-picker': path.resolve(
+          __dirname,
+          'src/components/ui/datetime-picker.tsx'
+        ),
         dialog: path.resolve(__dirname, 'src/components/ui/dialog.tsx'),
         'dropdown-menu': path.resolve(
           __dirname,

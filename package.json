@@ -66,6 +66,11 @@
       "import": "./dist/components/ui/command.es.js",
       "require": "./dist/components/ui/command.cjs.js"
     },
+    "./datetime-picker": {
+      "types": "./dist/components/ui/datetime-picker.d.ts",
+      "import": "./dist/components/ui/datetime-picker.es.js",
+      "require": "./dist/components/ui/datetime-picker.cjs.js"
+    },
     "./dialog": {
       "types": "./dist/components/ui/dialog.d.ts",
       "import": "./dist/components/ui/dialog.es.js",
