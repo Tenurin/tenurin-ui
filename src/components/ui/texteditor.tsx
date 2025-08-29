@@ -1,6 +1,14 @@
-import { forwardRef } from 'react';
+import React, { forwardRef, useCallback } from 'react';
 import { EditorProvider, useCurrentEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
+
+import Link from '@tiptap/extension-link';
+import Superscript from '@tiptap/extension-superscript';
+import Subscript from '@tiptap/extension-subscript';
+import Highlight from '@tiptap/extension-highlight';
+import Underline from '@tiptap/extension-underline';
+import { TextStyleKit } from '@tiptap/extension-text-style';
+import { Color } from '@tiptap/extension-color';
 
 import {
   Bold,
@@ -20,14 +28,33 @@ import {
   Pilcrow,
   Undo,
   Redo,
+  Underline as UnderlineIcon,
+  Link as LinkIcon,
+  Unlink,
+  Superscript as SuperscriptIcon,
+  Subscript as SubscriptIcon,
+  Highlighter,
 } from 'lucide-react';
 import { Separator } from './separator';
-
 import { Button } from './button';
 import { cn } from '../../lib/utils';
+import { Input } from './input';
 
 const Toolbar = () => {
   const { editor } = useCurrentEditor();
+
+  const setLink = useCallback(() => {
+    if (!editor) return;
+    const previousUrl = editor.getAttributes('link').href;
+    const url = window.prompt('URL', previousUrl);
+
+    if (url === null) return;
+    if (url === '') {
+      editor.chain().focus().extendMarkRange('link').unsetLink().run();
+      return;
+    }
+    editor.chain().focus().extendMarkRange('link').setLink({ href: url }).run();
+  }, [editor]);
 
   if (!editor) {
     return null;
@@ -40,7 +67,6 @@ const Toolbar = () => {
     isActive: boolean;
     canExecute: boolean;
   };
-
   type ToolbarItem = ToolbarButton | 'separator';
 
   const toolbarItems: ToolbarItem[] = [
@@ -67,11 +93,41 @@ const Toolbar = () => {
       canExecute: editor.can().toggleStrike(),
     },
     {
+      name: 'underline',
+      command: () => editor.chain().focus().toggleUnderline().run(),
+      icon: UnderlineIcon,
+      isActive: editor.isActive('underline'),
+      canExecute: editor.can().toggleUnderline(),
+    },
+    {
       name: 'code',
       command: () => editor.chain().focus().toggleCode().run(),
       icon: Code,
       isActive: editor.isActive('code'),
       canExecute: editor.can().toggleCode(),
+    },
+    'separator',
+    // Style Group
+    {
+      name: 'highlight',
+      command: () => editor.chain().focus().toggleHighlight().run(),
+      icon: Highlighter,
+      isActive: editor.isActive('highlight'),
+      canExecute: editor.can().toggleHighlight(),
+    },
+    {
+      name: 'superscript',
+      command: () => editor.chain().focus().toggleSuperscript().run(),
+      icon: SuperscriptIcon,
+      isActive: editor.isActive('superscript'),
+      canExecute: editor.can().toggleSuperscript(),
+    },
+    {
+      name: 'subscript',
+      command: () => editor.chain().focus().toggleSubscript().run(),
+      icon: SubscriptIcon,
+      isActive: editor.isActive('subscript'),
+      canExecute: editor.can().toggleSubscript(),
     },
     'separator',
     // Block Type Group
@@ -143,11 +199,18 @@ const Toolbar = () => {
     'separator',
     // Action Group
     {
-      name: 'clearMarks',
-      command: () => editor.chain().focus().unsetAllMarks().run(),
-      icon: RemoveFormatting,
-      isActive: false, // This is an action, not a state
-      canExecute: editor.can().unsetAllMarks(),
+      name: 'setLink',
+      command: setLink,
+      icon: LinkIcon,
+      isActive: editor.isActive('link'),
+      canExecute: true,
+    },
+    {
+      name: 'unsetLink',
+      command: () => editor.chain().focus().unsetLink().run(),
+      icon: Unlink,
+      isActive: false,
+      canExecute: editor.isActive('link'),
     },
     {
       name: 'horizontalRule',
@@ -157,7 +220,14 @@ const Toolbar = () => {
       canExecute: editor.can().setHorizontalRule(),
     },
     'separator',
-    // History Group
+    // Style clear & History
+    {
+      name: 'clearMarks',
+      command: () => editor.chain().focus().unsetAllMarks().run(),
+      icon: RemoveFormatting,
+      isActive: false,
+      canExecute: editor.can().unsetAllMarks(),
+    },
     {
       name: 'undo',
       command: () => editor.chain().focus().undo().run(),
@@ -192,6 +262,16 @@ const Toolbar = () => {
           </Button>
         )
       )}
+      <Input
+        type="color"
+        className="w-8 h-8 p-1"
+        value={editor.getAttributes('textStyle').color || '#000000'}
+        onInput={(event) =>
+          editor.chain().focus().setColor(event.currentTarget.value).run()
+        }
+        title="Text Color"
+        disabled={!editor.can().setColor('#000000')}
+      />
     </div>
   );
 };
@@ -205,10 +285,18 @@ export interface TextEditorProps {
 
 const extensions = [
   StarterKit.configure({
-    heading: {
-      levels: [1, 2, 3, 4],
-    },
+    heading: { levels: [1, 2, 3, 4] },
   }),
+  Underline,
+  Superscript,
+  Subscript,
+  Highlight,
+  Link.configure({
+    openOnClick: false,
+    autolink: true,
+  }),
+  TextStyleKit,
+  Color,
 ];
 
 const TextEditor = forwardRef<HTMLDivElement, TextEditorProps>(
@@ -218,7 +306,7 @@ const TextEditor = forwardRef<HTMLDivElement, TextEditorProps>(
         ref={ref}
         className={cn(
           'border border-input rounded-md',
-          { 'cursor-text': disabled },
+          { 'bg-muted cursor-not-allowed opacity-75': disabled },
           className
         )}
       >
