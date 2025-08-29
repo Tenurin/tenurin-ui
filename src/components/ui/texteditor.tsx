@@ -1,5 +1,5 @@
 import React, { forwardRef, useCallback } from 'react';
-import { EditorProvider, useCurrentEditor } from '@tiptap/react';
+import { EditorProvider, JSONContent, useCurrentEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 
 import Link from '@tiptap/extension-link';
@@ -276,12 +276,24 @@ const Toolbar = () => {
   );
 };
 
-export interface TextEditorProps {
-  content: string;
-  onChange: (richText: string) => void;
+interface TextEditorBaseProps {
   className?: string;
   disabled?: boolean;
 }
+
+interface TextEditorHtmlProps extends TextEditorBaseProps {
+  format: 'html';
+  content: string;
+  onChange: (html: string) => void;
+}
+
+interface TextEditorJsonProps extends TextEditorBaseProps {
+  format?: 'json';
+  content: JSONContent | string;
+  onChange: (json: JSONContent) => void;
+}
+
+export type TextEditorProps = TextEditorHtmlProps | TextEditorJsonProps;
 
 const extensions = [
   StarterKit.configure({
@@ -299,36 +311,40 @@ const extensions = [
   Color,
 ];
 
-const TextEditor = forwardRef<HTMLDivElement, TextEditorProps>(
-  ({ content, onChange, className, disabled = false }, ref) => {
-    return (
-      <div
-        ref={ref}
-        className={cn(
-          'border border-input rounded-md',
-          { 'bg-muted cursor-not-allowed opacity-75': disabled },
-          className
-        )}
-      >
-        <EditorProvider
-          editable={!disabled}
-          extensions={extensions}
-          content={content}
-          onUpdate={({ editor }) => {
-            onChange(editor.getHTML());
-          }}
-          editorProps={{
-            attributes: {
-              class:
-                'prose dark:prose-invert prose-sm sm:prose-base max-w-none m-5 focus:outline-none',
-            },
-          }}
-          slotBefore={!disabled ? <Toolbar /> : null}
-        ></EditorProvider>
-      </div>
-    );
-  }
-);
+const TextEditor = forwardRef<HTMLDivElement, TextEditorProps>((props, ref) => {
+  const { className, disabled = false } = props;
+  return (
+    <div
+      ref={ref}
+      className={cn(
+        'border border-input rounded-md',
+        { 'cursor-text': disabled },
+        className
+      )}
+    >
+      <EditorProvider
+        editable={!disabled}
+        extensions={extensions}
+        content={props.content}
+        onUpdate={({ editor }) => {
+          if (props.format === 'html') {
+            props.onChange(editor.getHTML());
+          } else {
+            // Defaults to json
+            props.onChange(editor.getJSON());
+          }
+        }}
+        editorProps={{
+          attributes: {
+            class:
+              'prose dark:prose-invert prose-sm sm:prose-base max-w-none m-5 focus:outline-none',
+          },
+        }}
+        slotBefore={!disabled ? <Toolbar /> : null}
+      ></EditorProvider>
+    </div>
+  );
+});
 
 TextEditor.displayName = 'Text Editor';
 
