@@ -356,7 +356,7 @@ const TextEditor = forwardRef<HTMLDivElement, TextEditorProps>((props, ref) => {
       ref={ref}
       className={cn(
         'border border-input rounded-md',
-        { 'cursor-not-allowed opacity-50': disabled },
+        { 'cursor-text': disabled },
         className
       )}
     >
