@@ -1,5 +1,5 @@
-import React, { forwardRef, useCallback } from 'react';
-import { EditorProvider, JSONContent, useCurrentEditor } from '@tiptap/react';
+import React, { forwardRef, useCallback, useEffect } from 'react';
+import { useEditor, EditorContent, JSONContent, Editor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 
 import Link from '@tiptap/extension-link';
@@ -40,9 +40,7 @@ import { Button } from './button';
 import { cn } from '../../lib/utils';
 import { Input } from './input';
 
-const Toolbar = () => {
-  const { editor } = useCurrentEditor();
-
+const Toolbar = ({ editor }: { editor: Editor | null }) => {
   const setLink = useCallback(() => {
     if (!editor) return;
     const previousUrl = editor.getAttributes('link').href;
@@ -252,6 +250,7 @@ const Toolbar = () => {
         ) : (
           <Button
             key={item.name}
+            type="button"
             variant={item.isActive ? 'secondary' : 'ghost'}
             size="icon"
             onClick={item.command}
@@ -313,35 +312,56 @@ const extensions = [
 
 const TextEditor = forwardRef<HTMLDivElement, TextEditorProps>((props, ref) => {
   const { className, disabled = false } = props;
+
+  const editor = useEditor({
+    extensions,
+    editable: !disabled,
+    content: props.content,
+    editorProps: {
+      attributes: {
+        class:
+          'prose dark:prose-invert prose-sm sm:prose-base max-w-none m-5 focus:outline-none',
+      },
+    },
+    onUpdate: ({ editor }) => {
+      if (props.format === 'html') {
+        props.onChange(editor.getHTML());
+      } else {
+        props.onChange(editor.getJSON());
+      }
+    },
+  });
+
+  useEffect(() => {
+    if (editor && editor.isEditable !== !disabled) {
+      editor.setEditable(!disabled);
+    }
+  }, [disabled, editor]);
+
+  useEffect(() => {
+    if (!editor) {
+      return;
+    }
+
+    const editorContent = JSON.stringify(editor.getJSON());
+    const newContent = JSON.stringify(props.content);
+
+    if (editorContent !== newContent) {
+      editor.commands.setContent(props.content, { emitUpdate: false });
+    }
+  }, [props.content, editor]);
+
   return (
     <div
       ref={ref}
       className={cn(
         'border border-input rounded-md',
-        { 'cursor-text': disabled },
+        { 'cursor-not-allowed opacity-50': disabled },
         className
       )}
     >
-      <EditorProvider
-        editable={!disabled}
-        extensions={extensions}
-        content={props.content}
-        onUpdate={({ editor }) => {
-          if (props.format === 'html') {
-            props.onChange(editor.getHTML());
-          } else {
-            // Defaults to json
-            props.onChange(editor.getJSON());
-          }
-        }}
-        editorProps={{
-          attributes: {
-            class:
-              'prose dark:prose-invert prose-sm sm:prose-base max-w-none m-5 focus:outline-none',
-          },
-        }}
-        slotBefore={!disabled ? <Toolbar /> : null}
-      ></EditorProvider>
+      {!disabled && <Toolbar editor={editor} />}
+      <EditorContent editor={editor} />
     </div>
   );
 });
