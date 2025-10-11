@@ -36,6 +36,11 @@
       "import": "./dist/components/ui/breadcrumb.es.js",
       "require": "./dist/components/ui/breadcrumb.cjs.js"
     },
+    "./button-group": {
+      "types": "./dist/components/ui/button-group.d.ts",
+      "import": "./dist/components/ui/button-group.es.js",
+      "require": "./dist/components/ui/button-group.cjs.js"
+    },
     "./button": {
       "types": "./dist/components/ui/button.d.ts",
       "import": "./dist/components/ui/button.es.js",
@@ -50,6 +55,16 @@
       "types": "./dist/components/ui/card.d.ts",
       "import": "./dist/components/ui/card.es.js",
       "require": "./dist/components/ui/card.cjs.js"
+    },
+    "./carousel": {
+      "types": "./dist/components/ui/carousel.d.ts",
+      "import": "./dist/components/ui/carousel.es.js",
+      "require": "./dist/components/ui/carousel.cjs.js"
+    },
+    "./chart": {
+      "types": "./dist/components/ui/chart.d.ts",
+      "import": "./dist/components/ui/chart.es.js",
+      "require": "./dist/components/ui/chart.cjs.js"
     },
     "./checkbox": {
       "types": "./dist/components/ui/checkbox.d.ts",
@@ -66,6 +81,11 @@
       "import": "./dist/components/ui/command.es.js",
       "require": "./dist/components/ui/command.cjs.js"
     },
+    "./context-menu": {
+      "types": "./dist/components/ui/context-menu.d.ts",
+      "import": "./dist/components/ui/context-menu.es.js",
+      "require": "./dist/components/ui/context-menu.cjs.js"
+    },
     "./datetime-picker": {
       "types": "./dist/components/ui/datetime-picker.d.ts",
       "import": "./dist/components/ui/datetime-picker.es.js",
@@ -76,15 +96,40 @@
       "import": "./dist/components/ui/dialog.es.js",
       "require": "./dist/components/ui/dialog.cjs.js"
     },
+    "./drawer": {
+      "types": "./dist/components/ui/drawer.d.ts",
+      "import": "./dist/components/ui/drawer.es.js",
+      "require": "./dist/components/ui/drawer.cjs.js"
+    },
     "./dropdown-menu": {
       "types": "./dist/components/ui/dropdown-menu.d.ts",
       "import": "./dist/components/ui/dropdown-menu.es.js",
       "require": "./dist/components/ui/dropdown-menu.cjs.js"
     },
+    "./empty": {
+      "types": "./dist/components/ui/empty.d.ts",
+      "import": "./dist/components/ui/empty.es.js",
+      "require": "./dist/components/ui/empty.cjs.js"
+    },
+    "./field": {
+      "types": "./dist/components/ui/field.d.ts",
+      "import": "./dist/components/ui/field.es.js",
+      "require": "./dist/components/ui/field.cjs.js"
+    },
+    "./form": {
+      "types": "./dist/components/ui/form.d.ts",
+      "import": "./dist/components/ui/form.es.js",
+      "require": "./dist/components/ui/form.cjs.js"
+    },
     "./hover-card": {
       "types": "./dist/components/ui/hover-card.d.ts",
       "import": "./dist/components/ui/hover-card.es.js",
       "require": "./dist/components/ui/hover-card.cjs.js"
+    },
+    "./input-group": {
+      "types": "./dist/components/ui/input-group.d.ts",
+      "import": "./dist/components/ui/input-group.es.js",
+      "require": "./dist/components/ui/input-group.cjs.js"
     },
     "./input-otp": {
       "types": "./dist/components/ui/input-otp.d.ts",
@@ -95,6 +140,16 @@
       "types": "./dist/components/ui/input.d.ts",
       "import": "./dist/components/ui/input.es.js",
       "require": "./dist/components/ui/input.cjs.js"
+    },
+    "./item": {
+      "types": "./dist/components/ui/item.d.ts",
+      "import": "./dist/components/ui/item.es.js",
+      "require": "./dist/components/ui/item.cjs.js"
+    },
+    "./kbd": {
+      "types": "./dist/components/ui/kbd.d.ts",
+      "import": "./dist/components/ui/kbd.es.js",
+      "require": "./dist/components/ui/kbd.cjs.js"
     },
     "./label": {
       "types": "./dist/components/ui/label.d.ts",
@@ -111,6 +166,11 @@
       "import": "./dist/components/ui/navigation-menu.es.js",
       "require": "./dist/components/ui/navigation-menu.cjs.js"
     },
+    "./pagination": {
+      "types": "./dist/components/ui/pagination.d.ts",
+      "import": "./dist/components/ui/pagination.es.js",
+      "require": "./dist/components/ui/pagination.cjs.js"
+    },
     "./popover": {
       "types": "./dist/components/ui/popover.d.ts",
       "import": "./dist/components/ui/popover.es.js",
@@ -125,6 +185,11 @@
       "types": "./dist/components/ui/radio-group.d.ts",
       "import": "./dist/components/ui/radio-group.es.js",
       "require": "./dist/components/ui/radio-group.cjs.js"
+    },
+    "./resizable": {
+      "types": "./dist/components/ui/resizable.d.ts",
+      "import": "./dist/components/ui/resizable.es.js",
+      "require": "./dist/components/ui/resizable.cjs.js"
     },
     "./scroll-area": {
       "types": "./dist/components/ui/scroll-area.d.ts",
@@ -156,10 +221,20 @@
       "import": "./dist/components/ui/skeleton.es.js",
       "require": "./dist/components/ui/skeleton.cjs.js"
     },
+    "./slider": {
+      "types": "./dist/components/ui/slider.d.ts",
+      "import": "./dist/components/ui/slider.es.js",
+      "require": "./dist/components/ui/slider.cjs.js"
+    },
     "./sonner": {
       "types": "./dist/components/ui/sonner.d.ts",
       "import": "./dist/components/ui/sonner.es.js",
       "require": "./dist/components/ui/sonner.cjs.js"
+    },
+    "./spinner": {
+      "types": "./dist/components/ui/spinner.d.ts",
+      "import": "./dist/components/ui/spinner.es.js",
+      "require": "./dist/components/ui/spinner.cjs.js"
     },
     "./switch": {
       "types": "./dist/components/ui/switch.d.ts",
@@ -185,6 +260,16 @@
       "types": "./dist/components/ui/texteditor.d.ts",
       "import": "./dist/components/ui/texteditor.es.js",
       "require": "./dist/components/ui/texteditor.cjs.js"
+    },
+    "./toggle": {
+      "types": "./dist/components/ui/toggle.d.ts",
+      "import": "./dist/components/ui/toggle.es.js",
+      "require": "./dist/components/ui/toggle.cjs.js"
+    },
+    "./toggle-group": {
+      "types": "./dist/components/ui/toggle-group.d.ts",
+      "import": "./dist/components/ui/toggle-group.es.js",
+      "require": "./dist/components/ui/toggle-group.cjs.js"
     },
     "./tooltip": {
       "types": "./dist/components/ui/tooltip.d.ts",
@@ -217,27 +302,33 @@
     "vite-plugin-lib-inject-css": "^2.2.1"
   },
   "dependencies": {
-    "@radix-ui/react-accordion": "^1.2.11",
-    "@radix-ui/react-alert-dialog": "^1.1.14",
+    "@hookform/resolvers": "^5.2.2",
+    "@radix-ui/react-accordion": "^1.2.12",
+    "@radix-ui/react-alert-dialog": "^1.1.15",
+    "@radix-ui/react-aspect-ratio": "^1.1.7",
     "@radix-ui/react-avatar": "^1.1.10",
     "@radix-ui/react-checkbox": "^1.3.3",
-    "@radix-ui/react-collapsible": "^1.1.11",
-    "@radix-ui/react-dialog": "^1.1.14",
-    "@radix-ui/react-dropdown-menu": "^2.1.15",
-    "@radix-ui/react-hover-card": "^1.1.14",
+    "@radix-ui/react-collapsible": "^1.1.12",
+    "@radix-ui/react-context-menu": "^2.2.16",
+    "@radix-ui/react-dialog": "^1.1.15",
+    "@radix-ui/react-dropdown-menu": "^2.1.16",
+    "@radix-ui/react-hover-card": "^1.1.15",
     "@radix-ui/react-label": "^2.1.7",
-    "@radix-ui/react-menubar": "^1.1.15",
-    "@radix-ui/react-navigation-menu": "^1.2.13",
-    "@radix-ui/react-popover": "^1.1.14",
+    "@radix-ui/react-menubar": "^1.1.16",
+    "@radix-ui/react-navigation-menu": "^1.2.14",
+    "@radix-ui/react-popover": "^1.1.15",
     "@radix-ui/react-progress": "^1.1.7",
-    "@radix-ui/react-radio-group": "^1.3.7",
-    "@radix-ui/react-scroll-area": "^1.2.9",
-    "@radix-ui/react-select": "^2.2.5",
+    "@radix-ui/react-radio-group": "^1.3.8",
+    "@radix-ui/react-scroll-area": "^1.2.10",
+    "@radix-ui/react-select": "^2.2.6",
     "@radix-ui/react-separator": "^1.1.7",
+    "@radix-ui/react-slider": "^1.3.6",
     "@radix-ui/react-slot": "^1.2.3",
-    "@radix-ui/react-switch": "^1.2.5",
-    "@radix-ui/react-tabs": "^1.1.12",
-    "@radix-ui/react-tooltip": "^1.2.7",
+    "@radix-ui/react-switch": "^1.2.6",
+    "@radix-ui/react-tabs": "^1.1.13",
+    "@radix-ui/react-toggle": "^1.1.10",
+    "@radix-ui/react-toggle-group": "^1.1.11",
+    "@radix-ui/react-tooltip": "^1.2.8",
     "@tailwindcss/vite": "^4.0.12",
     "@tiptap/extension-color": "^3.3.0",
     "@tiptap/extension-highlight": "^3.3.0",
@@ -253,14 +344,20 @@
     "clsx": "^2.1.1",
     "cmdk": "^1.1.1",
     "date-fns": "^3.6.0",
+    "embla-carousel-react": "^8.6.0",
     "input-otp": "^1.4.2",
     "lucide-react": "^0.479.0",
     "next-themes": "^0.4.6",
     "react": "^19.0.0",
-    "react-day-picker": "^9.7.0",
-    "sonner": "^2.0.1",
+    "react-day-picker": "^9.11.1",
+    "react-hook-form": "^7.65.0",
+    "react-resizable-panels": "^3.0.6",
+    "recharts": "^2.15.4",
+    "sonner": "^2.0.7",
     "tailwind-merge": "^3.0.2",
     "tailwindcss": "^4.0.12",
-    "tailwindcss-animate": "^1.0.7"
+    "tailwindcss-animate": "^1.0.7",
+    "vaul": "^1.1.2",
+    "zod": "^4.1.12"
   }
 }

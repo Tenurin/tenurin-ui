@@ -11,13 +11,13 @@ const alertVariants = cva(
         default:
           'bg-white text-neutral-950 dark:bg-neutral-950 dark:text-neutral-50',
         destructive:
-          'text-neutral-50 [&>svg]:text-current *:data-[slot=alert-description]:text-neutral-50/80 dark:text-neutral-50 dark:*:data-[slot=alert-description]:text-neutral-50/80',
+          'text-red-500 bg-white [&>svg]:text-current *:data-[slot=alert-description]:text-red-500/90 dark:text-red-900 dark:bg-neutral-950 dark:*:data-[slot=alert-description]:text-red-900/90',
       },
     },
     defaultVariants: {
       variant: 'default',
     },
-  },
+  }
 );
 
 function Alert({
@@ -41,7 +41,7 @@ function AlertTitle({ className, ...props }: React.ComponentProps<'div'>) {
       data-slot="alert-title"
       className={cn(
         'col-start-2 line-clamp-1 min-h-4 font-medium tracking-tight',
-        className,
+        className
       )}
       {...props}
     />
@@ -57,7 +57,7 @@ function AlertDescription({
       data-slot="alert-description"
       className={cn(
         'text-neutral-500 col-start-2 grid justify-items-start gap-1 text-sm [&_p]:leading-relaxed dark:text-neutral-400',
-        className,
+        className
       )}
       {...props}
     />
