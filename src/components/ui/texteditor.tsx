@@ -9,6 +9,10 @@ import Highlight from '@tiptap/extension-highlight';
 import Underline from '@tiptap/extension-underline';
 import { TextStyleKit } from '@tiptap/extension-text-style';
 import { Color } from '@tiptap/extension-color';
+import { Table } from '@tiptap/extension-table';
+import { TableRow } from '@tiptap/extension-table-row';
+import { TableCell } from '@tiptap/extension-table-cell';
+import { TableHeader } from '@tiptap/extension-table-header';
 
 import {
   Bold,
@@ -34,6 +38,13 @@ import {
   Superscript as SuperscriptIcon,
   Subscript as SubscriptIcon,
   Highlighter,
+  Table as TableIcon,
+  Columns3,
+  Rows3,
+  TableProperties,
+  Trash2,
+  Merge,
+  Split,
 } from 'lucide-react';
 import { Separator } from './separator';
 import { Button } from './button';
@@ -218,6 +229,90 @@ const Toolbar = ({ editor }: { editor: Editor | null }) => {
       canExecute: editor.can().setHorizontalRule(),
     },
     'separator',
+    // Table Group
+    {
+      name: 'insertTable',
+      command: () =>
+        editor
+          .chain()
+          .focus()
+          .insertTable({ rows: 3, cols: 3, withHeaderRow: true })
+          .run(),
+      icon: TableIcon,
+      isActive: false,
+      canExecute: editor.can().insertTable(),
+    },
+    {
+      name: 'addColumnBefore',
+      command: () => editor.chain().focus().addColumnBefore().run(),
+      icon: Columns3,
+      isActive: false,
+      canExecute: editor.can().addColumnBefore(),
+    },
+    {
+      name: 'addColumnAfter',
+      command: () => editor.chain().focus().addColumnAfter().run(),
+      icon: Columns3,
+      isActive: false,
+      canExecute: editor.can().addColumnAfter(),
+    },
+    {
+      name: 'deleteColumn',
+      command: () => editor.chain().focus().deleteColumn().run(),
+      icon: Columns3,
+      isActive: false,
+      canExecute: editor.can().deleteColumn(),
+    },
+    {
+      name: 'addRowBefore',
+      command: () => editor.chain().focus().addRowBefore().run(),
+      icon: Rows3,
+      isActive: false,
+      canExecute: editor.can().addRowBefore(),
+    },
+    {
+      name: 'addRowAfter',
+      command: () => editor.chain().focus().addRowAfter().run(),
+      icon: Rows3,
+      isActive: false,
+      canExecute: editor.can().addRowAfter(),
+    },
+    {
+      name: 'deleteRow',
+      command: () => editor.chain().focus().deleteRow().run(),
+      icon: Rows3,
+      isActive: false,
+      canExecute: editor.can().deleteRow(),
+    },
+    {
+      name: 'deleteTable',
+      command: () => editor.chain().focus().deleteTable().run(),
+      icon: Trash2,
+      isActive: false,
+      canExecute: editor.can().deleteTable(),
+    },
+    {
+      name: 'mergeCells',
+      command: () => editor.chain().focus().mergeCells().run(),
+      icon: Merge,
+      isActive: false,
+      canExecute: editor.can().mergeCells(),
+    },
+    {
+      name: 'splitCell',
+      command: () => editor.chain().focus().splitCell().run(),
+      icon: Split,
+      isActive: false,
+      canExecute: editor.can().splitCell(),
+    },
+    {
+      name: 'toggleHeaderCell',
+      command: () => editor.chain().focus().toggleHeaderCell().run(),
+      icon: TableProperties,
+      isActive: false,
+      canExecute: editor.can().toggleHeaderCell(),
+    },
+    'separator',
     // Style clear & History
     {
       name: 'clearMarks',
@@ -308,6 +403,23 @@ const extensions = [
   }),
   TextStyleKit,
   Color,
+  Table.configure({
+    resizable: true,
+    HTMLAttributes: {
+      class: 'border-collapse table-auto w-full border border-border',
+    },
+  }),
+  TableRow,
+  TableHeader.configure({
+    HTMLAttributes: {
+      class: 'border border-border bg-muted font-bold p-2 text-left',
+    },
+  }),
+  TableCell.configure({
+    HTMLAttributes: {
+      class: 'border border-border p-2',
+    },
+  }),
 ];
 
 const TextEditor = forwardRef<HTMLDivElement, TextEditorProps>((props, ref) => {
