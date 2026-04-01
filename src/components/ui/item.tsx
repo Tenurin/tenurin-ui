@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Slot } from '@radix-ui/react-slot';
 import { cva, type VariantProps } from 'class-variance-authority';
 
+import type { CvaFn } from '../../lib/cva';
 import { cn } from '../../lib/utils';
 import { Separator } from './separator';
 
@@ -30,7 +31,12 @@ function ItemSeparator({
   );
 }
 
-const itemVariants = cva(
+type ItemVariantProps = {
+  variant?: 'default' | 'outline' | 'muted' | null;
+  size?: 'default' | 'sm' | null;
+};
+
+const itemVariants: CvaFn<ItemVariantProps> = cva(
   'group/item flex items-center border border-neutral-200 border-transparent text-sm rounded-md transition-colors [a]:hover:bg-neutral-100/50 [a]:transition-colors duration-100 flex-wrap outline-none focus-visible:border-neutral-950 focus-visible:ring-neutral-950/50 focus-visible:ring-[3px] dark:border-neutral-800 dark:[a]:hover:bg-neutral-800/50 dark:focus-visible:border-neutral-300 dark:focus-visible:ring-neutral-300/50',
   {
     variants: {
@@ -71,7 +77,11 @@ function Item({
   );
 }
 
-const itemMediaVariants = cva(
+type ItemMediaVariantProps = {
+  variant?: 'default' | 'icon' | 'image' | null;
+};
+
+const itemMediaVariants: CvaFn<ItemMediaVariantProps> = cva(
   'flex shrink-0 items-center justify-center gap-2 group-has-[[data-slot=item-description]]/item:self-start [&_svg]:pointer-events-none group-has-[[data-slot=item-description]]/item:translate-y-0.5',
   {
     variants: {

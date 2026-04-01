@@ -3,6 +3,7 @@
 import * as React from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
 
+import type { CvaFn } from '../../lib/cva';
 import { cn } from '../../lib/utils';
 import { Button } from './button';
 import { Input } from './input';
@@ -36,7 +37,11 @@ function InputGroup({ className, ...props }: React.ComponentProps<'div'>) {
   );
 }
 
-const inputGroupAddonVariants = cva(
+type InputGroupAddonVariantProps = {
+  align?: 'inline-start' | 'inline-end' | 'block-start' | 'block-end' | null;
+};
+
+const inputGroupAddonVariants: CvaFn<InputGroupAddonVariantProps> = cva(
   "text-neutral-500 flex h-auto cursor-text items-center justify-center gap-2 py-1.5 text-sm font-medium select-none [&>svg:not([class*='size-'])]:size-4 [&>kbd]:rounded-[calc(var(--radius)-5px)] group-data-[disabled=true]/input-group:opacity-50 dark:text-neutral-400",
   {
     variants: {
@@ -79,7 +84,11 @@ function InputGroupAddon({
   );
 }
 
-const inputGroupButtonVariants = cva(
+type InputGroupButtonVariantProps = {
+  size?: 'xs' | 'sm' | 'icon-xs' | 'icon-sm' | null;
+};
+
+const inputGroupButtonVariants: CvaFn<InputGroupButtonVariantProps> = cva(
   'text-sm shadow-none flex gap-2 items-center',
   {
     variants: {
