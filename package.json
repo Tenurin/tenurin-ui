@@ -286,8 +286,12 @@
     "dist"
   ],
   "scripts": {
+    "check:tenurin-ui-source": "node scripts/check-tenurin-ui-source.mjs",
+    "fix:tenurin-ui-source": "node scripts/fix-tenurin-ui-source.mjs",
     "dev": "vite",
     "build": "vite build && tsc",
+    "lint": "node scripts/check-tenurin-ui-source.mjs",
+    "lint:fix": "node scripts/fix-tenurin-ui-source.mjs",
     "preview": "vite preview",
     "prepare": "npm run build"
   },
