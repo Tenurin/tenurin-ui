@@ -6,6 +6,11 @@
     "./styles": {
       "import": "./dist/index.css"
     },
+    "./font-manifest": {
+      "types": "./dist/lib/fontManifest.d.ts",
+      "import": "./dist/lib/font-manifest.es.js",
+      "require": "./dist/lib/font-manifest.cjs.js"
+    },
     "./accordion": {
       "types": "./dist/components/ui/accordion.d.ts",
       "import": "./dist/components/ui/accordion.es.js",

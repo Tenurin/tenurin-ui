@@ -3,12 +3,17 @@ import dts from 'vite-plugin-dts';
 import tailwindcss from '@tailwindcss/vite';
 import path from 'path';
 import { libInjectCss } from 'vite-plugin-lib-inject-css';
+import { copyFontAssetsPlugin } from './build/copyFontAssetsPlugin';
+
+const interFontsSourcePath = path.resolve(__dirname, 'src/assets/fonts/inter');
+const interFontsOutputPath = path.resolve(__dirname, 'dist/fonts/inter');
 
 export default defineConfig({
   build: {
     lib: {
       entry: {
         index: path.resolve(__dirname, 'src/index.ts'),
+        'font-manifest': path.resolve(__dirname, 'src/lib/fontManifest.ts'),
         accordion: path.resolve(__dirname, 'src/components/ui/accordion.tsx'),
         'alert-dialog': path.resolve(
           __dirname,
@@ -104,7 +109,10 @@ export default defineConfig({
       name: 'TenurinUI',
       formats: ['es', 'cjs'],
       fileName: (format, entryName) => {
-        const basePath = entryName === 'utils' ? 'lib' : 'components/ui';
+        const basePath =
+          entryName === 'utils' || entryName === 'font-manifest'
+            ? 'lib'
+            : 'components/ui';
         return `${basePath}/${entryName}.${format}.js`;
       },
     },
@@ -124,8 +132,9 @@ export default defineConfig({
       entryRoot: 'src',
       outDir: 'dist',
       tsconfigPath: './tsconfig.json',
-      include: ['src/components/ui', 'src/lib/utils.ts'],
+      include: ['src'],
     }),
     libInjectCss(),
+    copyFontAssetsPlugin(interFontsSourcePath, interFontsOutputPath),
   ],
 });
