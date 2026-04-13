@@ -4,7 +4,18 @@
   "type": "module",
   "exports": {
     "./styles": {
-      "import": "./dist/index.css"
+      "style": "./dist/index.css",
+      "import": "./dist/index.css",
+      "default": "./dist/index.css"
+    },
+    "./theme.css": {
+      "style": "./dist/theme.css",
+      "import": "./dist/theme.css",
+      "default": "./dist/theme.css"
+    },
+    "./tailwind-sources/*": {
+      "import": "./dist/tailwind-sources/*",
+      "default": "./dist/tailwind-sources/*"
     },
     "./font-manifest": {
       "types": "./dist/lib/fontManifest.d.ts",

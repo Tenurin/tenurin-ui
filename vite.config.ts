@@ -4,9 +4,17 @@ import tailwindcss from '@tailwindcss/vite';
 import path from 'path';
 import { libInjectCss } from 'vite-plugin-lib-inject-css';
 import { copyFontAssetsPlugin } from './build/copyFontAssetsPlugin';
+import { copyStyleAssetsPlugin } from './build/copyStyleAssetsPlugin';
+import { copyTailwindSourcesPlugin } from './build/copyTailwindSourcesPlugin';
 
 const interFontsSourcePath = path.resolve(__dirname, 'src/assets/fonts/inter');
 const interFontsOutputPath = path.resolve(__dirname, 'dist/fonts/inter');
+const componentEntriesOutputPath = path.resolve(__dirname, 'dist/components/ui');
+const themeCssSourcePath = path.resolve(__dirname, 'src/styles/theme.css');
+const themeCssOutputPath = path.resolve(__dirname, 'dist/theme.css');
+const tailwindSourcesOutputPath = path.resolve(__dirname, 'dist/tailwind-sources');
+const fontsCssSourcePath = path.resolve(__dirname, 'src/styles/fonts.css');
+const fontsCssOutputPath = path.resolve(__dirname, 'dist/fonts.css');
 
 export default defineConfig({
   build: {
@@ -136,5 +144,19 @@ export default defineConfig({
     }),
     libInjectCss(),
     copyFontAssetsPlugin(interFontsSourcePath, interFontsOutputPath),
+    copyStyleAssetsPlugin([
+      {
+        sourcePath: themeCssSourcePath,
+        destinationPath: themeCssOutputPath,
+      },
+      {
+        sourcePath: fontsCssSourcePath,
+        destinationPath: fontsCssOutputPath,
+      },
+    ]),
+    copyTailwindSourcesPlugin(
+      componentEntriesOutputPath,
+      tailwindSourcesOutputPath,
+    ),
   ],
 });
