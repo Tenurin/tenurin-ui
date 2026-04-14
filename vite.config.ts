@@ -112,6 +112,7 @@ export default defineConfig({
         ),
         toggle: path.resolve(__dirname, 'src/components/ui/toggle.tsx'),
         tooltip: path.resolve(__dirname, 'src/components/ui/tooltip.tsx'),
+        'use-mobile': path.resolve(__dirname, 'src/hooks/use-mobile.ts'),
         utils: path.resolve(__dirname, 'src/lib/utils.ts'),
       },
       name: 'TenurinUI',
@@ -120,6 +121,8 @@ export default defineConfig({
         const basePath =
           entryName === 'utils' || entryName === 'font-manifest'
             ? 'lib'
+            : entryName === 'use-mobile'
+              ? 'hooks'
             : 'components/ui';
         return `${basePath}/${entryName}.${format}.js`;
       },

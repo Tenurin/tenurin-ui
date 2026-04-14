@@ -292,6 +292,11 @@
       "import": "./dist/components/ui/tooltip.es.js",
       "require": "./dist/components/ui/tooltip.cjs.js"
     },
+    "./use-mobile": {
+      "types": "./dist/hooks/use-mobile.d.ts",
+      "import": "./dist/hooks/use-mobile.es.js",
+      "require": "./dist/hooks/use-mobile.cjs.js"
+    },
     "./utils": {
       "types": "./dist/lib/utils.d.ts",
       "import": "./dist/lib/utils.es.js",
