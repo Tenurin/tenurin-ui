@@ -89,23 +89,23 @@
     var(--foreground) 22%
   );
 
-  --app-accent-company-fg: oklch(40.5% 0.088 231.24);
-  --app-accent-location-fg: oklch(38.8% 0.105 167.42);
-  --app-accent-academic-fg: oklch(42.3% 0.103 306.18);
+  --app-accent-triad-a-fg: oklch(40.5% 0.088 231.24);
+  --app-accent-triad-b-fg: oklch(38.8% 0.105 167.42);
+  --app-accent-triad-c-fg: oklch(42.3% 0.103 306.18);
 
-  --app-accent-academic-border: color-mix(
+  --app-accent-triad-c-border: color-mix(
     in oklab,
-    var(--app-accent-academic-fg) 24%,
+    var(--app-accent-triad-c-fg) 24%,
     var(--border) 76%
   );
-  --app-accent-academic-bg: color-mix(
+  --app-accent-triad-c-bg: color-mix(
     in oklab,
-    var(--app-accent-academic-fg) 10%,
+    var(--app-accent-triad-c-fg) 10%,
     var(--background) 90%
   );
-  --app-accent-academic-surface-fg: color-mix(
+  --app-accent-triad-c-surface-fg: color-mix(
     in oklab,
-    var(--app-accent-academic-fg) 78%,
+    var(--app-accent-triad-c-fg) 78%,
     var(--foreground) 22%
   );
 
@@ -197,24 +197,24 @@
     var(--foreground) 26%
   );
 
-  --app-accent-company-fg: oklch(84.2% 0.082 227.41);
-  --app-accent-location-fg: oklch(83.8% 0.092 168.72);
-  --app-accent-academic-fg: oklch(85.1% 0.088 304.52);
+  --app-accent-triad-a-fg: oklch(84.2% 0.082 227.41);
+  --app-accent-triad-b-fg: oklch(83.8% 0.092 168.72);
+  --app-accent-triad-c-fg: oklch(85.1% 0.088 304.52);
   --app-accent-channel-fg: oklch(77.1% 0.152 82.96);
 
-  --app-accent-academic-border: color-mix(
+  --app-accent-triad-c-border: color-mix(
     in oklab,
-    var(--app-accent-academic-fg) 22%,
+    var(--app-accent-triad-c-fg) 22%,
     var(--border) 78%
   );
-  --app-accent-academic-bg: color-mix(
+  --app-accent-triad-c-bg: color-mix(
     in oklab,
-    var(--app-accent-academic-fg) 12%,
+    var(--app-accent-triad-c-fg) 12%,
     var(--background) 88%
   );
-  --app-accent-academic-surface-fg: color-mix(
+  --app-accent-triad-c-surface-fg: color-mix(
     in oklab,
-    var(--app-accent-academic-fg) 74%,
+    var(--app-accent-triad-c-fg) 74%,
     var(--foreground) 26%
   );
 }
@@ -276,16 +276,16 @@
   color: var(--app-accent-cool-fg);
 }
 
-.ui-app-accent-company-fg {
-  color: var(--app-accent-company-fg);
+.ui-app-accent-triad-a-fg {
+  color: var(--app-accent-triad-a-fg);
 }
 
-.ui-app-accent-location-fg {
-  color: var(--app-accent-location-fg);
+.ui-app-accent-triad-b-fg {
+  color: var(--app-accent-triad-b-fg);
 }
 
-.ui-app-accent-academic-fg {
-  color: var(--app-accent-academic-fg);
+.ui-app-accent-triad-c-fg {
+  color: var(--app-accent-triad-c-fg);
 }
 
 .ui-app-accent-negative-fg {
@@ -367,16 +367,16 @@
   color: var(--app-accent-positive-fg);
 }
 
-.ui-app-accent-academic-surface {
-  border-color: var(--app-accent-academic-border);
-  background-color: var(--app-accent-academic-bg);
-  color: var(--app-accent-academic-surface-fg);
+.ui-app-accent-triad-c-surface {
+  border-color: var(--app-accent-triad-c-border);
+  background-color: var(--app-accent-triad-c-bg);
+  color: var(--app-accent-triad-c-surface-fg);
 }
 
-.ui-app-accent-academic-surface:hover {
-  border-color: var(--app-accent-academic-border);
-  background-color: var(--app-accent-academic-bg);
-  color: var(--app-accent-academic-surface-fg);
+.ui-app-accent-triad-c-surface:hover {
+  border-color: var(--app-accent-triad-c-border);
+  background-color: var(--app-accent-triad-c-bg);
+  color: var(--app-accent-triad-c-surface-fg);
 }
 
 .ui-app-accent-negative-surface {
@@ -406,4 +406,29 @@
 
 @theme {
   --animation-caret-blink: caret-blink 1.25s ease-out infinite;
+}
+
+@keyframes loader-mark-turn {
+  0%,
+  18% {
+    transform: rotate(0deg);
+  }
+
+  32%,
+  50% {
+    transform: rotate(360deg);
+  }
+
+  64%,
+  82% {
+    transform: rotate(720deg);
+  }
+
+  100% {
+    transform: rotate(1080deg);
+  }
+}
+
+.loader-mark-turn {
+  animation: loader-mark-turn 2.8s ease-in-out infinite;
 }

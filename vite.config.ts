@@ -10,11 +10,28 @@ import { copyTailwindSourcesPlugin } from './build/copyTailwindSourcesPlugin';
 const interFontsSourcePath = path.resolve(__dirname, 'src/assets/fonts/inter');
 const interFontsOutputPath = path.resolve(__dirname, 'dist/fonts/inter');
 const componentEntriesOutputPath = path.resolve(__dirname, 'dist/components/ui');
+const templateEntriesOutputPath = path.resolve(__dirname, 'dist/templates');
 const themeCssSourcePath = path.resolve(__dirname, 'src/styles/theme.css');
 const themeCssOutputPath = path.resolve(__dirname, 'dist/theme.css');
 const tailwindSourcesOutputPath = path.resolve(__dirname, 'dist/tailwind-sources');
 const fontsCssSourcePath = path.resolve(__dirname, 'src/styles/fonts.css');
 const fontsCssOutputPath = path.resolve(__dirname, 'dist/fonts.css');
+const lightLogoSourcePath = path.resolve(
+  __dirname,
+  'src/assets/brand/tenurin-light-mode-icon.svg',
+);
+const lightLogoOutputPath = path.resolve(
+  __dirname,
+  'dist/assets/brand/tenurin-light-mode-icon.svg',
+);
+const darkLogoSourcePath = path.resolve(
+  __dirname,
+  'src/assets/brand/tenurin-dark-mode-icon.svg',
+);
+const darkLogoOutputPath = path.resolve(
+  __dirname,
+  'dist/assets/brand/tenurin-dark-mode-icon.svg',
+);
 
 export default defineConfig({
   build: {
@@ -54,15 +71,31 @@ export default defineConfig({
           __dirname,
           'src/components/ui/datetime-picker.tsx'
         ),
+        'default-loader': path.resolve(
+          __dirname,
+          'src/components/ui/default-loader.tsx'
+        ),
         dialog: path.resolve(__dirname, 'src/components/ui/dialog.tsx'),
         drawer: path.resolve(__dirname, 'src/components/ui/drawer.tsx'),
         'dropdown-menu': path.resolve(
           __dirname,
           'src/components/ui/dropdown-menu.tsx'
         ),
+        'empty-state': path.resolve(
+          __dirname,
+          'src/components/ui/empty-state.tsx'
+        ),
         empty: path.resolve(__dirname, 'src/components/ui/empty.tsx'),
         field: path.resolve(__dirname, 'src/components/ui/field.tsx'),
         form: path.resolve(__dirname, 'src/components/ui/form.tsx'),
+        'form-field-shell': path.resolve(
+          __dirname,
+          'src/components/ui/form-field-shell.tsx'
+        ),
+        'form-section': path.resolve(
+          __dirname,
+          'src/components/ui/form-section.tsx'
+        ),
         'hover-card': path.resolve(
           __dirname,
           'src/components/ui/hover-card.tsx'
@@ -76,24 +109,45 @@ export default defineConfig({
         item: path.resolve(__dirname, 'src/components/ui/item.tsx'),
         kbd: path.resolve(__dirname, 'src/components/ui/kbd.tsx'),
         label: path.resolve(__dirname, 'src/components/ui/label.tsx'),
+        'list-toolbar': path.resolve(
+          __dirname,
+          'src/components/ui/list-toolbar.tsx'
+        ),
+        logo: path.resolve(__dirname, 'src/components/ui/logo.tsx'),
         menubar: path.resolve(__dirname, 'src/components/ui/menubar.tsx'),
         'navigation-menu': path.resolve(
           __dirname,
           'src/components/ui/navigation-menu.tsx'
         ),
         pagination: path.resolve(__dirname, 'src/components/ui/pagination.tsx'),
+        'posts-table': path.resolve(
+          __dirname,
+          'src/components/ui/posts-table.tsx'
+        ),
         popover: path.resolve(__dirname, 'src/components/ui/popover.tsx'),
         progress: path.resolve(__dirname, 'src/components/ui/progress.tsx'),
         'radio-group': path.resolve(
           __dirname,
           'src/components/ui/radio-group.tsx'
         ),
+        'results-pagination': path.resolve(
+          __dirname,
+          'src/components/ui/results-pagination.tsx'
+        ),
         resizable: path.resolve(__dirname, 'src/components/ui/resizable.tsx'),
         'scroll-area': path.resolve(
           __dirname,
           'src/components/ui/scroll-area.tsx'
         ),
+        'search-input': path.resolve(
+          __dirname,
+          'src/components/ui/search-input.tsx'
+        ),
         select: path.resolve(__dirname, 'src/components/ui/select.tsx'),
+        'select-filter': path.resolve(
+          __dirname,
+          'src/components/ui/select-filter.tsx'
+        ),
         separator: path.resolve(__dirname, 'src/components/ui/separator.tsx'),
         sheet: path.resolve(__dirname, 'src/components/ui/sheet.tsx'),
         sidebar: path.resolve(__dirname, 'src/components/ui/sidebar.tsx'),
@@ -105,6 +159,18 @@ export default defineConfig({
         table: path.resolve(__dirname, 'src/components/ui/table.tsx'),
         tabs: path.resolve(__dirname, 'src/components/ui/tabs.tsx'),
         textarea: path.resolve(__dirname, 'src/components/ui/textarea.tsx'),
+        'templates/sidebar': path.resolve(
+          __dirname,
+          'src/templates/sidebar/index.tsx'
+        ),
+        'templates/route-error': path.resolve(
+          __dirname,
+          'src/templates/route-error/index.tsx'
+        ),
+        'templates/post-detail': path.resolve(
+          __dirname,
+          'src/templates/post-detail/index.tsx'
+        ),
         texteditor: path.resolve(__dirname, 'src/components/ui/texteditor.tsx'),
         'toggle-group': path.resolve(
           __dirname,
@@ -112,12 +178,20 @@ export default defineConfig({
         ),
         toggle: path.resolve(__dirname, 'src/components/ui/toggle.tsx'),
         tooltip: path.resolve(__dirname, 'src/components/ui/tooltip.tsx'),
+        'upload-surface': path.resolve(
+          __dirname,
+          'src/components/ui/upload-surface.tsx'
+        ),
         'use-mobile': path.resolve(__dirname, 'src/hooks/use-mobile.ts'),
         utils: path.resolve(__dirname, 'src/lib/utils.ts'),
       },
       name: 'TenurinUI',
       formats: ['es', 'cjs'],
       fileName: (format, entryName) => {
+        if (entryName.startsWith('templates/')) {
+          return `${entryName}.${format}.js`;
+        }
+
         const basePath =
           entryName === 'utils' || entryName === 'font-manifest'
             ? 'lib'
@@ -128,7 +202,7 @@ export default defineConfig({
       },
     },
     rollupOptions: {
-      external: ['react', 'react-dom'],
+      external: ['react', 'react-dom', 'react-router'],
       output: {
         globals: {
           react: 'React',
@@ -156,9 +230,17 @@ export default defineConfig({
         sourcePath: fontsCssSourcePath,
         destinationPath: fontsCssOutputPath,
       },
+      {
+        sourcePath: lightLogoSourcePath,
+        destinationPath: lightLogoOutputPath,
+      },
+      {
+        sourcePath: darkLogoSourcePath,
+        destinationPath: darkLogoOutputPath,
+      },
     ]),
     copyTailwindSourcesPlugin(
-      componentEntriesOutputPath,
+      [componentEntriesOutputPath, templateEntriesOutputPath],
       tailwindSourcesOutputPath,
     ),
   ],

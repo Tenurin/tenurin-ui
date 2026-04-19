@@ -47,6 +47,11 @@
       "import": "./dist/components/ui/badge.es.js",
       "require": "./dist/components/ui/badge.cjs.js"
     },
+    "./batch-list-table": {
+      "types": "./dist/components/ui/batch-list-table.d.ts",
+      "import": "./dist/components/ui/batch-list-table.es.js",
+      "require": "./dist/components/ui/batch-list-table.cjs.js"
+    },
     "./breadcrumb": {
       "types": "./dist/components/ui/breadcrumb.d.ts",
       "import": "./dist/components/ui/breadcrumb.es.js",
@@ -107,6 +112,11 @@
       "import": "./dist/components/ui/datetime-picker.es.js",
       "require": "./dist/components/ui/datetime-picker.cjs.js"
     },
+    "./default-loader": {
+      "types": "./dist/components/ui/default-loader.d.ts",
+      "import": "./dist/components/ui/default-loader.es.js",
+      "require": "./dist/components/ui/default-loader.cjs.js"
+    },
     "./dialog": {
       "types": "./dist/components/ui/dialog.d.ts",
       "import": "./dist/components/ui/dialog.es.js",
@@ -122,6 +132,11 @@
       "import": "./dist/components/ui/dropdown-menu.es.js",
       "require": "./dist/components/ui/dropdown-menu.cjs.js"
     },
+    "./empty-state": {
+      "types": "./dist/components/ui/empty-state.d.ts",
+      "import": "./dist/components/ui/empty-state.es.js",
+      "require": "./dist/components/ui/empty-state.cjs.js"
+    },
     "./empty": {
       "types": "./dist/components/ui/empty.d.ts",
       "import": "./dist/components/ui/empty.es.js",
@@ -132,10 +147,25 @@
       "import": "./dist/components/ui/field.es.js",
       "require": "./dist/components/ui/field.cjs.js"
     },
+    "./file-upload-field": {
+      "types": "./dist/components/ui/file-upload-field.d.ts",
+      "import": "./dist/components/ui/file-upload-field.es.js",
+      "require": "./dist/components/ui/file-upload-field.cjs.js"
+    },
     "./form": {
       "types": "./dist/components/ui/form.d.ts",
       "import": "./dist/components/ui/form.es.js",
       "require": "./dist/components/ui/form.cjs.js"
+    },
+    "./form-field-shell": {
+      "types": "./dist/components/ui/form-field-shell.d.ts",
+      "import": "./dist/components/ui/form-field-shell.es.js",
+      "require": "./dist/components/ui/form-field-shell.cjs.js"
+    },
+    "./form-section": {
+      "types": "./dist/components/ui/form-section.d.ts",
+      "import": "./dist/components/ui/form-section.es.js",
+      "require": "./dist/components/ui/form-section.cjs.js"
     },
     "./hover-card": {
       "types": "./dist/components/ui/hover-card.d.ts",
@@ -172,6 +202,31 @@
       "import": "./dist/components/ui/label.es.js",
       "require": "./dist/components/ui/label.cjs.js"
     },
+    "./logo": {
+      "types": "./dist/components/ui/logo.d.ts",
+      "import": "./dist/components/ui/logo.es.js",
+      "require": "./dist/components/ui/logo.cjs.js"
+    },
+    "./list-toolbar": {
+      "types": "./dist/components/ui/list-toolbar.d.ts",
+      "import": "./dist/components/ui/list-toolbar.es.js",
+      "require": "./dist/components/ui/list-toolbar.cjs.js"
+    },
+    "./templates/sidebar": {
+      "types": "./dist/templates/sidebar/index.d.ts",
+      "import": "./dist/templates/sidebar.es.js",
+      "require": "./dist/templates/sidebar.cjs.js"
+    },
+    "./templates/route-error": {
+      "types": "./dist/templates/route-error/index.d.ts",
+      "import": "./dist/templates/route-error.es.js",
+      "require": "./dist/templates/route-error.cjs.js"
+    },
+    "./templates/post-detail": {
+      "types": "./dist/templates/post-detail/index.d.ts",
+      "import": "./dist/templates/post-detail.es.js",
+      "require": "./dist/templates/post-detail.cjs.js"
+    },
     "./menubar": {
       "types": "./dist/components/ui/menubar.d.ts",
       "import": "./dist/components/ui/menubar.es.js",
@@ -186,6 +241,11 @@
       "types": "./dist/components/ui/pagination.d.ts",
       "import": "./dist/components/ui/pagination.es.js",
       "require": "./dist/components/ui/pagination.cjs.js"
+    },
+    "./posts-table": {
+      "types": "./dist/components/ui/posts-table.d.ts",
+      "import": "./dist/components/ui/posts-table.es.js",
+      "require": "./dist/components/ui/posts-table.cjs.js"
     },
     "./popover": {
       "types": "./dist/components/ui/popover.d.ts",
@@ -202,6 +262,11 @@
       "import": "./dist/components/ui/radio-group.es.js",
       "require": "./dist/components/ui/radio-group.cjs.js"
     },
+    "./results-pagination": {
+      "types": "./dist/components/ui/results-pagination.d.ts",
+      "import": "./dist/components/ui/results-pagination.es.js",
+      "require": "./dist/components/ui/results-pagination.cjs.js"
+    },
     "./resizable": {
       "types": "./dist/components/ui/resizable.d.ts",
       "import": "./dist/components/ui/resizable.es.js",
@@ -212,10 +277,20 @@
       "import": "./dist/components/ui/scroll-area.es.js",
       "require": "./dist/components/ui/scroll-area.cjs.js"
     },
+    "./search-input": {
+      "types": "./dist/components/ui/search-input.d.ts",
+      "import": "./dist/components/ui/search-input.es.js",
+      "require": "./dist/components/ui/search-input.cjs.js"
+    },
     "./select": {
       "types": "./dist/components/ui/select.d.ts",
       "import": "./dist/components/ui/select.es.js",
       "require": "./dist/components/ui/select.cjs.js"
+    },
+    "./select-filter": {
+      "types": "./dist/components/ui/select-filter.d.ts",
+      "import": "./dist/components/ui/select-filter.es.js",
+      "require": "./dist/components/ui/select-filter.cjs.js"
     },
     "./separator": {
       "types": "./dist/components/ui/separator.d.ts",
@@ -292,6 +367,11 @@
       "import": "./dist/components/ui/tooltip.es.js",
       "require": "./dist/components/ui/tooltip.cjs.js"
     },
+    "./upload-surface": {
+      "types": "./dist/components/ui/upload-surface.d.ts",
+      "import": "./dist/components/ui/upload-surface.es.js",
+      "require": "./dist/components/ui/upload-surface.cjs.js"
+    },
     "./use-mobile": {
       "types": "./dist/hooks/use-mobile.d.ts",
       "import": "./dist/hooks/use-mobile.es.js",
@@ -323,6 +403,7 @@
     "@types/node": "^22.13.10",
     "@types/react": "^19.0.10",
     "@types/react-dom": "^19.0.4",
+    "react-router": "^7.2.0",
     "typescript": "~5.7.2",
     "vite": "^6.2.0",
     "vite-plugin-dts": "^4.5.3",
@@ -382,6 +463,7 @@
     "react": "^19.0.0",
     "react-day-picker": "^9.11.1",
     "react-hook-form": "^7.65.0",
+    "react-router": "^7.2.0",
     "react-resizable-panels": "^3.0.6",
     "recharts": "^2.15.4",
     "sonner": "^2.0.7",
@@ -390,5 +472,8 @@
     "tailwindcss-animate": "^1.0.7",
     "vaul": "^1.1.2",
     "zod": "^4.1.12"
+  },
+  "peerDependencies": {
+    "react-router": "^7.2.0"
   }
 }
