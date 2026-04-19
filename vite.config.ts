@@ -47,6 +47,10 @@ export default defineConfig({
         alert: path.resolve(__dirname, 'src/components/ui/alert.tsx'),
         avatar: path.resolve(__dirname, 'src/components/ui/avatar.tsx'),
         badge: path.resolve(__dirname, 'src/components/ui/badge.tsx'),
+        'batch-list-table': path.resolve(
+          __dirname,
+          'src/components/ui/batch-list-table.tsx'
+        ),
         breadcrumb: path.resolve(__dirname, 'src/components/ui/breadcrumb.tsx'),
         'button-group': path.resolve(
           __dirname,
