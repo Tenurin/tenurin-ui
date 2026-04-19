@@ -20,6 +20,7 @@
 - Build declaration output with `pnpm run build:types`.
 - Use `pnpm run build:watch` for iterative local development when consumer repos need fresh `dist/` output.
 - This repo does not currently use an ESLint config. The active repo checks are `pnpm run lint` and `pnpm run lint:fix`, which run the source-shape scripts in `scripts/check-tenurin-ui-source.mjs` and `scripts/fix-tenurin-ui-source.mjs`.
+- Keep `package.json` exports, `vite.config.ts` `build.lib.entry`, and emitted `dist/` artifacts in sync. Public subpath exports must have a matching Vite library entry and must emit the referenced JS and type files during `pnpm run build`.
 
 ## Consumer Compatibility
 

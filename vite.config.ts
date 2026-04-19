@@ -91,6 +91,10 @@ export default defineConfig({
         ),
         empty: path.resolve(__dirname, 'src/components/ui/empty.tsx'),
         field: path.resolve(__dirname, 'src/components/ui/field.tsx'),
+        'file-upload-field': path.resolve(
+          __dirname,
+          'src/components/ui/file-upload-field.tsx'
+        ),
         form: path.resolve(__dirname, 'src/components/ui/form.tsx'),
         'form-field-shell': path.resolve(
           __dirname,
