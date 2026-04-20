@@ -47,10 +47,10 @@
       "import": "./dist/components/ui/badge.es.js",
       "require": "./dist/components/ui/badge.cjs.js"
     },
-    "./batch-list-table": {
-      "types": "./dist/components/ui/batch-list-table.d.ts",
-      "import": "./dist/components/ui/batch-list-table.es.js",
-      "require": "./dist/components/ui/batch-list-table.cjs.js"
+    "./list-table": {
+      "types": "./dist/components/ui/list-table.d.ts",
+      "import": "./dist/components/ui/list-table.es.js",
+      "require": "./dist/components/ui/list-table.cjs.js"
     },
     "./breadcrumb": {
       "types": "./dist/components/ui/breadcrumb.d.ts",
@@ -242,10 +242,10 @@
       "import": "./dist/components/ui/pagination.es.js",
       "require": "./dist/components/ui/pagination.cjs.js"
     },
-    "./posts-table": {
-      "types": "./dist/components/ui/posts-table.d.ts",
-      "import": "./dist/components/ui/posts-table.es.js",
-      "require": "./dist/components/ui/posts-table.cjs.js"
+    "./minimal-list-table": {
+      "types": "./dist/components/ui/minimal-list-table.d.ts",
+      "import": "./dist/components/ui/minimal-list-table.es.js",
+      "require": "./dist/components/ui/minimal-list-table.cjs.js"
     },
     "./popover": {
       "types": "./dist/components/ui/popover.d.ts",

@@ -47,9 +47,9 @@ export default defineConfig({
         alert: path.resolve(__dirname, 'src/components/ui/alert.tsx'),
         avatar: path.resolve(__dirname, 'src/components/ui/avatar.tsx'),
         badge: path.resolve(__dirname, 'src/components/ui/badge.tsx'),
-        'batch-list-table': path.resolve(
+        'list-table': path.resolve(
           __dirname,
-          'src/components/ui/batch-list-table.tsx'
+          'src/components/ui/list-table.tsx'
         ),
         breadcrumb: path.resolve(__dirname, 'src/components/ui/breadcrumb.tsx'),
         'button-group': path.resolve(
@@ -128,9 +128,9 @@ export default defineConfig({
           'src/components/ui/navigation-menu.tsx'
         ),
         pagination: path.resolve(__dirname, 'src/components/ui/pagination.tsx'),
-        'posts-table': path.resolve(
+        'minimal-list-table': path.resolve(
           __dirname,
-          'src/components/ui/posts-table.tsx'
+          'src/components/ui/minimal-list-table.tsx'
         ),
         popover: path.resolve(__dirname, 'src/components/ui/popover.tsx'),
         progress: path.resolve(__dirname, 'src/components/ui/progress.tsx'),

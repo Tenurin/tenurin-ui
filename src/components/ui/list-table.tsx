@@ -12,7 +12,7 @@ import {
   TableRow,
 } from './table';
 
-export type BatchListColumn<TRow> = Readonly<{
+export type ListTableColumn<TRow> = Readonly<{
   id: string;
   header: ReactNode;
   headerClassName?: string;
@@ -20,9 +20,9 @@ export type BatchListColumn<TRow> = Readonly<{
   render: (row: TRow) => ReactNode;
 }>;
 
-type BatchListTableProps<TRow> = Readonly<{
+type ListTableProps<TRow> = Readonly<{
   rows: readonly TRow[];
-  columns: readonly BatchListColumn<TRow>[];
+  columns: readonly ListTableColumn<TRow>[];
   isLoading: boolean;
   isError: boolean;
   getRowKey: (row: TRow) => string;
@@ -42,7 +42,7 @@ type BatchListTableProps<TRow> = Readonly<{
   bodyRowClassName?: string;
 }>;
 
-export default function BatchListTable<TRow>({
+export default function ListTable<TRow>({
   rows,
   columns,
   isLoading,
@@ -62,7 +62,7 @@ export default function BatchListTable<TRow>({
   tableCellClassName,
   headerRowClassName,
   bodyRowClassName,
-}: BatchListTableProps<TRow>) {
+}: ListTableProps<TRow>) {
   if (!isLoading && !isError && rows.length === 0) {
     return (
       <div className={cn('w-full overflow-hidden rounded-sm', surfaceClassName)}>
