@@ -1,5 +1,5 @@
-import { cn } from '../../lib/utils';
-import type { ReactNode } from 'react';
+import { cn } from "../../lib/utils";
+import type { ReactNode } from "react";
 
 type FormSectionProps = Readonly<{
   eyebrow: string;
@@ -19,7 +19,7 @@ export default function FormSection({
       <div className="space-y-2">
         <p
           className={cn(
-            'text-[11px] uppercase tracking-[0.24em] text-muted-foreground',
+            "text-[11px] uppercase tracking-[0.24em] text-muted-foreground",
             eyebrowClassName,
           )}
         >
@@ -38,16 +38,26 @@ export default function FormSection({
 
 type FormReadonlyValueProps = Readonly<{
   label: string;
-  value: string | number;
+  value: ReactNode;
+  contentClassName?: string;
 }>;
 
-export function FormReadonlyValue({ label, value }: FormReadonlyValueProps) {
+export function FormReadonlyValue({
+  label,
+  value,
+  contentClassName,
+}: FormReadonlyValueProps) {
   return (
-    <div className="space-y-3">
+    <div className="space-y-2.5">
       <p className="text-[11px] uppercase tracking-[0.24em] text-muted-foreground">
         {label}
       </p>
-      <div className="min-h-12 rounded-sm border border-border/80 bg-neutral-50 px-4 py-3 text-sm text-[var(--foreground)] shadow-none dark:bg-neutral-800/30">
+      <div
+        className={cn(
+          "min-h-12 rounded-sm border border-border/60 bg-[color:color-mix(in_oklab,var(--sidebar)_90%,var(--background))] px-4 py-3 text-sm text-[color-mix(in_oklab,var(--foreground)_58%,transparent)] shadow-none",
+          contentClassName,
+        )}
+      >
         {value}
       </div>
     </div>

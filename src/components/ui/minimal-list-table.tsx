@@ -12,6 +12,7 @@ import {
   TableHeader,
   TableRow,
 } from './table';
+import { getTableLoadingSkeletonClassName } from './table-loading';
 
 export type MinimalListTableColumn<TItem> = Readonly<{
   key: string;
@@ -19,6 +20,7 @@ export type MinimalListTableColumn<TItem> = Readonly<{
   widthClassName?: string;
   headClassName?: string;
   cellClassName?: string;
+  loadingClassName?: string;
   renderCell: (item: TItem) => ReactNode;
 }>;
 
@@ -40,6 +42,7 @@ type MinimalListTableProps<TItem> = Readonly<{
   actionsLabel?: string;
   renderActions?: (item: TItem) => ReactNode;
   actionsCellClassName?: string;
+  actionsLoadingClassName?: string;
 }>;
 
 const tableHeadClassName =
@@ -64,6 +67,7 @@ export default function MinimalListTable<TItem>({
   actionsLabel = 'Actions',
   renderActions,
   actionsCellClassName = 'relative z-10 py-1',
+  actionsLoadingClassName,
 }: MinimalListTableProps<TItem>) {
   const showActionsColumn = renderActions !== undefined;
   const columnCount = columns.length + (showActionsColumn ? 1 : 0);
@@ -113,9 +117,36 @@ export default function MinimalListTable<TItem>({
         {isPending
           ? Array.from({ length: pageSize }).map((_, index) => (
               <TableRow key={index}>
-                <TableCell colSpan={columnCount}>
-                  <Skeleton className="h-8 w-full" />
-                </TableCell>
+                {columns.map((column, columnIndex) => (
+                  <TableCell
+                    key={column.key}
+                    className={cn(
+                      columnIndex === 0 ? 'max-w-0 py-1' : 'py-1',
+                      column.cellClassName,
+                    )}
+                  >
+                    <Skeleton
+                      className={getTableLoadingSkeletonClassName({
+                        index: columnIndex,
+                        className: column.loadingClassName,
+                        isCentered:
+                          column.cellClassName?.includes('text-center') ??
+                          false,
+                      })}
+                    />
+                  </TableCell>
+                ))}
+                {showActionsColumn ? (
+                  <TableCell className={actionsCellClassName}>
+                    <Skeleton
+                      className={getTableLoadingSkeletonClassName({
+                        index: columnCount - 1,
+                        className: actionsLoadingClassName,
+                        isActionsColumn: true,
+                      })}
+                    />
+                  </TableCell>
+                ) : null}
               </TableRow>
             ))
           : null}

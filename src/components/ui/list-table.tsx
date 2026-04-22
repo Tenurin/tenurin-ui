@@ -11,12 +11,14 @@ import {
   TableHeader,
   TableRow,
 } from './table';
+import { getTableLoadingSkeletonClassName } from './table-loading';
 
 export type ListTableColumn<TRow> = Readonly<{
   id: string;
   header: ReactNode;
   headerClassName?: string;
   cellClassName?: string;
+  loadingClassName?: string;
   render: (row: TRow) => ReactNode;
 }>;
 
@@ -95,9 +97,22 @@ export default function ListTable<TRow>({
           {isLoading
             ? Array.from({ length: loadingRowCount }).map((_, index) => (
                 <TableRow key={index} className="border-b-0">
-                  <TableCell colSpan={columnCount} className="px-6 py-8 lg:px-9">
-                    <Skeleton className="h-16 w-full rounded-lg" />
-                  </TableCell>
+                  {columns.map((column, columnIndex) => (
+                    <TableCell
+                      key={column.id}
+                      className={cn(tableCellClassName, column.cellClassName)}
+                    >
+                      <Skeleton
+                        className={getTableLoadingSkeletonClassName({
+                          index: columnIndex,
+                          className: column.loadingClassName,
+                          isCentered:
+                            column.cellClassName?.includes('text-center') ??
+                            false,
+                        })}
+                      />
+                    </TableCell>
+                  ))}
                 </TableRow>
               ))
             : null}
