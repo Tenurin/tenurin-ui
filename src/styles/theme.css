@@ -1,4 +1,4 @@
-@import './fonts.css';
+@import "./fonts.css";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -272,8 +272,40 @@
   color: var(--app-accent-channel-fg);
 }
 
+.ui-app-accent-channel-surface {
+  border-color: color-mix(
+    in oklab,
+    var(--app-accent-channel-fg) 34%,
+    transparent
+  );
+  background-color: color-mix(
+    in oklab,
+    var(--app-accent-channel-fg) 14%,
+    transparent
+  );
+  color: var(--app-accent-channel-fg);
+}
+
+.ui-app-accent-channel-surface:hover {
+  border-color: color-mix(
+    in oklab,
+    var(--app-accent-channel-fg) 44%,
+    transparent
+  );
+  background-color: color-mix(
+    in oklab,
+    var(--app-accent-channel-fg) 20%,
+    transparent
+  );
+  color: var(--app-accent-channel-fg);
+}
+
 .ui-app-accent-cool-fg {
   color: var(--app-accent-cool-fg);
+}
+
+.ui-app-accent-warm-fg {
+  color: var(--app-accent-warm-fg);
 }
 
 .ui-app-accent-triad-a-fg {

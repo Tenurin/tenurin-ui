@@ -79,6 +79,10 @@ export default defineConfig({
           __dirname,
           'src/components/ui/default-loader.tsx'
         ),
+        'detail-section': path.resolve(
+          __dirname,
+          'src/components/ui/detail-section.tsx'
+        ),
         dialog: path.resolve(__dirname, 'src/components/ui/dialog.tsx'),
         drawer: path.resolve(__dirname, 'src/components/ui/drawer.tsx'),
         'dropdown-menu': path.resolve(
@@ -163,6 +167,10 @@ export default defineConfig({
         slider: path.resolve(__dirname, 'src/components/ui/slider.tsx'),
         sonner: path.resolve(__dirname, 'src/components/ui/sonner.tsx'),
         spinner: path.resolve(__dirname, 'src/components/ui/spinner.tsx'),
+        'surface-card': path.resolve(
+          __dirname,
+          'src/components/ui/surface-card.tsx'
+        ),
         switch: path.resolve(__dirname, 'src/components/ui/switch.tsx'),
         table: path.resolve(__dirname, 'src/components/ui/table.tsx'),
         tabs: path.resolve(__dirname, 'src/components/ui/tabs.tsx'),
@@ -170,6 +178,10 @@ export default defineConfig({
         'templates/sidebar': path.resolve(
           __dirname,
           'src/templates/sidebar/index.tsx'
+        ),
+        'templates/messaging': path.resolve(
+          __dirname,
+          'src/templates/messaging/index.tsx'
         ),
         'templates/route-error': path.resolve(
           __dirname,

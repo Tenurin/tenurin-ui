@@ -117,6 +117,11 @@
       "import": "./dist/components/ui/default-loader.es.js",
       "require": "./dist/components/ui/default-loader.cjs.js"
     },
+    "./detail-section": {
+      "types": "./dist/components/ui/detail-section.d.ts",
+      "import": "./dist/components/ui/detail-section.es.js",
+      "require": "./dist/components/ui/detail-section.cjs.js"
+    },
     "./dialog": {
       "types": "./dist/components/ui/dialog.d.ts",
       "import": "./dist/components/ui/dialog.es.js",
@@ -216,6 +221,11 @@
       "types": "./dist/templates/sidebar/index.d.ts",
       "import": "./dist/templates/sidebar.es.js",
       "require": "./dist/templates/sidebar.cjs.js"
+    },
+    "./templates/messaging": {
+      "types": "./dist/templates/messaging/index.d.ts",
+      "import": "./dist/templates/messaging.es.js",
+      "require": "./dist/templates/messaging.cjs.js"
     },
     "./templates/route-error": {
       "types": "./dist/templates/route-error/index.d.ts",
@@ -326,6 +336,11 @@
       "types": "./dist/components/ui/spinner.d.ts",
       "import": "./dist/components/ui/spinner.es.js",
       "require": "./dist/components/ui/spinner.cjs.js"
+    },
+    "./surface-card": {
+      "types": "./dist/components/ui/surface-card.d.ts",
+      "import": "./dist/components/ui/surface-card.es.js",
+      "require": "./dist/components/ui/surface-card.cjs.js"
     },
     "./switch": {
       "types": "./dist/components/ui/switch.d.ts",
