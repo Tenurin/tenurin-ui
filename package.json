@@ -37,6 +37,16 @@
       "import": "./dist/components/ui/alert.es.js",
       "require": "./dist/components/ui/alert.cjs.js"
     },
+    "./alert-surface": {
+      "types": "./dist/components/ui/alert-surface.d.ts",
+      "import": "./dist/components/ui/alert-surface.es.js",
+      "require": "./dist/components/ui/alert-surface.cjs.js"
+    },
+    "./auth-form": {
+      "types": "./dist/components/ui/auth-form.d.ts",
+      "import": "./dist/components/ui/auth-form.es.js",
+      "require": "./dist/components/ui/auth-form.cjs.js"
+    },
     "./avatar": {
       "types": "./dist/components/ui/avatar.d.ts",
       "import": "./dist/components/ui/avatar.es.js",
@@ -66,6 +76,11 @@
       "types": "./dist/components/ui/button.d.ts",
       "import": "./dist/components/ui/button.es.js",
       "require": "./dist/components/ui/button.cjs.js"
+    },
+    "./dashboard-actions": {
+      "types": "./dist/components/ui/dashboard-actions.d.ts",
+      "import": "./dist/components/ui/dashboard-actions.es.js",
+      "require": "./dist/components/ui/dashboard-actions.cjs.js"
     },
     "./calendar": {
       "types": "./dist/components/ui/calendar.d.ts",
@@ -122,6 +137,11 @@
       "import": "./dist/components/ui/detail-section.es.js",
       "require": "./dist/components/ui/detail-section.cjs.js"
     },
+    "./detail-hero": {
+      "types": "./dist/components/ui/detail-hero.d.ts",
+      "import": "./dist/components/ui/detail-hero.es.js",
+      "require": "./dist/components/ui/detail-hero.cjs.js"
+    },
     "./dialog": {
       "types": "./dist/components/ui/dialog.d.ts",
       "import": "./dist/components/ui/dialog.es.js",
@@ -152,6 +172,11 @@
       "import": "./dist/components/ui/field.es.js",
       "require": "./dist/components/ui/field.cjs.js"
     },
+    "./editable-form-field-list": {
+      "types": "./dist/components/ui/editable-form-field-list.d.ts",
+      "import": "./dist/components/ui/editable-form-field-list.es.js",
+      "require": "./dist/components/ui/editable-form-field-list.cjs.js"
+    },
     "./file-upload-field": {
       "types": "./dist/components/ui/file-upload-field.d.ts",
       "import": "./dist/components/ui/file-upload-field.es.js",
@@ -167,6 +192,11 @@
       "import": "./dist/components/ui/form-field-shell.es.js",
       "require": "./dist/components/ui/form-field-shell.cjs.js"
     },
+    "./form-field-input": {
+      "types": "./dist/components/ui/form-field-input.d.ts",
+      "import": "./dist/components/ui/form-field-input.es.js",
+      "require": "./dist/components/ui/form-field-input.cjs.js"
+    },
     "./form-section": {
       "types": "./dist/components/ui/form-section.d.ts",
       "import": "./dist/components/ui/form-section.es.js",
@@ -181,6 +211,11 @@
       "types": "./dist/components/ui/input-group.d.ts",
       "import": "./dist/components/ui/input-group.es.js",
       "require": "./dist/components/ui/input-group.cjs.js"
+    },
+    "./inline-field-error": {
+      "types": "./dist/components/ui/inline-field-error.d.ts",
+      "import": "./dist/components/ui/inline-field-error.es.js",
+      "require": "./dist/components/ui/inline-field-error.cjs.js"
     },
     "./input-otp": {
       "types": "./dist/components/ui/input-otp.d.ts",
@@ -207,6 +242,21 @@
       "import": "./dist/components/ui/label.es.js",
       "require": "./dist/components/ui/label.cjs.js"
     },
+    "./legal-dialog": {
+      "types": "./dist/components/ui/legal-dialog.d.ts",
+      "import": "./dist/components/ui/legal-dialog.es.js",
+      "require": "./dist/components/ui/legal-dialog.cjs.js"
+    },
+    "./messaging-chat-skeleton": {
+      "types": "./dist/components/ui/messaging-chat-skeleton.d.ts",
+      "import": "./dist/components/ui/messaging-chat-skeleton.es.js",
+      "require": "./dist/components/ui/messaging-chat-skeleton.cjs.js"
+    },
+    "./messaging-conversation-item": {
+      "types": "./dist/components/ui/messaging-conversation-item.d.ts",
+      "import": "./dist/components/ui/messaging-conversation-item.es.js",
+      "require": "./dist/components/ui/messaging-conversation-item.cjs.js"
+    },
     "./logo": {
       "types": "./dist/components/ui/logo.d.ts",
       "import": "./dist/components/ui/logo.es.js",
@@ -222,6 +272,11 @@
       "import": "./dist/templates/sidebar.es.js",
       "require": "./dist/templates/sidebar.cjs.js"
     },
+    "./templates/auth": {
+      "types": "./dist/templates/auth/index.d.ts",
+      "import": "./dist/templates/auth.es.js",
+      "require": "./dist/templates/auth.cjs.js"
+    },
     "./templates/messaging": {
       "types": "./dist/templates/messaging/index.d.ts",
       "import": "./dist/templates/messaging.es.js",
@@ -236,6 +291,11 @@
       "types": "./dist/templates/post-detail/index.d.ts",
       "import": "./dist/templates/post-detail.es.js",
       "require": "./dist/templates/post-detail.cjs.js"
+    },
+    "./templates/status-page": {
+      "types": "./dist/templates/status-page/index.d.ts",
+      "import": "./dist/templates/status-page.es.js",
+      "require": "./dist/templates/status-page.cjs.js"
     },
     "./menubar": {
       "types": "./dist/components/ui/menubar.d.ts",

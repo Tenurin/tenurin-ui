@@ -1,4 +1,5 @@
 import type { LucideIcon } from 'lucide-react';
+import type { MessagingConversationItemData } from '../../components/ui/messaging-conversation-item';
 
 export type MessagingSummaryRow = Readonly<{
   icon: LucideIcon;
@@ -17,10 +18,5 @@ export type MessagingContextSummaryData = Readonly<{
   rows: readonly MessagingSummaryRow[];
 }>;
 
-export type MessagingConversationListItemData = Readonly<{
-  title: string;
-  subtitle: string;
-  unreadCount?: number;
-  icon: LucideIcon;
-  iconClassName?: string;
-}>;
+export type MessagingConversationListItemData<TValue = unknown> =
+  MessagingConversationItemData<TValue>;

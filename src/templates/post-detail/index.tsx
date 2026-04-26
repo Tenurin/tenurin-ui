@@ -1,5 +1,6 @@
 'use client';
 
+import type { ReactNode } from 'react';
 import type { LucideIcon } from 'lucide-react';
 import { Building2, CalendarDays, Users } from 'lucide-react';
 import { TextEditor } from '../../components/ui/texteditor';
@@ -14,6 +15,8 @@ export type PostDetailTemplateProps = Readonly<{
   audienceSectionLabel?: string;
   audienceIcon?: LucideIcon;
   content: RichTextContent | string | null;
+  headerActions?: ReactNode;
+  footerActions?: ReactNode;
 }>;
 
 export function PostDetailTemplate({
@@ -24,10 +27,18 @@ export function PostDetailTemplate({
   audienceSectionLabel = 'Batch',
   audienceIcon: AudienceIcon = Users,
   content,
+  headerActions,
+  footerActions,
 }: PostDetailTemplateProps) {
   return (
     <div className="min-h-full w-11/12 xl:w-2/3 mx-auto pb-24">
       <div className="py-10 lg:py-12">
+        {headerActions ? (
+          <div className="mb-10 flex flex-wrap items-center justify-end gap-3">
+            {headerActions}
+          </div>
+        ) : null}
+
         <div>
           <div className="xl:mt-9">
             <h1 className="text-3xl font-medium tracking-tight text-[var(--foreground)] md:text-4xl">
@@ -91,6 +102,12 @@ export function PostDetailTemplate({
             </div>
           </div>
         </section>
+
+        {footerActions ? (
+          <section className="mt-10 flex flex-wrap items-center justify-end gap-3">
+            {footerActions}
+          </section>
+        ) : null}
       </article>
     </div>
   );

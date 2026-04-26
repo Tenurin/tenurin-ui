@@ -1,24 +1,35 @@
-import { cn } from '../../lib/utils';
-import type { MessagingConversationListItemData } from './types';
+import type { LucideIcon } from 'lucide-react';
 
-type MessagingConversationListItemProps = Readonly<{
-  conversation: MessagingConversationListItemData;
-  isActive: boolean;
-  onSelect: () => void;
+import { cn } from '../../lib/utils';
+
+export type MessagingConversationItemData<TValue = unknown> = Readonly<{
+  id: string;
+  title: string;
+  subtitle: string;
+  value: TValue;
+  unreadCount?: number;
+  icon: LucideIcon;
+  iconClassName?: string;
 }>;
 
-export function MessagingConversationListItem({
+export type MessagingConversationItemProps<TValue = unknown> = Readonly<{
+  conversation: MessagingConversationItemData<TValue>;
+  isActive: boolean;
+  onSelect: (conversation: MessagingConversationItemData<TValue>) => void;
+}>;
+
+export function MessagingConversationItem<TValue = unknown>({
   conversation,
   isActive,
   onSelect,
-}: MessagingConversationListItemProps) {
+}: MessagingConversationItemProps<TValue>) {
   const ConversationIcon = conversation.icon;
   const unreadCount = conversation.unreadCount ?? 0;
 
   return (
     <button
       type="button"
-      onClick={onSelect}
+      onClick={() => onSelect(conversation)}
       className={cn(
         'w-full rounded-sm px-3 py-3 text-left transition-colors',
         isActive

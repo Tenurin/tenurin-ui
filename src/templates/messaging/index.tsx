@@ -5,13 +5,13 @@ export type {
   MessagingConversationListItemData,
   MessagingSummaryRow,
 } from './types';
-export { MessagingChatMessageListSkeleton } from './chat-message-list-skeleton';
-export { MessagingContextSummary } from './context-summary';
-export { MessagingConversationListItem } from './conversation-list-item';
-export { MessagingEmptyState } from './empty-state';
-export { MessagingLayoutShell } from './layout-shell';
-export { MessagingSectionHeading } from './section-heading';
-export {
-  MESSAGING_COMPACT_BREAKPOINT_PX,
-  useIsMessagingCompact,
-} from './use-is-messaging-compact';
+export { MessagingConversationListTemplate } from './conversation-list-template';
+export type { MessagingConversationListTemplateProps } from './conversation-list-template';
+export { MessagingSidebarTemplate } from './sidebar-template';
+export type { MessagingSidebarTemplateProps } from './sidebar-template';
+export { MessagingTemplate } from './template';
+export type {
+  MessagingTemplateProps,
+  MessagingTemplateRenderChatArgs,
+  MessagingTemplateRenderConversationListArgs,
+} from './template';

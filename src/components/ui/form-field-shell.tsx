@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
 
 import { cn } from '../../lib/utils';
+import InlineFieldError from './inline-field-error';
 import { Label } from './label';
 
 type FormFieldShellProps = Readonly<{
@@ -46,11 +47,7 @@ export default function FormFieldShell({
 
       {content}
 
-      {errorMessage ? (
-        <p className={cn('text-sm text-destructive', errorClassName)}>
-          {errorMessage}
-        </p>
-      ) : null}
+      <InlineFieldError className={errorClassName} message={errorMessage} />
     </div>
   );
 }

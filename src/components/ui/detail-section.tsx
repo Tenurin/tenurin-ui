@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react';
 import { Badge } from './badge';
+import InlineFieldError from './inline-field-error';
 import { Label } from './label';
 import { cn } from '../../lib/utils';
 
@@ -102,7 +103,7 @@ export function DetailField({
         {label}
       </Label>
       {children}
-      {error ? <p className="text-xs text-destructive">{error}</p> : null}
+      <InlineFieldError message={error} />
     </div>
   );
 }

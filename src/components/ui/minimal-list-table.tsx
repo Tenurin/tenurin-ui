@@ -47,6 +47,7 @@ type MinimalListTableProps<TItem> = Readonly<{
 
 const tableHeadClassName =
   'py-4 text-[11px] font-medium uppercase tracking-[0.24em]';
+const tableBodyRowClassName = '[&>td]:py-3';
 const mutedForegroundStyle = { color: 'var(--muted-foreground)' } as const;
 
 export default function MinimalListTable<TItem>({
@@ -72,11 +73,12 @@ export default function MinimalListTable<TItem>({
   const showActionsColumn = renderActions !== undefined;
   const columnCount = columns.length + (showActionsColumn ? 1 : 0);
   const showTableHeader = isPending || isError || items.length > 0;
+  const isEmptyState = !isPending && !isError && items.length === 0;
   const equalColumnWidth = `${100 / Math.max(columnCount, 1)}%`;
 
   return (
     <Table
-      className={tableClassName}
+      className={cn(tableClassName, isEmptyState ? 'min-w-0' : undefined)}
       containerClassName="overflow-x-auto"
     >
       {equalColumnWidths ? (
@@ -116,7 +118,7 @@ export default function MinimalListTable<TItem>({
       <TableBody className="[&_tr]:border-b-0">
         {isPending
           ? Array.from({ length: pageSize }).map((_, index) => (
-              <TableRow key={index}>
+              <TableRow key={index} className={tableBodyRowClassName}>
                 {columns.map((column, columnIndex) => (
                   <TableCell
                     key={column.key}
@@ -160,29 +162,32 @@ export default function MinimalListTable<TItem>({
             </TableCell>
           </TableRow>
         )}
-        {isPending || isError || items.length !== 0 ? null : (
+        {isEmptyState ? (
           <TableRow>
-            <TableCell colSpan={columnCount} className="h-24 text-center">
-              <div className="flex flex-col items-center justify-center gap-2 py-8">
+            <TableCell
+              colSpan={columnCount}
+              className="h-24 text-center whitespace-normal"
+            >
+              <div className="mx-auto flex max-w-full flex-col items-center justify-center gap-2 px-4 py-8">
                 <div className="flex h-12 w-12 items-center justify-center rounded-full bg-muted/50">
                   <FileText className="h-6 w-6 text-muted-foreground" />
                 </div>
-                <div className="flex flex-col gap-1">
-                  <p className="font-medium">{emptyTitle}</p>
-                  <p className="text-sm text-muted-foreground">
+                <div className="flex max-w-full flex-col gap-1">
+                  <p className="break-words font-medium">{emptyTitle}</p>
+                  <p className="break-words text-sm text-muted-foreground">
                     {emptyDescription}
                   </p>
                 </div>
               </div>
             </TableCell>
           </TableRow>
-        )}
+        ) : null}
         {isPending || isError || items.length === 0
           ? null
           : items.map((item) => (
               <TableRow
                 key={getItemKey(item)}
-                className={cn('relative', rowClassName)}
+                className={cn(tableBodyRowClassName, 'relative', rowClassName)}
               >
                 {columns.map((column, columnIndex) => (
                   <TableCell
