@@ -80,6 +80,14 @@ export default defineConfig({
         carousel: path.resolve(__dirname, "src/components/ui/carousel.tsx"),
         chart: path.resolve(__dirname, "src/components/ui/chart.tsx"),
         checkbox: path.resolve(__dirname, "src/components/ui/checkbox.tsx"),
+        "compensation-frequency": path.resolve(
+          __dirname,
+          "src/components/ui/compensation-frequency.tsx",
+        ),
+        "listing-compensation": path.resolve(
+          __dirname,
+          "src/components/ui/listing-compensation.ts",
+        ),
         collapsible: path.resolve(
           __dirname,
           "src/components/ui/collapsible.tsx",

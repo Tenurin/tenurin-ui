@@ -1,3 +1,5 @@
+'use client';
+
 import { FileText } from 'lucide-react';
 import { Link } from 'react-router';
 import type { ReactNode } from 'react';
@@ -8,11 +10,13 @@ import {
   Table,
   TableBody,
   TableCell,
-  TableHead,
-  TableHeader,
   TableRow,
 } from './table';
 import { getTableLoadingSkeletonClassName } from './table-loading';
+import { useMinimalListTableColumnResizing } from './minimal-list-table-column-resizing';
+import { MinimalListTableHeader } from './minimal-list-table-header';
+import { renderTruncatedTableCellContent } from './table-cell-content';
+import { TABLE_ACTIONS_COLUMN_ID } from './table-column-resizing';
 
 export type MinimalListTableColumn<TItem> = Readonly<{
   key: string;
@@ -21,6 +25,7 @@ export type MinimalListTableColumn<TItem> = Readonly<{
   headClassName?: string;
   cellClassName?: string;
   loadingClassName?: string;
+  minimumWidth?: number;
   renderCell: (item: TItem) => ReactNode;
 }>;
 
@@ -43,6 +48,8 @@ type MinimalListTableProps<TItem> = Readonly<{
   renderActions?: (item: TItem) => ReactNode;
   actionsCellClassName?: string;
   actionsLoadingClassName?: string;
+  resizableColumns?: boolean;
+  minimumColumnWidth?: number;
 }>;
 
 const tableHeadClassName =
@@ -69,51 +76,63 @@ export default function MinimalListTable<TItem>({
   renderActions,
   actionsCellClassName = 'relative z-10 py-1',
   actionsLoadingClassName,
+  resizableColumns = true,
+  minimumColumnWidth,
 }: MinimalListTableProps<TItem>) {
   const showActionsColumn = renderActions !== undefined;
+  const columnResizing = useMinimalListTableColumnResizing({
+    actionsLabel,
+    columns,
+    minimumColumnWidth,
+    resizableColumns,
+    showActionsColumn,
+  });
   const columnCount = columns.length + (showActionsColumn ? 1 : 0);
   const showTableHeader = isPending || isError || items.length > 0;
   const isEmptyState = !isPending && !isError && items.length === 0;
   const equalColumnWidth = `${100 / Math.max(columnCount, 1)}%`;
+  const equalColumnWidthStyle = equalColumnWidths
+    ? { width: equalColumnWidth }
+    : undefined;
 
   return (
     <Table
-      className={cn(tableClassName, isEmptyState ? 'min-w-0' : undefined)}
+      className={cn(
+        tableClassName,
+        isEmptyState ? 'min-w-0' : undefined,
+        columnResizing.isColumnWidthActive ? 'table-fixed' : undefined,
+      )}
       containerClassName="overflow-x-auto"
     >
-      {equalColumnWidths ? (
-        <colgroup>
-          {Array.from({ length: columnCount }).map((_, index) => (
-            <col key={index} style={{ width: equalColumnWidth }} />
-          ))}
-        </colgroup>
-      ) : null}
+      <colgroup>
+        {columns.map((column) => (
+          <col
+            key={column.key}
+            style={columnResizing.getColumnWidthStyle(
+              column.key,
+              equalColumnWidthStyle,
+            )}
+          />
+        ))}
+        {showActionsColumn ? (
+          <col
+            style={columnResizing.getColumnWidthStyle(
+              TABLE_ACTIONS_COLUMN_ID,
+              equalColumnWidthStyle,
+            )}
+          />
+        ) : null}
+      </colgroup>
       {showTableHeader ? (
-        <TableHeader className="[&_tr]:border-b-0">
-          <TableRow>
-            {columns.map((column) => (
-              <TableHead
-                key={column.key}
-                className={cn(
-                  tableHeadClassName,
-                  equalColumnWidths ? undefined : column.widthClassName,
-                  column.headClassName,
-                )}
-                style={mutedForegroundStyle}
-              >
-                {column.header}
-              </TableHead>
-            ))}
-            {showActionsColumn ? (
-              <TableHead
-                className={cn(tableHeadClassName, 'w-20')}
-                style={mutedForegroundStyle}
-              >
-                {actionsLabel}
-              </TableHead>
-            ) : null}
-          </TableRow>
-        </TableHeader>
+        <MinimalListTableHeader
+          actionsLabel={actionsLabel}
+          columnResizing={columnResizing}
+          columns={columns}
+          equalColumnWidths={equalColumnWidths}
+          mutedForegroundStyle={mutedForegroundStyle}
+          showActionsColumn={showActionsColumn}
+          tableHeadClassName={tableHeadClassName}
+        />
       ) : null}
       <TableBody className="[&_tr]:border-b-0">
         {isPending
@@ -123,6 +142,7 @@ export default function MinimalListTable<TItem>({
                   <TableCell
                     key={column.key}
                     className={cn(
+                      'min-w-0',
                       columnIndex === 0 ? 'max-w-0 py-1' : 'py-1',
                       column.cellClassName,
                     )}
@@ -193,6 +213,7 @@ export default function MinimalListTable<TItem>({
                   <TableCell
                     key={column.key}
                     className={cn(
+                      'min-w-0',
                       columnIndex === 0 ? 'max-w-0 py-1' : 'py-1',
                       column.cellClassName,
                     )}
@@ -204,7 +225,10 @@ export default function MinimalListTable<TItem>({
                         state={getRowState?.(item)}
                       />
                     ) : null}
-                    {column.renderCell(item)}
+                    {renderTruncatedTableCellContent(
+                      column.renderCell(item),
+                      columnResizing.isColumnWidthActive,
+                    )}
                   </TableCell>
                 ))}
                 {showActionsColumn ? (

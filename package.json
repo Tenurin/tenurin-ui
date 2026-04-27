@@ -107,6 +107,16 @@
       "import": "./dist/components/ui/checkbox.es.js",
       "require": "./dist/components/ui/checkbox.cjs.js"
     },
+    "./compensation-frequency": {
+      "types": "./dist/components/ui/compensation-frequency.d.ts",
+      "import": "./dist/components/ui/compensation-frequency.es.js",
+      "require": "./dist/components/ui/compensation-frequency.cjs.js"
+    },
+    "./listing-compensation": {
+      "types": "./dist/components/ui/listing-compensation.d.ts",
+      "import": "./dist/components/ui/listing-compensation.es.js",
+      "require": "./dist/components/ui/listing-compensation.cjs.js"
+    },
     "./collapsible": {
       "types": "./dist/components/ui/collapsible.d.ts",
       "import": "./dist/components/ui/collapsible.es.js",

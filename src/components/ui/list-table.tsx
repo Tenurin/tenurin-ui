@@ -1,4 +1,7 @@
+'use client';
+
 import type { ReactNode } from 'react';
+import { useMemo } from 'react';
 import { Link } from 'react-router';
 
 import { cn } from '../../lib/utils';
@@ -12,6 +15,13 @@ import {
   TableRow,
 } from './table';
 import { getTableLoadingSkeletonClassName } from './table-loading';
+import { ResizableTableHeaderContent } from './resizable-table-header-content';
+import { renderTruncatedTableCellContent } from './table-cell-content';
+import { buildHeaderMinimumWidths } from './table-header-width';
+import {
+  DEFAULT_MINIMUM_COLUMN_WIDTH,
+  useTableColumnResizing,
+} from './table-column-resizing';
 
 export type ListTableColumn<TRow> = Readonly<{
   id: string;
@@ -19,6 +29,7 @@ export type ListTableColumn<TRow> = Readonly<{
   headerClassName?: string;
   cellClassName?: string;
   loadingClassName?: string;
+  minimumWidth?: number;
   render: (row: TRow) => ReactNode;
 }>;
 
@@ -42,6 +53,8 @@ type ListTableProps<TRow> = Readonly<{
   tableCellClassName?: string;
   headerRowClassName?: string;
   bodyRowClassName?: string;
+  resizableColumns?: boolean;
+  minimumColumnWidth?: number;
 }>;
 
 export default function ListTable<TRow>({
@@ -64,7 +77,30 @@ export default function ListTable<TRow>({
   tableCellClassName,
   headerRowClassName,
   bodyRowClassName,
+  resizableColumns = true,
+  minimumColumnWidth,
 }: ListTableProps<TRow>) {
+  const effectiveMinimumColumnWidth =
+    minimumColumnWidth ?? DEFAULT_MINIMUM_COLUMN_WIDTH;
+  const columnMinimumWidths = useMemo(
+    () =>
+      buildHeaderMinimumWidths(
+        columns.map((column) => ({
+          header: column.header,
+          id: column.id,
+          minimumWidth: column.minimumWidth,
+        })),
+        effectiveMinimumColumnWidth,
+      ),
+    [columns, effectiveMinimumColumnWidth],
+  );
+  const columnResizing = useTableColumnResizing({
+    columnIds: columns.map((column) => column.id),
+    enabled: resizableColumns,
+    minimumColumnWidths: columnMinimumWidths,
+    minimumColumnWidth,
+  });
+
   if (!isLoading && !isError && rows.length === 0) {
     return (
       <div className={cn('w-full overflow-hidden rounded-sm', surfaceClassName)}>
@@ -78,16 +114,43 @@ export default function ListTable<TRow>({
 
   return (
     <div className={cn('w-full max-w-full overflow-hidden rounded-sm', surfaceClassName)}>
-      <Table className={tableClassName}>
+      <Table
+        className={cn(
+          tableClassName,
+          columnResizing.isColumnWidthActive ? 'table-fixed' : undefined,
+        )}
+      >
+        <colgroup>
+          {columns.map((column) => (
+            <col
+              key={column.id}
+              style={columnResizing.getColumnWidthStyle(column.id)}
+            />
+          ))}
+        </colgroup>
         {showTableHeader ? (
           <TableHeader className={cn('[&_tr]:border-b-0', tableHeaderClassName)}>
             <TableRow className={cn('border-b-0', headerRowClassName)}>
               {columns.map((column) => (
                 <TableHead
                   key={column.id}
-                  className={cn(tableHeadCellClassName, column.headerClassName)}
+                  data-resizable-column-id={column.id}
+                  style={columnResizing.getColumnMinimumWidthStyle(column.id)}
+                  className={cn(
+                    'relative',
+                    tableHeadCellClassName,
+                    column.headerClassName,
+                  )}
                 >
-                  {column.header}
+                  <ResizableTableHeaderContent
+                    columnId={column.id}
+                    enabled={columnResizing.canResizeColumn(column.id)}
+                    label={column.id}
+                    onResizePointerDown={columnResizing.startColumnResize}
+                    onResizeKeyDown={columnResizing.resizeColumnWithKeyboard}
+                  >
+                    {column.header}
+                  </ResizableTableHeaderContent>
                 </TableHead>
               ))}
             </TableRow>
@@ -136,7 +199,11 @@ export default function ListTable<TRow>({
                   {columns.map((column, columnIndex) => (
                     <TableCell
                       key={column.id}
-                      className={cn(tableCellClassName, column.cellClassName)}
+                      className={cn(
+                        'min-w-0',
+                        tableCellClassName,
+                        column.cellClassName,
+                      )}
                     >
                       {columnIndex === 0 && getRowHref ? (
                         <Link
@@ -146,7 +213,10 @@ export default function ListTable<TRow>({
                           className="absolute inset-0"
                         />
                       ) : null}
-                      {column.render(row)}
+                      {renderTruncatedTableCellContent(
+                        column.render(row),
+                        columnResizing.isColumnWidthActive,
+                      )}
                     </TableCell>
                   ))}
                 </TableRow>
