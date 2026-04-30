@@ -19,7 +19,7 @@ const alertSurfaceToneClassNames: Record<AlertSurfaceTone, string> = {
     'ui-app-accent-positive-surface [&_[data-slot=alert-surface-icon]]:text-current',
 };
 
-type AlertSurfaceProps = ComponentProps<'div'> &
+type AlertSurfaceProps = Omit<ComponentProps<'div'>, 'title'> &
   Readonly<{
     contentClassName?: string;
     description?: ReactNode;

@@ -292,6 +292,11 @@
       "import": "./dist/templates/messaging.es.js",
       "require": "./dist/templates/messaging.cjs.js"
     },
+    "./templates/access-denied": {
+      "types": "./dist/templates/access-denied/index.d.ts",
+      "import": "./dist/templates/access-denied.es.js",
+      "require": "./dist/templates/access-denied.cjs.js"
+    },
     "./templates/route-error": {
       "types": "./dist/templates/route-error/index.d.ts",
       "import": "./dist/templates/route-error.es.js",

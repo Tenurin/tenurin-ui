@@ -241,6 +241,10 @@ export default defineConfig({
           __dirname,
           "src/templates/messaging/index.tsx",
         ),
+        "templates/access-denied": path.resolve(
+          __dirname,
+          "src/templates/access-denied/index.tsx",
+        ),
         "templates/route-error": path.resolve(
           __dirname,
           "src/templates/route-error/index.tsx",
