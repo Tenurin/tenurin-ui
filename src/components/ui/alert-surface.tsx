@@ -10,7 +10,7 @@ const alertSurfaceBaseClassName =
 
 const alertSurfaceToneClassNames: Record<AlertSurfaceTone, string> = {
   default:
-    'border-border/60 bg-sidebar text-foreground [&_[data-slot=alert-surface-icon]]:text-current',
+    'ui-app-accent-warm-surface [&_[data-slot=alert-surface-icon]]:text-current',
   negative:
     'ui-app-accent-negative-surface [&_[data-slot=alert-surface-icon]]:text-current',
   warm:

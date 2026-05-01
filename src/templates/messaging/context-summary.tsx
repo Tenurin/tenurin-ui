@@ -56,13 +56,13 @@ export function MessagingContextSummary({
             return (
               <div
                 key={`${row.label}-${row.value}`}
-                className="grid grid-cols-[4.5rem_minmax(0,1fr)] gap-3"
+                className="grid grid-cols-[4.5rem_minmax(0,1fr)] items-center gap-3"
               >
                 <dt className="text-xs text-muted-foreground">{row.label}</dt>
-                <dd className="inline-flex min-w-0 items-start gap-2 whitespace-normal text-xs text-[var(--foreground)]">
+                <dd className="inline-flex min-w-0 items-center gap-2 whitespace-normal text-xs text-[var(--foreground)]">
                   <RowIcon
                     className={cn(
-                      'mt-0.5 h-4 w-4 shrink-0',
+                      'h-4 w-4 shrink-0',
                       row.iconClassName,
                     )}
                   />

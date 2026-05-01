@@ -33,6 +33,7 @@
 
 - Keep public component APIs explicit and conservative because changes here affect multiple apps.
 - Keep component props typed as `Readonly<...>` when the component does not intentionally mutate them.
+- When adding React Hook Form integrations, examples, or wrappers around controlled inputs such as selects, comboboxes, date pickers, or custom UI components, prefer `Controller` or `useController` over manual `watch` plus `setValue`. Reserve `watch` and `useWatch` for derived display state or conditional rendering, not for primary field control.
 - Prefer direct positive branches over negated conditions when either form would work; avoid `!condition` control flow when the positive path is clearer.
 - Do not introduce nested ternaries in feature code. Extract intermediate variables or use plain `if` branches instead.
 - Prefer optional chaining over repetitive nullish guard expressions when it keeps the code shorter and clearer.

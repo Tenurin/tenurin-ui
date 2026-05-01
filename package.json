@@ -82,6 +82,11 @@
       "import": "./dist/components/ui/dashboard-actions.es.js",
       "require": "./dist/components/ui/dashboard-actions.cjs.js"
     },
+    "./data-collection": {
+      "types": "./dist/components/ui/data-collection.d.ts",
+      "import": "./dist/components/ui/data-collection.es.js",
+      "require": "./dist/components/ui/data-collection.cjs.js"
+    },
     "./calendar": {
       "types": "./dist/components/ui/calendar.d.ts",
       "import": "./dist/components/ui/calendar.es.js",

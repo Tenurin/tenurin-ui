@@ -75,6 +75,10 @@ export default defineConfig({
           __dirname,
           "src/components/ui/dashboard-actions.tsx",
         ),
+        "data-collection": path.resolve(
+          __dirname,
+          "src/components/ui/data-collection.tsx",
+        ),
         calendar: path.resolve(__dirname, "src/components/ui/calendar.tsx"),
         card: path.resolve(__dirname, "src/components/ui/card.tsx"),
         carousel: path.resolve(__dirname, "src/components/ui/carousel.tsx"),
