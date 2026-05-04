@@ -13,6 +13,10 @@ const componentEntriesOutputPath = path.resolve(
   __dirname,
   "dist/components/ui",
 );
+const analyticsEntriesOutputPath = path.resolve(
+  __dirname,
+  "dist/components/analytics",
+);
 const templateEntriesOutputPath = path.resolve(__dirname, "dist/templates");
 const themeCssSourcePath = path.resolve(__dirname, "src/styles/theme.css");
 const themeCssOutputPath = path.resolve(__dirname, "dist/theme.css");
@@ -54,6 +58,10 @@ export default defineConfig({
         "alert-surface": path.resolve(
           __dirname,
           "src/components/ui/alert-surface.tsx",
+        ),
+        analytics: path.resolve(
+          __dirname,
+          "src/components/analytics/index.ts",
         ),
         "auth-form": path.resolve(
           __dirname,
@@ -282,6 +290,10 @@ export default defineConfig({
           return `${entryName}.${format}.js`;
         }
 
+        if (entryName === "analytics") {
+          return `components/analytics/index.${format}.js`;
+        }
+
         const basePath =
           entryName === "utils" || entryName === "font-manifest"
             ? "lib"
@@ -330,7 +342,11 @@ export default defineConfig({
       },
     ]),
     copyTailwindSourcesPlugin(
-      [componentEntriesOutputPath, templateEntriesOutputPath],
+      [
+        componentEntriesOutputPath,
+        analyticsEntriesOutputPath,
+        templateEntriesOutputPath,
+      ],
       tailwindSourcesOutputPath,
     ),
   ],

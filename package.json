@@ -42,6 +42,11 @@
       "import": "./dist/components/ui/alert-surface.es.js",
       "require": "./dist/components/ui/alert-surface.cjs.js"
     },
+    "./analytics": {
+      "types": "./dist/components/analytics/index.d.ts",
+      "import": "./dist/components/analytics/index.es.js",
+      "require": "./dist/components/analytics/index.cjs.js"
+    },
     "./auth-form": {
       "types": "./dist/components/ui/auth-form.d.ts",
       "import": "./dist/components/ui/auth-form.es.js",
