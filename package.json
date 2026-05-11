@@ -322,6 +322,11 @@
       "import": "./dist/templates/status-page.es.js",
       "require": "./dist/templates/status-page.cjs.js"
     },
+    "./templates/dashboard-account": {
+      "types": "./dist/templates/dashboard-account/index.d.ts",
+      "import": "./dist/templates/dashboard-account.es.js",
+      "require": "./dist/templates/dashboard-account.cjs.js"
+    },
     "./menubar": {
       "types": "./dist/components/ui/menubar.d.ts",
       "import": "./dist/components/ui/menubar.es.js",
@@ -391,6 +396,11 @@
       "types": "./dist/components/ui/separator.d.ts",
       "import": "./dist/components/ui/separator.es.js",
       "require": "./dist/components/ui/separator.cjs.js"
+    },
+    "./settings-account": {
+      "types": "./dist/components/ui/settings-account.d.ts",
+      "import": "./dist/components/ui/settings-account.es.js",
+      "require": "./dist/components/ui/settings-account.cjs.js"
     },
     "./sheet": {
       "types": "./dist/components/ui/sheet.d.ts",

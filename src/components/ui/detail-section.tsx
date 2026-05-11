@@ -128,9 +128,9 @@ export function DetailInnerPanel({
         className,
       )}
     >
-      <div className="space-y-4">
+      <div className="space-y-2">
         <div className="flex items-start justify-between gap-4">
-          <p className="text-lg font-medium leading-tight">{title}</p>
+          <p className="text-sm font-medium leading-tight">{title}</p>
           {children}
         </div>
         <p className="text-sm text-muted-foreground">{description}</p>

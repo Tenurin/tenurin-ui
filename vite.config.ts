@@ -227,6 +227,10 @@ export default defineConfig({
           "src/components/ui/select-filter.tsx",
         ),
         separator: path.resolve(__dirname, "src/components/ui/separator.tsx"),
+        "settings-account": path.resolve(
+          __dirname,
+          "src/components/ui/settings-account.tsx",
+        ),
         sheet: path.resolve(__dirname, "src/components/ui/sheet.tsx"),
         sidebar: path.resolve(__dirname, "src/components/ui/sidebar.tsx"),
         skeleton: path.resolve(__dirname, "src/components/ui/skeleton.tsx"),
@@ -268,6 +272,10 @@ export default defineConfig({
         "templates/status-page": path.resolve(
           __dirname,
           "src/templates/status-page/index.tsx",
+        ),
+        "templates/dashboard-account": path.resolve(
+          __dirname,
+          "src/templates/dashboard-account/index.tsx",
         ),
         texteditor: path.resolve(__dirname, "src/components/ui/texteditor.tsx"),
         "toggle-group": path.resolve(

@@ -29,6 +29,57 @@
 - Keep package exports stable and explicit. Do not add consumer-only local path assumptions.
 - Changes must remain compatible with remote package consumption, not only local linked-workspace usage.
 
+## Templates vs components (what lives where)
+
+**Goal:** Dashboard apps (`student`, `college`, `company`, `college-collaborator`) should not each own copies of the same page chrome. Anything that is the *same layout and composition* across those repos should move to `tenurin-ui`.
+
+### Templates (`src/templates/*`, exported as `tenurin-ui/templates/...`)
+
+Use a **template** when you are shipping a **composed page or feature shell** that multiple apps adopt with the same structure, spacing, and roles—while still allowing apps to pass **data, copy, and children** (slots).
+
+Current template families:
+
+- **`templates/auth`** — `AuthShell`, `AuthPanel` for sign-in and related auth flows.
+- **`templates/sidebar`** — `AppSidebarTemplate` (logo, nav sections, user menu shell).
+- **`templates/messaging`** — Messaging layout, conversation list shell, empty states, section headings.
+- **`templates/status-page`**, **`templates/route-error`**, **`templates/access-denied`** — Full-page outcomes and errors.
+- **`templates/post-detail`** — Post detail page shell.
+- **`templates/dashboard-account`** — Shared Settings page chrome and Profile route outer shell (`DashboardSettingsPageTemplate`, `DashboardProfilePageShell`).
+
+Templates may import **`components/ui/*`** primitives. They should stay **domain-agnostic** (no app-specific API paths, Zustand stores, or route constants).
+
+### Components (`src/components/ui/*`, exported as `tenurin-ui/button`, `tenurin-ui/input`, …)
+
+Use a **component** for a **reusable control or visual primitive**: buttons, inputs, dialogs, table cells, skeleton rows, `auth-form` class names, etc. Components are building blocks; they do not encode a full dashboard route’s layout.
+
+**Account settings presentation:** `tenurin-ui/settings-account` exports `SettingsAccountRoot`, `SettingsAccountSection`, and shared surface class constants for the dashboard Settings tab. Apps keep `AlternateEmails`, `ResetPasswordDialog`, and `DeleteAccountDialog` (API and navigation); change panel colors or borders in `settings-account.tsx` once to update all dashboards.
+
+Apps compose **templates + components + app hooks/stores** inside `app/src/pages` or `app/src/components`.
+
+### Both (typical pattern)
+
+- **Template** = outer page shell (max width, header row, optional actions slot, main content region).
+- **Components** = fields, cards, tables inside the shell.
+- **App** = `useQuery`, `fetcher`, validators, and navigation.
+
+### When to add a new template
+
+Add under `src/templates/<name>/`, export from `src/templates/<name>/index.tsx`, then wire **`package.json` `exports`**, **`vite.config.ts` `build.lib.entry`**, and **`scripts/check-tenurin-ui-source.mjs`** expectations so `pnpm run build` emits matching `dist/` artifacts.
+
+### Account / settings / profile (cross-dashboard)
+
+Today, **Settings** page wrappers are duplicated verbatim across apps (`max-w-3xl`, title “Settings”, description). **Profile** pages share the same *outer* pattern (centered column, optional edit header) but use **different** domain panels (`StudentProfilePanel`, `CollegeProfilePanel`, `CompanyProfilePanel`, …).
+
+**Implemented in `templates/dashboard-account`:**
+
+- `DashboardSettingsPageTemplate` — Settings page heading + `children` (used by all four dashboard apps).
+- `DashboardProfilePageShell` — outer Profile route layout; apps keep inner `max-w-2xl` / panel markup.
+
+**Optional follow-ups:**
+
+- Share more of Profile inner chrome if `*ProfilePanel` structures converge.
+- **Onboarding** (`StudentDetails`, `CompanyDetails`, …) — only lift into a template if the same `AuthShell` + column + title/description pattern repeats; otherwise keep thin page files that compose `templates/auth` + app panels.
+
 ## Quality Expectations
 
 - Keep public component APIs explicit and conservative because changes here affect multiple apps.
