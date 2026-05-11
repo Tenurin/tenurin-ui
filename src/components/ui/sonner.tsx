@@ -12,29 +12,48 @@ import type { ToastClassnames, ToasterProps } from 'sonner';
 import { alertSurfaceBaseClassName } from './alert-surface';
 import { cn } from '../../lib/utils';
 
+/** Sonner injects `[data-icon]{ align-items:center }`; top-align SVG with first text line. */
+const toastIconSlotAlignmentClassName =
+  '[&_[data-icon]]:!items-start [&_[data-icon]]:!justify-start';
+
 const toastIconClassNames = {
-  default:
+  default: cn(
+    toastIconSlotAlignmentClassName,
     '[&_[data-icon]]:ui-app-accent-cool-fg [&_[data-icon]_svg]:ui-app-accent-cool-fg',
-  error:
+  ),
+  error: cn(
+    toastIconSlotAlignmentClassName,
     '[&_[data-icon]]:ui-app-accent-negative-fg [&_[data-icon]_svg]:ui-app-accent-negative-fg',
-  info: '[&_[data-icon]]:ui-app-accent-cool-fg [&_[data-icon]_svg]:ui-app-accent-cool-fg',
-  loading:
+  ),
+  info: cn(
+    toastIconSlotAlignmentClassName,
     '[&_[data-icon]]:ui-app-accent-cool-fg [&_[data-icon]_svg]:ui-app-accent-cool-fg',
-  success:
+  ),
+  loading: cn(
+    toastIconSlotAlignmentClassName,
+    '[&_[data-icon]]:ui-app-accent-cool-fg [&_[data-icon]_svg]:ui-app-accent-cool-fg',
+  ),
+  success: cn(
+    toastIconSlotAlignmentClassName,
     '[&_[data-icon]]:ui-app-accent-positive-fg [&_[data-icon]_svg]:ui-app-accent-positive-fg',
-  warning:
+  ),
+  warning: cn(
+    toastIconSlotAlignmentClassName,
     '[&_[data-icon]]:ui-app-accent-warm-fg [&_[data-icon]_svg]:ui-app-accent-warm-fg',
+  ),
 };
 
 const toastClassNames = {
   toast: cn(
     alertSurfaceBaseClassName,
-    'toast group flex w-full items-start gap-3 !rounded-sm px-5 py-4',
+    // Sonner injects `[data-sonner-toast][data-styled]{ align-items:center }`; win
+    // with important so the icon stays top-aligned with the first line of copy.
+    'toast group flex w-full !items-start gap-3 !rounded-sm px-5 py-4',
   ),
   title: 'text-base font-medium leading-6 text-foreground',
   description: 'text-sm leading-5 text-muted-foreground',
   content: 'grid gap-1',
-  icon: 'mt-0.5 ui-app-accent-cool-fg [&>svg]:size-5',
+  icon: 'self-start ui-app-accent-cool-fg [&>svg]:size-5',
   closeButton:
     'border-border bg-sidebar text-muted-foreground hover:bg-muted hover:text-foreground',
   actionButton:
@@ -75,6 +94,13 @@ const Toaster = ({ icons, style, toastOptions, ...props }: ToasterProps) => {
       }
       toastOptions={{
         ...toastOptions,
+        // Sonner injects `[data-sonner-toast][data-styled]{ align-items:center }`
+        // after bundled CSS; inline `alignItems` wins so the icon lines up with the
+        // first line of title + description.
+        style: {
+          alignItems: 'flex-start',
+          ...toastOptions?.style,
+        },
         classNames: {
           ...toastClassNames,
           ...toastOptions?.classNames,
