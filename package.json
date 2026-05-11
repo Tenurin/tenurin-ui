@@ -22,6 +22,11 @@
       "import": "./dist/lib/font-manifest.es.js",
       "require": "./dist/lib/font-manifest.cjs.js"
     },
+    "./truncate-middle": {
+      "types": "./dist/lib/truncateMiddle.d.ts",
+      "import": "./dist/lib/truncate-middle.es.js",
+      "require": "./dist/lib/truncate-middle.cjs.js"
+    },
     "./accordion": {
       "types": "./dist/components/ui/accordion.d.ts",
       "import": "./dist/components/ui/accordion.es.js",
@@ -331,6 +336,11 @@
       "types": "./dist/components/ui/menubar.d.ts",
       "import": "./dist/components/ui/menubar.es.js",
       "require": "./dist/components/ui/menubar.cjs.js"
+    },
+    "./middle-truncated-text": {
+      "types": "./dist/components/ui/middle-truncated-text.d.ts",
+      "import": "./dist/components/ui/middle-truncated-text.es.js",
+      "require": "./dist/components/ui/middle-truncated-text.cjs.js"
     },
     "./navigation-menu": {
       "types": "./dist/components/ui/navigation-menu.d.ts",

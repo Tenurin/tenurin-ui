@@ -1,6 +1,7 @@
 import MinimalListTable, {
   type MinimalListTableColumn,
 } from '../../ui/minimal-list-table';
+import { MiddleTruncatedText } from '../../ui/middle-truncated-text';
 
 import { formatAnalyticsCurrency } from '../analyticsFormat';
 import type { AnalyticsCompensationBranchRow } from './analyticsCompensationTypes';
@@ -20,12 +21,11 @@ const compensationBranchColumns: readonly MinimalListTableColumn<AnalyticsCompen
       cellClassName: 'max-w-0 py-2',
       loadingClassName: 'h-5 w-9/12',
       renderCell: (row) => (
-        <span
-          className="block truncate pr-3 text-sm font-medium text-[var(--foreground)]"
-          title={row.branchName}
-        >
-          {row.branchName}
-        </span>
+        <MiddleTruncatedText
+          text={row.branchName}
+          className="pr-3 text-sm font-medium text-[var(--foreground)]"
+          charWidthPx={7}
+        />
       ),
     },
     getCurrencyColumn('highest', 'Highest'),

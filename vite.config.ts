@@ -49,6 +49,7 @@ export default defineConfig({
       entry: {
         index: path.resolve(__dirname, "src/index.ts"),
         "font-manifest": path.resolve(__dirname, "src/lib/fontManifest.ts"),
+        "truncate-middle": path.resolve(__dirname, "src/lib/truncateMiddle.ts"),
         accordion: path.resolve(__dirname, "src/components/ui/accordion.tsx"),
         "alert-dialog": path.resolve(
           __dirname,
@@ -193,6 +194,10 @@ export default defineConfig({
         ),
         logo: path.resolve(__dirname, "src/components/ui/logo.tsx"),
         menubar: path.resolve(__dirname, "src/components/ui/menubar.tsx"),
+        "middle-truncated-text": path.resolve(
+          __dirname,
+          "src/components/ui/middle-truncated-text.tsx",
+        ),
         "navigation-menu": path.resolve(
           __dirname,
           "src/components/ui/navigation-menu.tsx",
@@ -303,7 +308,9 @@ export default defineConfig({
         }
 
         const basePath =
-          entryName === "utils" || entryName === "font-manifest"
+          entryName === "utils" ||
+          entryName === "font-manifest" ||
+          entryName === "truncate-middle"
             ? "lib"
             : entryName === "use-mobile"
               ? "hooks"
