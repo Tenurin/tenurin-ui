@@ -70,7 +70,38 @@ export default function AnalyticsStatusBanner({
   const buttonLabel = isActionPending ? 'Requesting...' : actionLabel;
   const isButtonDisabled = isActionDisabled || isActionPending;
 
-  const actionButton = (
+  // Tooltip trigger sits in the label's trailing slot but is not a DOM child of the
+  // disabled <Button> (disabled buttons block pointer events to descendants). It is
+  // absolutely positioned over the padded area so it still looks like one control.
+  const actionControl = actionTooltip ? (
+    <div className="relative inline-flex w-fit">
+      <Button
+        type="button"
+        variant="outline"
+        size="sm"
+        className="ui-app-accent-neutral-surface font-normal w-fit rounded-sm pr-8 disabled:text-muted-foreground disabled:opacity-70"
+        disabled={isButtonDisabled}
+        onClick={onAction}
+      >
+        {isActionPending ? <Loader2 className="h-4 w-4 animate-spin" /> : null}
+        {buttonLabel}
+      </Button>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <button
+            type="button"
+            className="pointer-events-auto absolute right-1 top-1/2 z-10 inline-flex h-6 w-6 -translate-y-1/2 items-center justify-center rounded-sm text-muted-foreground transition-colors hover:text-[var(--foreground)] focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
+            aria-label={`${actionLabel} note`}
+          >
+            <Info className="h-4 w-4" />
+          </button>
+        </TooltipTrigger>
+        <TooltipContent side="top" className="max-w-sm text-pretty">
+          {actionTooltip}
+        </TooltipContent>
+      </Tooltip>
+    </div>
+  ) : (
     <Button
       type="button"
       variant="outline"
@@ -81,22 +112,6 @@ export default function AnalyticsStatusBanner({
     >
       {isActionPending ? <Loader2 className="h-4 w-4 animate-spin" /> : null}
       {buttonLabel}
-      {actionTooltip ? (
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <button
-              type="button"
-              className="inline-flex h-4 w-4 items-center justify-center rounded-sm text-muted-foreground transition-colors hover:text-[var(--foreground)] focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
-              aria-label={`${actionLabel} note`}
-            >
-              <Info className="h-4 w-4" />
-            </button>
-          </TooltipTrigger>
-          <TooltipContent side="top" className="max-w-sm text-pretty">
-            {actionTooltip}
-          </TooltipContent>
-        </Tooltip>
-      ) : null}
     </Button>
   );
 
@@ -127,7 +142,7 @@ export default function AnalyticsStatusBanner({
           ))}
         </div>
 
-        <div className="flex w-fit items-center gap-2">{actionButton}</div>
+        <div className="flex w-fit items-center gap-2">{actionControl}</div>
       </div>
     </section>
   );
