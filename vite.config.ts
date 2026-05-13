@@ -44,6 +44,10 @@ const darkLogoOutputPath = path.resolve(
 );
 
 export default defineConfig({
+  esbuild: {
+    jsx: "automatic",
+    jsxImportSource: "react",
+  },
   build: {
     lib: {
       entry: {
