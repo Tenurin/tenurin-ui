@@ -362,9 +362,18 @@ export default defineConfig({
     ]),
     copyTailwindSourcesPlugin(
       [
-        componentEntriesOutputPath,
-        analyticsEntriesOutputPath,
-        templateEntriesOutputPath,
+        {
+          sourceDirectory: componentEntriesOutputPath,
+          outputSubdirectory: "components/ui",
+        },
+        {
+          sourceDirectory: analyticsEntriesOutputPath,
+          outputSubdirectory: "components/analytics",
+        },
+        {
+          sourceDirectory: templateEntriesOutputPath,
+          outputSubdirectory: "templates",
+        },
       ],
       tailwindSourcesOutputPath,
     ),
