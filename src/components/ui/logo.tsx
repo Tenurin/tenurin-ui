@@ -5,10 +5,22 @@ import { createContext, useContext } from 'react';
 import { cn } from '../../lib/utils';
 
 /**
- * Absolute logo image URL (for example the website wordmark from a checked-in brand manifest).
+ * One resolved raster variant (CDN or static manifest entry).
+ */
+export type BrandLogoVariant = Readonly<{
+  url: string;
+  width: number;
+  height: number;
+}>;
+
+/**
+ * CDN wordmark configuration: PNG (or other) fallback URL plus optional AVIF/WebP variants.
  */
 export type BrandLogoUrls = Readonly<{
   src: string;
+  readonly variants?: Readonly<
+    Partial<Record<'avif' | 'webp' | 'png' | 'jpg' | 'jpeg', BrandLogoVariant>>
+  >;
 }>;
 
 const BrandLogoContext = createContext<BrandLogoUrls | null>(null);
@@ -35,6 +47,8 @@ export function BrandLogoProvider({
 type LogoProps = Readonly<{
   alt?: string;
   className?: string;
+  loading?: 'eager' | 'lazy';
+  fetchPriority?: 'high' | 'low' | 'auto';
 }>;
 
 const BRAND_ASSET_BASE_PATH = '../../assets/brand/';
@@ -54,19 +68,105 @@ function applyPublicBrandFallback(event: SyntheticEvent<HTMLImageElement>) {
   img.src = PUBLIC_BRAND_ICON_FALLBACK;
 }
 
-/** Shared mark classes: one asset + invert in dark mode (matches website navbar logo). */
-const logoImgClassName =
-  'h-8 w-8 shrink-0 object-contain dark:invert';
+/** Box sizing for the logo slot (used on `<picture>` or single `<img>`). */
+const logoBoxClassName = 'h-8 w-8 shrink-0';
 
-function Logo({ alt = 'Tenurin logo', className }: LogoProps) {
+/** Painting on the actual raster (must stay on `<img>` so `filter` applies to decoded pixels). */
+const logoRasterClassName = 'object-contain dark:invert';
+
+function pickBrandLogoDims(brand: BrandLogoUrls): BrandLogoVariant | undefined {
+  return (
+    brand.variants?.png ??
+    brand.variants?.webp ??
+    brand.variants?.avif ??
+    brand.variants?.jpg ??
+    brand.variants?.jpeg
+  );
+}
+
+/** Manifest dimensions for full-bleed masters are huge; HTML attrs blow up flex min-width. */
+const MAX_LOGO_IMPLIED_PX = 256;
+
+/**
+ * Only forwards width/height when small enough for layout; large CDN master sizes break flex rows.
+ */
+function logoImgSizeAttrs(
+  dims: BrandLogoVariant | undefined,
+): Readonly<{ width?: number; height?: number }> {
+  if (!dims?.width || !dims?.height) {
+    return {};
+  }
+  if (dims.width > MAX_LOGO_IMPLIED_PX || dims.height > MAX_LOGO_IMPLIED_PX) {
+    return {};
+  }
+  return { width: dims.width, height: dims.height };
+}
+
+function BrandLogoPicture({
+  brand,
+  alt,
+  className,
+  loading,
+  fetchPriority,
+}: Readonly<{
+  brand: BrandLogoUrls;
+  alt: string;
+  className?: string;
+  loading?: LogoProps['loading'];
+  fetchPriority?: LogoProps['fetchPriority'];
+}>) {
+  const v = brand.variants;
+  const dims = pickBrandLogoDims(brand);
+  const sizeAttrs = logoImgSizeAttrs(dims);
+  return (
+    <picture className={cn('block', logoBoxClassName, className)}>
+      {v?.avif ? (
+        <source srcSet={v.avif.url} type="image/avif" />
+      ) : null}
+      {v?.webp ? (
+        <source srcSet={v.webp.url} type="image/webp" />
+      ) : null}
+      <img
+        src={brand.src}
+        alt={alt}
+        {...sizeAttrs}
+        loading={loading}
+        fetchPriority={fetchPriority}
+        decoding="async"
+        className={cn('h-full w-full', logoRasterClassName)}
+        onError={applyPublicBrandFallback}
+      />
+    </picture>
+  );
+}
+
+function Logo({ alt = 'Tenurin logo', className, loading, fetchPriority }: LogoProps) {
   const brandFromContext = useContext(BrandLogoContext);
 
   if (brandFromContext) {
+    const modern =
+      brandFromContext.variants?.avif ?? brandFromContext.variants?.webp;
+    if (modern) {
+      return (
+        <BrandLogoPicture
+          brand={brandFromContext}
+          alt={alt}
+          className={className}
+          loading={loading ?? 'eager'}
+          fetchPriority={fetchPriority ?? 'high'}
+        />
+      );
+    }
+
     return (
       <img
         src={brandFromContext.src}
         alt={alt}
-        className={cn(logoImgClassName, className)}
+        {...logoImgSizeAttrs(pickBrandLogoDims(brandFromContext))}
+        loading={loading ?? 'lazy'}
+        fetchPriority={fetchPriority ?? 'auto'}
+        decoding="async"
+        className={cn(logoBoxClassName, logoRasterClassName, className)}
         onError={applyPublicBrandFallback}
       />
     );
@@ -76,7 +176,7 @@ function Logo({ alt = 'Tenurin logo', className }: LogoProps) {
     <img
       src={getBundledBrandAssetUrl('tenurin-light-mode-icon.svg')}
       alt={alt}
-      className={cn(logoImgClassName, className)}
+      className={cn(logoBoxClassName, logoRasterClassName, className)}
     />
   );
 }

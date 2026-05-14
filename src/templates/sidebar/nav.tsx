@@ -172,7 +172,10 @@ export function AppSidebarNav({ sections }: AppSidebarNavProps) {
         {sections.map((section, sectionIndex) => (
           <div key={`section-${sectionIndex}`}>
             {section.separated ? (
-              <div className="mt-3 mb-3 ml-4 w-3/5 border-t border-border pt-3" />
+              <div
+                aria-hidden
+                className="mx-auto mt-3 mb-3 w-3/5 max-w-full border-t border-border pt-3"
+              />
             ) : null}
             {section.items.map((item) =>
               item.items !== undefined ? (
