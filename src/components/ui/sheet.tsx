@@ -46,9 +46,12 @@ function SheetContent({
   className,
   children,
   side = 'right',
+  hideClose = false,
   ...props
 }: React.ComponentProps<typeof SheetPrimitive.Content> & {
   side?: 'top' | 'right' | 'bottom' | 'left';
+  /** When true, omits the built-in top-right close control (e.g. mobile sidebar supplies its own dismiss path). */
+  hideClose?: boolean;
 }) {
   return (
     <SheetPortal>
@@ -70,10 +73,12 @@ function SheetContent({
         {...props}
       >
         {children}
-        <SheetPrimitive.Close className="ring-offset-white focus:ring-neutral-950 data-[state=open]:bg-neutral-100 absolute top-4 right-4 rounded-xs opacity-70 transition-opacity hover:opacity-100 focus:ring-2 focus:ring-offset-2 focus:outline-hidden disabled:pointer-events-none dark:ring-offset-neutral-950 dark:focus:ring-neutral-300 dark:data-[state=open]:bg-neutral-800">
-          <XIcon className="size-4" />
-          <span className="sr-only">Close</span>
-        </SheetPrimitive.Close>
+        {hideClose ? null : (
+          <SheetPrimitive.Close className="ring-offset-white focus:ring-neutral-950 data-[state=open]:bg-neutral-100 absolute top-4 right-4 rounded-xs opacity-70 transition-opacity hover:opacity-100 focus:ring-2 focus:ring-offset-2 focus:outline-hidden disabled:pointer-events-none dark:ring-offset-neutral-950 dark:focus:ring-neutral-300 dark:data-[state=open]:bg-neutral-800">
+            <XIcon className="size-4" />
+            <span className="sr-only">Close</span>
+          </SheetPrimitive.Close>
+        )}
       </SheetPrimitive.Content>
     </SheetPortal>
   );
