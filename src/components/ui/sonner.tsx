@@ -1,3 +1,4 @@
+import * as React from 'react';
 import { useTheme } from 'next-themes';
 import {
   CircleAlert,
@@ -69,11 +70,11 @@ const toastClassNames = {
 } satisfies ToastClassnames;
 
 const toastIcons = {
-  error: <CircleAlert className="size-5" />,
-  info: <Info className="size-5" />,
-  loading: <Loader2 className="size-5 animate-spin" />,
-  success: <CircleCheck className="size-5" />,
-  warning: <TriangleAlert className="size-5" />,
+  error: React.createElement(CircleAlert, { className: 'size-5' }),
+  info: React.createElement(Info, { className: 'size-5' }),
+  loading: React.createElement(Loader2, { className: 'size-5 animate-spin' }),
+  success: React.createElement(CircleCheck, { className: 'size-5' }),
+  warning: React.createElement(TriangleAlert, { className: 'size-5' }),
 };
 
 const Toaster = ({ icons, style, toastOptions, ...props }: ToasterProps) => {

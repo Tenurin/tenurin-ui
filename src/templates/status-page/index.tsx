@@ -1,5 +1,6 @@
 'use client';
 
+import * as React from 'react';
 import type { ComponentProps, ReactNode } from 'react';
 import { CircleAlert, CircleCheck, Info, TriangleAlert } from 'lucide-react';
 import { Link, type To } from 'react-router';
@@ -18,9 +19,9 @@ const toneIconClassNames: Record<StatusPageTone, string> = {
 };
 
 const toneIcons: Record<Exclude<StatusPageTone, 'default'>, ReactNode> = {
-  negative: <CircleAlert className="size-7" />,
-  positive: <CircleCheck className="size-7" />,
-  warm: <TriangleAlert className="size-7" />,
+  negative: React.createElement(CircleAlert, { className: 'size-7' }),
+  positive: React.createElement(CircleCheck, { className: 'size-7' }),
+  warm: React.createElement(TriangleAlert, { className: 'size-7' }),
 };
 
 export type StatusPageTemplateProps = Omit<
