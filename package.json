@@ -332,6 +332,11 @@
       "import": "./dist/templates/dashboard-account.es.js",
       "require": "./dist/templates/dashboard-account.cjs.js"
     },
+    "./templates/help-request": {
+      "types": "./dist/templates/help-request/index.d.ts",
+      "import": "./dist/templates/help-request.es.js",
+      "require": "./dist/templates/help-request.cjs.js"
+    },
     "./menubar": {
       "types": "./dist/components/ui/menubar.d.ts",
       "import": "./dist/components/ui/menubar.es.js",

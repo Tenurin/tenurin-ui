@@ -286,6 +286,10 @@ export default defineConfig({
           __dirname,
           "src/templates/dashboard-account/index.tsx",
         ),
+        "templates/help-request": path.resolve(
+          __dirname,
+          "src/templates/help-request/index.tsx",
+        ),
         texteditor: path.resolve(__dirname, "src/components/ui/texteditor.tsx"),
         "toggle-group": path.resolve(
           __dirname,

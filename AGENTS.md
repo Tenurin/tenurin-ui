@@ -45,6 +45,7 @@ Current template families:
 - **`templates/status-page`**, **`templates/route-error`**, **`templates/access-denied`** — Full-page outcomes and errors.
 - **`templates/post-detail`** — Post detail page shell.
 - **`templates/dashboard-account`** — Shared Settings page chrome and Profile route outer shell (`DashboardSettingsPageTemplate`, `DashboardProfilePageShell`).
+- **`templates/help-request`** — Shared Help modal (`HelpRequestDialogTemplate`) for raising support requests; apps wire `guideUrl` and `onSubmit`.
 
 Templates may import **`components/ui/*`** primitives. They should stay **domain-agnostic** (no app-specific API paths, Zustand stores, or route constants).
 
