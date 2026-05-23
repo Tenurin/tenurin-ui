@@ -36,7 +36,7 @@ export function MessagingParticipantRow({
           <AvatarFallback>{avatarFallback}</AvatarFallback>
         </Avatar>
         <div className="min-w-0">
-          <p className="truncate text-sm font-medium">
+          <p className="truncate text-sm">
             {name}
             {isOwner ? (
               <span className="ml-1 font-normal text-muted-foreground">
@@ -50,7 +50,7 @@ export function MessagingParticipantRow({
             ) : null}
           </p>
           {email ? (
-            <p className="truncate text-xs text-muted-foreground">{email}</p>
+            <p className="truncate font-light text-xs text-muted-foreground">{email}</p>
           ) : null}
         </div>
       </div>
