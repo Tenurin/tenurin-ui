@@ -6,6 +6,7 @@ import { MessagingChatMessageListSkeleton } from '../../components/ui/messaging-
 import { MessagingEmptyState } from './empty-state';
 import { MessagingLayoutShell } from './layout-shell';
 import { MessagingSidebarTemplate } from './sidebar-template';
+import { messagingSubtleScrollbarClassName } from './scroll-styles';
 import type { MessagingContextSummaryData } from './types';
 import { useIsMessagingCompact } from './use-is-messaging-compact';
 
@@ -42,7 +43,9 @@ export type MessagingTemplateProps<TConversation> = Readonly<{
 function ChatMessageListLoader() {
   return (
     <div className="flex h-full w-full max-w-5xl min-h-0 flex-col mx-auto">
-      <div className="min-h-0 flex-1 overflow-y-auto">
+      <div
+        className={`min-h-0 flex-1 overflow-y-auto ${messagingSubtleScrollbarClassName}`}
+      >
         <div className="mx-auto flex min-h-full flex-col px-6 pb-8 pt-8 md:px-10 md:pt-10">
           <MessagingChatMessageListSkeleton />
         </div>

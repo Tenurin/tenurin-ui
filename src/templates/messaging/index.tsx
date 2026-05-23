@@ -1,5 +1,6 @@
 'use client';
 
+export { messagingSubtleScrollbarClassName } from './scroll-styles';
 export type {
   MessagingContextSummaryData,
   MessagingConversationListItemData,
@@ -15,3 +16,9 @@ export type {
   MessagingTemplateRenderChatArgs,
   MessagingTemplateRenderConversationListArgs,
 } from './template';
+export { MessagingChatConversationHeader } from './chat-conversation-header';
+export type { MessagingChatConversationHeaderProps } from './chat-conversation-header';
+export { MessagingParticipantsPanelTemplate } from './participants-panel-template';
+export type { MessagingParticipantsPanelTemplateProps } from './participants-panel-template';
+export { MessagingParticipantRow } from './participant-row';
+export type { MessagingParticipantRowProps } from './participant-row';

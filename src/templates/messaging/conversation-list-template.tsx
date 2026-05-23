@@ -1,6 +1,7 @@
 'use client';
 
 import SearchInput from '../../components/ui/search-input';
+import { messagingSubtleScrollbarClassName } from './scroll-styles';
 import { Skeleton } from '../../components/ui/skeleton';
 import { MessagingConversationItem } from '../../components/ui/messaging-conversation-item';
 import type { MessagingConversationListItemData } from './types';
@@ -65,7 +66,9 @@ export function MessagingConversationListTemplate<TConversation>({
         iconClassName="h-5 w-5"
       />
 
-      <div className="mt-4 flex-1 overflow-y-auto">
+      <div
+        className={`mt-4 flex-1 overflow-y-auto ${messagingSubtleScrollbarClassName}`}
+      >
         {isLoading ? <ConversationListSkeleton /> : null}
 
         {isError ? (
