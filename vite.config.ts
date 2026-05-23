@@ -26,21 +26,13 @@ const tailwindSourcesOutputPath = path.resolve(
 );
 const fontsCssSourcePath = path.resolve(__dirname, "src/styles/fonts.css");
 const fontsCssOutputPath = path.resolve(__dirname, "dist/fonts.css");
-const lightLogoSourcePath = path.resolve(
+const brandIconSourcePath = path.resolve(
   __dirname,
-  "src/assets/brand/tenurin-light-mode-icon.svg",
+  "src/assets/brand/tenurin-brand-icon.svg",
 );
-const lightLogoOutputPath = path.resolve(
+const brandIconOutputPath = path.resolve(
   __dirname,
-  "dist/assets/brand/tenurin-light-mode-icon.svg",
-);
-const darkLogoSourcePath = path.resolve(
-  __dirname,
-  "src/assets/brand/tenurin-dark-mode-icon.svg",
-);
-const darkLogoOutputPath = path.resolve(
-  __dirname,
-  "dist/assets/brand/tenurin-dark-mode-icon.svg",
+  "dist/assets/brand/tenurin-brand-icon.svg",
 );
 
 export default defineConfig({
@@ -356,12 +348,8 @@ export default defineConfig({
         destinationPath: fontsCssOutputPath,
       },
       {
-        sourcePath: lightLogoSourcePath,
-        destinationPath: lightLogoOutputPath,
-      },
-      {
-        sourcePath: darkLogoSourcePath,
-        destinationPath: darkLogoOutputPath,
+        sourcePath: brandIconSourcePath,
+        destinationPath: brandIconOutputPath,
       },
     ]),
     copyTailwindSourcesPlugin(

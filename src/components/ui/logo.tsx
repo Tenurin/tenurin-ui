@@ -174,7 +174,7 @@ function Logo({ alt = 'Tenurin logo', className, loading, fetchPriority }: LogoP
 
   return (
     <img
-      src={getBundledBrandAssetUrl('tenurin-light-mode-icon.svg')}
+      src={getBundledBrandAssetUrl('tenurin-brand-icon.svg')}
       alt={alt}
       className={cn(logoBoxClassName, logoRasterClassName, className)}
     />
