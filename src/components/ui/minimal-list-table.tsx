@@ -102,15 +102,22 @@ export default function MinimalListTable<TItem>({
         columnResizing.isColumnResizingEnabled ? 'min-w-0' : undefined,
         columnResizing.isColumnResizing
           ? 'touch-none overflow-x-hidden'
-          : columnResizing.isColumnResizingEnabled
-            ? 'overflow-x-hidden'
-            : 'overflow-x-auto',
+          : columnResizing.needsHorizontalScroll
+            ? 'overflow-x-auto'
+            : columnResizing.isColumnResizingEnabled
+              ? 'overflow-x-hidden'
+              : 'overflow-x-auto',
       )}
       className={cn(
         tableClassName,
         isEmptyState ? 'min-w-0' : undefined,
         columnResizing.isColumnResizingEnabled
-          ? 'w-full max-w-full min-w-0 table-fixed'
+          ? cn(
+              'table-fixed',
+              columnResizing.needsHorizontalScroll
+                ? 'w-max min-w-full'
+                : 'w-full max-w-full min-w-0',
+            )
           : columnResizing.isColumnWidthActive
             ? 'table-fixed'
             : undefined,

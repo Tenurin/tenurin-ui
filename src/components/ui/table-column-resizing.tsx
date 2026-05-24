@@ -1,6 +1,7 @@
 import {
   useCallback,
   useEffect,
+  useMemo,
   useRef,
   useState,
   type KeyboardEvent,
@@ -17,6 +18,7 @@ import {
 import { startColumnResizeSession } from './table-column-resizing-session';
 import {
   hasColumnWidthsForIds,
+  sumColumnWidths,
   type ColumnResizeSession,
   type ColumnWidthMap,
 } from './table-column-resizing-utils';
@@ -41,6 +43,7 @@ export type UseTableColumnResizingResult = Readonly<{
   isColumnResizing: boolean;
   isColumnResizingEnabled: boolean;
   isColumnWidthActive: boolean;
+  needsHorizontalScroll: boolean;
   getColumnWidthStyle: (columnId: string, style?: CSSProperties) => CSSProperties;
   startColumnResize: (event: ReactPointerEvent<HTMLButtonElement>, columnId: string) => void;
   resizeColumnWithKeyboard: (event: KeyboardEvent<HTMLButtonElement>, columnId: string) => void;
@@ -56,16 +59,41 @@ export function useTableColumnResizing({
   useUniformColumnMinimum = false,
 }: UseTableColumnResizingOptions): UseTableColumnResizingResult {
   const [columnWidths, setColumnWidths] = useState<ColumnWidthMap>({});
+  const [containerWidth, setContainerWidth] = useState(0);
   const [isColumnResizing, setIsColumnResizing] = useState(false);
   const resizeSessionRef = useRef<ColumnResizeSession | null>(null);
   const dragWidthsRef = useRef<ColumnWidthMap | null>(null);
   const resizeFrameRef = useRef<number | null>(null);
   const resizeStartFrameRef = useRef<number | null>(null);
+  const containerObserverRef = useRef<ResizeObserver | null>(null);
   const isColumnResizingEnabled = enabled && columnIds.length > 1;
   const isColumnWidthActive = hasColumnWidthsForIds(columnIds, columnWidths);
+  const needsHorizontalScroll = useMemo(() => {
+    if (!isColumnWidthActive || containerWidth <= 0) {
+      return false;
+    }
+
+    return sumColumnWidths(columnIds, columnWidths) > containerWidth;
+  }, [columnIds, columnWidths, containerWidth, isColumnWidthActive]);
+
+  const observeTableContainer = useCallback((table: HTMLTableElement) => {
+    const container = table.parentElement;
+
+    if (container === null) {
+      return;
+    }
+
+    setContainerWidth(container.clientWidth);
+    containerObserverRef.current?.disconnect();
+    containerObserverRef.current = new ResizeObserver(() => {
+      setContainerWidth(container.clientWidth);
+    });
+    containerObserverRef.current.observe(container);
+  }, []);
 
   useEffect(() => {
     return () => {
+      containerObserverRef.current?.disconnect();
       if (resizeFrameRef.current !== null) {
         cancelAnimationFrame(resizeFrameRef.current);
       }
@@ -163,6 +191,8 @@ export function useTableColumnResizing({
 
   const syncColumnWidthsFromTable = useCallback(
     (table: HTMLTableElement) => {
+      observeTableContainer(table);
+
       if (!isColumnResizingEnabled || hasColumnWidthsForIds(columnIds, columnWidths)) {
         return;
       }
@@ -170,7 +200,13 @@ export function useTableColumnResizing({
       const { widths } = readMeasurement(table);
       setColumnWidths(widths);
     },
-    [columnIds, columnWidths, isColumnResizingEnabled, readMeasurement],
+    [
+      columnIds,
+      columnWidths,
+      isColumnResizingEnabled,
+      observeTableContainer,
+      readMeasurement,
+    ],
   );
 
   const startColumnResize = useCallback(
@@ -188,6 +224,8 @@ export function useTableColumnResizing({
       if (table === null) {
         return;
       }
+
+      observeTableContainer(table);
 
       const storedWidths = hasColumnWidthsForIds(columnIds, columnWidths)
         ? columnWidths
@@ -231,6 +269,7 @@ export function useTableColumnResizing({
       flushColumnWidths,
       getDragColumnMinimumWidth,
       isColumnResizingEnabled,
+      observeTableContainer,
       readMeasurement,
       scheduleColumnWidthCommit,
     ],
@@ -254,6 +293,7 @@ export function useTableColumnResizing({
         return;
       }
 
+      observeTableContainer(table);
       event.preventDefault();
       const { widths: measuredWidths } = readMeasurement(
         table,
@@ -284,6 +324,7 @@ export function useTableColumnResizing({
       columnWidths,
       getDragColumnMinimumWidth,
       isColumnResizingEnabled,
+      observeTableContainer,
       readMeasurement,
     ],
   );
@@ -294,6 +335,7 @@ export function useTableColumnResizing({
     isColumnResizing,
     isColumnResizingEnabled,
     isColumnWidthActive,
+    needsHorizontalScroll,
     resizeColumnWithKeyboard,
     startColumnResize,
     syncColumnWidthsFromTable,

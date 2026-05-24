@@ -232,6 +232,21 @@ export function getTableResizeTargetWidth(table: HTMLTableElement): number {
   return Math.round(table.getBoundingClientRect().width);
 }
 
+/** Locks to container width when content fits; preserves content width when it overflows. */
+export function getColumnResizeTargetTotal(
+  columnIds: readonly string[],
+  contentWidths: ColumnWidthMap,
+  containerWidth: number,
+): number {
+  const contentTotal = sumColumnWidths(columnIds, contentWidths);
+
+  if (contentTotal > containerWidth) {
+    return contentTotal;
+  }
+
+  return containerWidth;
+}
+
 function stealWidthFromColumns(
   widths: ColumnWidthMap,
   donorIds: readonly string[],

@@ -1,5 +1,6 @@
 import {
   applyProportionalColumnResize,
+  getColumnResizeTargetTotal,
   hasConservedColumnWidthTotal,
   normalizeColumnWidthsToTotal,
   resolveResizeDelta,
@@ -190,6 +191,44 @@ function runChecks() {
   assert(
     shrinkApplicants.noOfApplicants === 88,
     'applicants should shrink to the shared minimum',
+  );
+
+  const overflowPreferred = { a: 400, b: 400, c: 400, d: 400 };
+  const overflowTarget = getColumnResizeTargetTotal(
+    columnIds,
+    overflowPreferred,
+    800,
+  );
+
+  assert(overflowTarget === 1600, 'overflow content should keep natural width total');
+
+  const overflowWidths = normalizeColumnWidthsToTotal(
+    overflowPreferred,
+    columnIds,
+    overflowTarget,
+    minimums,
+  );
+
+  assert(
+    sumColumnWidths(columnIds, overflowWidths) === 1600,
+    'overflow layout should not compress header-based defaults',
+  );
+
+  const fitPreferred = { a: 100, b: 100, c: 100, d: 100 };
+  const fitTarget = getColumnResizeTargetTotal(columnIds, fitPreferred, 800);
+
+  assert(fitTarget === 800, 'fit content should expand to container width');
+
+  const fitWidths = normalizeColumnWidthsToTotal(
+    fitPreferred,
+    columnIds,
+    fitTarget,
+    minimums,
+  );
+
+  assert(
+    sumColumnWidths(columnIds, fitWidths) === 800,
+    'fit layout should fill the container',
   );
 
   const lockedMeasuredMinimums = { a: 200, b: 200, c: 200, d: 200 };

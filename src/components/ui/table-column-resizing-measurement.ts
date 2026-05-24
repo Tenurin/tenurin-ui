@@ -1,5 +1,6 @@
 import {
   applyProportionalColumnResize,
+  getColumnResizeTargetTotal,
   getTableResizeTargetWidth,
   normalizeColumnWidthsToTotal,
   readColumnMinimumWidths,
@@ -11,6 +12,7 @@ const KEYBOARD_RESIZE_STEP = 16;
 const FAST_KEYBOARD_RESIZE_STEP = 48;
 
 type ColumnResizeMeasurement = Readonly<{
+  containerWidth: number;
   measuredMinimumWidths: ColumnWidthMap;
   widths: ColumnWidthMap;
 }>;
@@ -107,7 +109,7 @@ export function readColumnResizeMeasurement(
         configuredMinimumWidths,
         measuredMinimumWidths,
       );
-  const targetTotal = getTableResizeTargetWidth(table);
+  const containerWidth = getTableResizeTargetWidth(table);
   const { preferredWidths, storedWidths } = options;
 
   let appliedWidths: ColumnWidthMap;
@@ -126,7 +128,14 @@ export function readColumnResizeMeasurement(
     appliedWidths = readColumnWidths(table, columnIds);
   }
 
+  const targetTotal = getColumnResizeTargetTotal(
+    columnIds,
+    appliedWidths,
+    containerWidth,
+  );
+
   return {
+    containerWidth,
     measuredMinimumWidths,
     widths: normalizeColumnWidthsToTotal(
       appliedWidths,
