@@ -1,6 +1,6 @@
 import {
+  applyCascadingColumnResize,
   applyColumnMinimumWidths,
-  getResizedColumnPair,
   readColumnMinimumWidths,
   readColumnWidths,
   type ColumnWidthMap,
@@ -20,11 +20,9 @@ export type ColumnMinimumWidthResolver = (
 ) => number;
 
 type ResizedColumnWidthsOptions = Readonly<{
-  adjacentColumnId: string;
-  adjacentColumnWidth: number;
   baseWidths: ColumnWidthMap;
   columnId: string;
-  columnWidth: number;
+  columnIds: readonly string[];
   delta: number;
   measuredMinimumWidths: ColumnWidthMap;
   resolveMinimumWidth: ColumnMinimumWidthResolver;
@@ -91,31 +89,21 @@ export function readColumnResizeMeasurement(
 }
 
 export function getResizedColumnWidths({
-  adjacentColumnId,
-  adjacentColumnWidth,
   baseWidths,
   columnId,
-  columnWidth,
+  columnIds,
   delta,
   measuredMinimumWidths,
   resolveMinimumWidth,
 }: ResizedColumnWidthsOptions): ColumnWidthMap {
-  const resizedColumnPair = getResizedColumnPair({
-    adjacentColumnMinimumWidth: resolveMinimumWidth(
-      adjacentColumnId,
-      measuredMinimumWidths,
-    ),
-    adjacentColumnWidth,
-    columnMinimumWidth: resolveMinimumWidth(columnId, measuredMinimumWidths),
-    columnWidth,
+  return applyCascadingColumnResize({
+    baseWidths,
+    columnId,
+    columnIds,
     delta,
+    measuredMinimumWidths,
+    resolveMinimumWidth,
   });
-
-  return {
-    ...baseWidths,
-    [adjacentColumnId]: resizedColumnPair.adjacentColumnWidth,
-    [columnId]: resizedColumnPair.columnWidth,
-  };
 }
 
 export function getKeyboardResizeDelta(

@@ -10,10 +10,8 @@ import type {
 } from './table-column-resizing-utils';
 
 type StartColumnResizeSessionOptions = Readonly<{
-  adjacentColumnId: string;
-  adjacentColumnWidth: number;
   columnId: string;
-  columnWidth: number;
+  columnIds: readonly string[];
   event: ReactPointerEvent<HTMLButtonElement>;
   measuredMinimumWidths: ColumnWidthMap;
   onEnd: () => void;
@@ -23,10 +21,8 @@ type StartColumnResizeSessionOptions = Readonly<{
 }>;
 
 export function startColumnResizeSession({
-  adjacentColumnId,
-  adjacentColumnWidth,
   columnId,
-  columnWidth,
+  columnIds,
   event,
   measuredMinimumWidths,
   onEnd,
@@ -48,11 +44,9 @@ export function startColumnResizeSession({
   const handlePointerMove = (pointerEvent: PointerEvent) => {
     onResize(
       getResizedColumnWidths({
-        adjacentColumnId,
-        adjacentColumnWidth,
         baseWidths: startingWidths,
         columnId,
-        columnWidth,
+        columnIds,
         delta: pointerEvent.clientX - startX,
         measuredMinimumWidths,
         resolveMinimumWidth,

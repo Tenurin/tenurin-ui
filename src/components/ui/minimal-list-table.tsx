@@ -97,12 +97,18 @@ export default function MinimalListTable<TItem>({
 
   return (
     <Table
+      containerClassName={
+        columnResizing.isColumnResizingEnabled ? 'min-w-0 overflow-x-auto' : 'overflow-x-auto'
+      }
       className={cn(
         tableClassName,
         isEmptyState ? 'min-w-0' : undefined,
-        columnResizing.isColumnWidthActive ? 'table-fixed' : undefined,
+        columnResizing.isColumnResizingEnabled
+          ? 'w-full max-w-full table-fixed'
+          : columnResizing.isColumnWidthActive
+            ? 'table-fixed'
+            : undefined,
       )}
-      containerClassName="overflow-x-auto"
     >
       <colgroup>
         {columns.map((column) => (

@@ -132,20 +132,16 @@ export function useTableColumnResizing({
         minimumColumnWidths,
       );
       const { measuredMinimumWidths, widths: startingWidths } = measurement;
-      const startingWidth = startingWidths[columnId];
-      const startingAdjacentWidth = startingWidths[adjacentColumnId];
 
-      if (startingWidth === undefined || startingAdjacentWidth === undefined) {
+      if (startingWidths[columnId] === undefined) {
         return;
       }
 
       resizeSessionRef.current?.cleanup();
       setColumnWidths(startingWidths);
       resizeSessionRef.current = startColumnResizeSession({
-        adjacentColumnId,
-        adjacentColumnWidth: startingAdjacentWidth,
         columnId,
-        columnWidth: startingWidth,
+        columnIds,
         event,
         measuredMinimumWidths,
         onEnd: () => {
@@ -198,27 +194,19 @@ export function useTableColumnResizing({
         const baseWidths = hasColumnWidths(currentWidths)
           ? currentWidths
           : measuredWidths;
-        const currentWidth = baseWidths[columnId];
-        const adjacentColumnWidth = baseWidths[adjacentColumnId];
 
-        if (currentWidth === undefined || adjacentColumnWidth === undefined) {
+        if (baseWidths[columnId] === undefined) {
           return currentWidths;
         }
 
-        return {
-          ...measuredWidths,
-          ...currentWidths,
-          ...getResizedColumnWidths({
-            adjacentColumnId,
-            adjacentColumnWidth,
-            baseWidths: currentWidths,
-            columnId,
-            columnWidth: currentWidth,
-            delta,
-            measuredMinimumWidths,
-            resolveMinimumWidth: getColumnMinimumWidth,
-          }),
-        };
+        return getResizedColumnWidths({
+          baseWidths,
+          columnId,
+          columnIds,
+          delta,
+          measuredMinimumWidths,
+          resolveMinimumWidth: getColumnMinimumWidth,
+        });
       });
     },
     [

@@ -220,6 +220,10 @@ export default defineConfig({
           "src/components/ui/minimal-list-table.tsx",
         ),
         popover: path.resolve(__dirname, "src/components/ui/popover.tsx"),
+        "policy-summary-card": path.resolve(
+          __dirname,
+          "src/components/ui/policy-summary-card.tsx",
+        ),
         progress: path.resolve(__dirname, "src/components/ui/progress.tsx"),
         "radio-group": path.resolve(
           __dirname,

@@ -5,6 +5,7 @@ import type {
 } from 'react';
 
 import { cn } from '../../lib/utils';
+import { MiddleTruncatedText } from './middle-truncated-text';
 import { RESIZABLE_TABLE_HEADER_LABEL_ATTRIBUTE } from './table-column-resizing-utils';
 
 type ResizableTableHeaderContentProps = Readonly<{
@@ -22,6 +23,42 @@ type ResizableTableHeaderContentProps = Readonly<{
   ) => void;
 }>;
 
+function getHeaderLabelText(children: ReactNode): string | undefined {
+  if (typeof children === 'string' || typeof children === 'number') {
+    return String(children);
+  }
+
+  return undefined;
+}
+
+function renderHeaderLabel(children: ReactNode): ReactNode {
+  const headerText = getHeaderLabelText(children);
+
+  if (headerText === undefined) {
+    return (
+      <span
+        {...{ [RESIZABLE_TABLE_HEADER_LABEL_ATTRIBUTE]: '' }}
+        className="min-w-0 whitespace-nowrap leading-snug"
+      >
+        {children}
+      </span>
+    );
+  }
+
+  return (
+    <span
+      {...{ [RESIZABLE_TABLE_HEADER_LABEL_ATTRIBUTE]: '' }}
+      className="block min-w-0 flex-1"
+    >
+      <MiddleTruncatedText
+        text={headerText}
+        className="min-w-0 leading-snug"
+        measureWidth
+      />
+    </span>
+  );
+}
+
 export function ResizableTableHeaderContent({
   children,
   columnId,
@@ -37,12 +74,7 @@ export function ResizableTableHeaderContent({
         enabled ? 'pr-5' : undefined,
       )}
     >
-      <span
-        {...{ [RESIZABLE_TABLE_HEADER_LABEL_ATTRIBUTE]: '' }}
-        className="min-w-0 whitespace-nowrap leading-snug"
-      >
-        {children}
-      </span>
+      {renderHeaderLabel(children)}
       {enabled ? (
         <button
           type="button"

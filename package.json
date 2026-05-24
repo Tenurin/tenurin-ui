@@ -382,6 +382,11 @@
       "import": "./dist/components/ui/popover.es.js",
       "require": "./dist/components/ui/popover.cjs.js"
     },
+    "./policy-summary-card": {
+      "types": "./dist/components/ui/policy-summary-card.d.ts",
+      "import": "./dist/components/ui/policy-summary-card.es.js",
+      "require": "./dist/components/ui/policy-summary-card.cjs.js"
+    },
     "./progress": {
       "types": "./dist/components/ui/progress.d.ts",
       "import": "./dist/components/ui/progress.es.js",
@@ -533,7 +538,7 @@
     "build": "vite build && tsc -p tsconfig.build.json && node scripts/check-package-exports.mjs --check-dist",
     "build:types": "tsc -p tsconfig.build.json",
     "build:watch": "node scripts/build-watch.mjs",
-    "lint": "node scripts/check-tenurin-ui-source.mjs && node scripts/check-package-exports.mjs",
+    "lint": "node scripts/check-tenurin-ui-source.mjs && node scripts/check-package-exports.mjs && node --experimental-strip-types scripts/check-table-column-resizing.mjs",
     "lint:fix": "node scripts/fix-tenurin-ui-source.mjs",
     "preview": "vite preview",
     "prepare": "npm run build"

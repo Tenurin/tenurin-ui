@@ -1,5 +1,6 @@
 import { format, isSameDay } from 'date-fns';
 
+import { cn } from '../../lib/utils';
 import { Button } from './button';
 import { MessagingChatMessageBubble } from './messaging-chat-message-bubble';
 import type {
@@ -7,6 +8,12 @@ import type {
   MessagingChatOpenAttachmentArgs,
   MessagingChatSenderInfo,
 } from './messaging-chat-message-types';
+import {
+  areMessagesInSameGroup,
+  getMessageGroupPosition,
+  shouldShowMessageTimestamp,
+  shouldShowSenderLabel,
+} from './messagingChatMessageGrouping';
 import { MessagingChatMessageListSkeleton } from './messaging-chat-skeleton';
 
 export type MessagingChatMessageListProps = Readonly<{
@@ -27,8 +34,8 @@ type ChatTimelineItem =
       date: string;
     }
   | {
-      kind: 'message';
-      message: MessagingChatMessage;
+      kind: 'messageGroup';
+      messages: MessagingChatMessage[];
     };
 
 function buildTimeline(messages: MessagingChatMessage[]): ChatTimelineItem[] {
@@ -48,10 +55,27 @@ function buildTimeline(messages: MessagingChatMessage[]): ChatTimelineItem[] {
       });
     }
 
-    items.push({
-      kind: 'message',
-      message,
-    });
+    const lastItem = items.at(-1);
+    const lastGroupMessage =
+      lastItem?.kind === 'messageGroup'
+        ? lastItem.messages.at(-1)
+        : undefined;
+
+    if (
+      lastItem?.kind === 'messageGroup' &&
+      lastGroupMessage &&
+      areMessagesInSameGroup(lastGroupMessage, message)
+    ) {
+      items[items.length - 1] = {
+        kind: 'messageGroup',
+        messages: [...lastItem.messages, message],
+      };
+    } else {
+      items.push({
+        kind: 'messageGroup',
+        messages: [message],
+      });
+    }
 
     return items;
   }, []);
@@ -104,26 +128,49 @@ export function MessagingChatMessageList({
         </div>
       ) : null}
 
-      {timelineItems.map((item) =>
-        item.kind === 'date' ? (
+      {timelineItems.map((item) => {
+        if (item.kind === 'date') {
+          return (
+            <div
+              key={item.date}
+              className="flex items-center justify-center gap-5 py-2"
+            >
+              <p className="text-xs font-medium uppercase tracking-[0.28em] text-muted-foreground">
+                {format(new Date(item.date), 'EEEE, MMM d')}
+              </p>
+            </div>
+          );
+        }
+
+        const isMine = item.messages[0].senderId === currentUserId;
+
+        return (
           <div
-            key={item.date}
-            className="flex items-center justify-center gap-5 py-2"
+            key={item.messages.map((message) => message.messageId).join('-')}
+            className={cn(
+              'flex w-full flex-col gap-1 text-sm',
+              isMine ? 'items-end' : 'items-start',
+            )}
           >
-            <p className="text-xs font-medium uppercase tracking-[0.28em] text-muted-foreground">
-              {format(new Date(item.date), 'EEEE, MMM d')}
-            </p>
+            {item.messages.map((message, index) => (
+              <MessagingChatMessageBubble
+                key={message.messageId}
+                message={message}
+                isMine={message.senderId === currentUserId}
+                senderName={senderInfoByUserId?.[message.senderId]?.name}
+                groupPosition={getMessageGroupPosition(item.messages, index)}
+                showTimestamp={shouldShowMessageTimestamp(item.messages, index)}
+                showSenderLabel={shouldShowSenderLabel(
+                  item.messages,
+                  index,
+                  message.senderId === currentUserId,
+                )}
+                onOpenAttachment={onOpenAttachment}
+              />
+            ))}
           </div>
-        ) : (
-          <MessagingChatMessageBubble
-            key={item.message.messageId}
-            message={item.message}
-            isMine={item.message.senderId === currentUserId}
-            senderName={senderInfoByUserId?.[item.message.senderId]?.name}
-            onOpenAttachment={onOpenAttachment}
-          />
-        ),
-      )}
+        );
+      })}
     </div>
   );
 }

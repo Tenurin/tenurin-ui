@@ -117,7 +117,7 @@ export default function ListTable<TRow>({
       <Table
         className={cn(
           tableClassName,
-          columnResizing.isColumnWidthActive ? 'table-fixed' : undefined,
+          columnResizing.isColumnResizingEnabled ? 'table-fixed' : undefined,
         )}
       >
         <colgroup>
