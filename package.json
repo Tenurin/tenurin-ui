@@ -272,15 +272,30 @@
       "import": "./dist/components/ui/legal-dialog.es.js",
       "require": "./dist/components/ui/legal-dialog.cjs.js"
     },
-    "./messaging-chat-skeleton": {
-      "types": "./dist/components/ui/messaging-chat-skeleton.d.ts",
-      "import": "./dist/components/ui/messaging-chat-skeleton.es.js",
-      "require": "./dist/components/ui/messaging-chat-skeleton.cjs.js"
+    "./messaging-chat-message-bubble": {
+      "types": "./dist/components/ui/messaging-chat-message-bubble.d.ts",
+      "import": "./dist/components/ui/messaging-chat-message-bubble.es.js",
+      "require": "./dist/components/ui/messaging-chat-message-bubble.cjs.js"
+    },
+    "./messaging-chat-message-list": {
+      "types": "./dist/components/ui/messaging-chat-message-list.d.ts",
+      "import": "./dist/components/ui/messaging-chat-message-list.es.js",
+      "require": "./dist/components/ui/messaging-chat-message-list.cjs.js"
+    },
+    "./messaging-chat-message-types": {
+      "types": "./dist/components/ui/messaging-chat-message-types.d.ts",
+      "import": "./dist/components/ui/messaging-chat-message-types.es.js",
+      "require": "./dist/components/ui/messaging-chat-message-types.cjs.js"
     },
     "./messaging-conversation-item": {
       "types": "./dist/components/ui/messaging-conversation-item.d.ts",
       "import": "./dist/components/ui/messaging-conversation-item.es.js",
       "require": "./dist/components/ui/messaging-conversation-item.cjs.js"
+    },
+    "./messaging-message-content": {
+      "types": "./dist/components/ui/messaging-message-content.d.ts",
+      "import": "./dist/components/ui/messaging-message-content.es.js",
+      "require": "./dist/components/ui/messaging-message-content.cjs.js"
     },
     "./logo": {
       "types": "./dist/components/ui/logo.d.ts",

@@ -180,9 +180,25 @@ export default defineConfig({
           __dirname,
           "src/components/ui/messaging-chat-skeleton.tsx",
         ),
+        "messaging-chat-message-bubble": path.resolve(
+          __dirname,
+          "src/components/ui/messaging-chat-message-bubble.tsx",
+        ),
+        "messaging-chat-message-list": path.resolve(
+          __dirname,
+          "src/components/ui/messaging-chat-message-list.tsx",
+        ),
+        "messaging-chat-message-types": path.resolve(
+          __dirname,
+          "src/components/ui/messaging-chat-message-types.ts",
+        ),
         "messaging-conversation-item": path.resolve(
           __dirname,
           "src/components/ui/messaging-conversation-item.tsx",
+        ),
+        "messaging-message-content": path.resolve(
+          __dirname,
+          "src/components/ui/messaging-message-content.tsx",
         ),
         "list-toolbar": path.resolve(
           __dirname,
