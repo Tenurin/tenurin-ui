@@ -2,6 +2,13 @@
 
 @custom-variant dark (&:is(.dark *));
 
+html,
+body,
+#root {
+  min-height: 100%;
+  background-color: var(--background);
+}
+
 :root {
   /* Core semantic tokens */
   --background: oklch(1 0 0);
