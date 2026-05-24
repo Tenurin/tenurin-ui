@@ -1,4 +1,4 @@
-import type { CSSProperties, ReactNode } from 'react';
+import type { ReactNode } from 'react';
 
 import type { ColumnWidthMap } from './table-column-resizing-utils';
 
@@ -63,12 +63,3 @@ export function buildHeaderMinimumWidths(
   );
 }
 
-export function getHeaderMinimumWidthStyle(
-  minimumWidth: number,
-  style?: CSSProperties,
-): CSSProperties {
-  return {
-    ...style,
-    minWidth: `${minimumWidth}px`,
-  };
-}

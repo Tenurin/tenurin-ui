@@ -8,14 +8,37 @@ import type {
   MessagingChatMessage,
   MessagingChatOpenAttachmentArgs,
 } from './messaging-chat-message-types';
+import type { MessagingChatMessageGroupPosition } from './messagingChatMessageGrouping';
 import { toast } from './sonner';
 
 export type MessagingChatMessageBubbleProps = Readonly<{
   message: MessagingChatMessage;
   isMine: boolean;
   senderName?: string;
+  groupPosition?: MessagingChatMessageGroupPosition;
+  showTimestamp?: boolean;
+  showSenderLabel?: boolean;
   onOpenAttachment?: (args: MessagingChatOpenAttachmentArgs) => Promise<void>;
 }>;
+
+function getBubbleCornerClassName(
+  isMine: boolean,
+  groupPosition: MessagingChatMessageGroupPosition,
+): string {
+  if (isMine) {
+    if (groupPosition === 'single' || groupPosition === 'first') {
+      return '!rounded-tr-none';
+    }
+
+    return 'rounded-sm';
+  }
+
+  if (groupPosition === 'single' || groupPosition === 'first') {
+    return '!rounded-tl-none';
+  }
+
+  return 'rounded-sm';
+}
 
 function AttachmentButton({
   disabled,
@@ -38,7 +61,7 @@ function AttachmentButton({
       className={cn(
         'flex w-full items-center gap-3 rounded-2xl border px-4 py-3 text-left text-sm transition-colors',
         isMine
-          ? 'ui-app-accent-inverse-surface'
+          ? 'ui-app-accent-own-surface'
           : 'ui-app-accent-neutral-surface',
       )}
     >
@@ -64,6 +87,9 @@ export function MessagingChatMessageBubble({
   message,
   isMine,
   senderName,
+  groupPosition = 'single',
+  showTimestamp = true,
+  showSenderLabel = !isMine,
   onOpenAttachment,
 }: MessagingChatMessageBubbleProps) {
   const [openingAttachmentId, setOpeningAttachmentId] = useState<string | null>(
@@ -91,30 +117,27 @@ export function MessagingChatMessageBubble({
   };
 
   const senderLabel = senderName || message.senderType.toUpperCase();
-  const bubbleLabel = isMine ? 'You' : senderLabel;
 
   return (
     <div
       className={cn(
-        'flex w-full flex-col gap-2 text-sm',
-        isMine && 'items-end',
+        'flex w-full flex-col text-sm',
+        isMine ? 'items-end' : 'items-start',
       )}
     >
-      <span
-        className={cn(
-          'font-medium text-xs text-[var(--foreground)]',
-          !isMine ? 'cursor-default' : 'hidden',
-        )}
-      >
-        {bubbleLabel}
-      </span>
+      {showSenderLabel ? (
+        <span className="mb-1 text-[11px] font-medium text-[var(--foreground)]">
+          {senderLabel}
+        </span>
+      ) : null}
 
       <div
         className={cn(
-          'w-fit rounded-lg px-3 py-1 text-base md:max-w-4/5',
+          'w-fit rounded-sm px-3 py-1 text-base md:max-w-4/5',
+          getBubbleCornerClassName(isMine, groupPosition),
           isMine
-            ? '!rounded-tr-none ui-app-accent-inverse-surface'
-            : '!rounded-tl-none ui-app-accent-neutral-surface',
+            ? 'ui-app-accent-own-surface'
+            : 'ui-app-accent-neutral-surface',
         )}
       >
         {message.content ? (
@@ -142,9 +165,11 @@ export function MessagingChatMessageBubble({
         ) : null}
       </div>
 
-      <span className="text-[11px] font-medium text-muted-foreground">
-        {format(new Date(message.createdAt), 'p')}
-      </span>
+      {showTimestamp ? (
+        <span className="mt-1 text-[11px] font-medium text-muted-foreground">
+          {format(new Date(message.createdAt), 'p')}
+        </span>
+      ) : null}
     </div>
   );
 }

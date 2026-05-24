@@ -1,6 +1,7 @@
 import {
-  applyColumnMinimumWidths,
-  getResizedColumnPair,
+  applyProportionalColumnResize,
+  getTableResizeTargetWidth,
+  normalizeColumnWidthsToTotal,
   readColumnMinimumWidths,
   readColumnWidths,
   type ColumnWidthMap,
@@ -20,11 +21,9 @@ export type ColumnMinimumWidthResolver = (
 ) => number;
 
 type ResizedColumnWidthsOptions = Readonly<{
-  adjacentColumnId: string;
-  adjacentColumnWidth: number;
   baseWidths: ColumnWidthMap;
   columnId: string;
-  columnWidth: number;
+  columnIds: readonly string[];
   delta: number;
   measuredMinimumWidths: ColumnWidthMap;
   resolveMinimumWidth: ColumnMinimumWidthResolver;
@@ -62,60 +61,98 @@ function buildMergedMinimumWidths(
   );
 }
 
+function buildUniformColumnMinimumWidths(
+  columnIds: readonly string[],
+  fallbackMinimumColumnWidth: number,
+  configuredMinimumWidths: ColumnWidthMap,
+): ColumnWidthMap {
+  return Object.fromEntries(
+    columnIds.map((columnId) => [
+      columnId,
+      resolveColumnMinimumWidth(
+        columnId,
+        fallbackMinimumColumnWidth,
+        configuredMinimumWidths,
+        undefined,
+      ),
+    ]),
+  );
+}
+
+type ReadColumnResizeMeasurementOptions = Readonly<{
+  preferredWidths?: ColumnWidthMap;
+  storedWidths?: ColumnWidthMap;
+  useUniformColumnMinimum?: boolean;
+}>;
+
 export function readColumnResizeMeasurement(
   table: HTMLTableElement,
   columnIds: readonly string[],
   fallbackMinimumColumnWidth: number,
   configuredMinimumWidths: ColumnWidthMap,
+  options: ReadColumnResizeMeasurementOptions = {},
 ): ColumnResizeMeasurement {
-  const measuredMinimumWidths = readColumnMinimumWidths(
-    table,
-    columnIds,
-    fallbackMinimumColumnWidth,
-  );
-  const minimumWidths = buildMergedMinimumWidths(
-    columnIds,
-    fallbackMinimumColumnWidth,
-    configuredMinimumWidths,
-    measuredMinimumWidths,
-  );
+  const measuredMinimumWidths = options.useUniformColumnMinimum
+    ? {}
+    : readColumnMinimumWidths(table, columnIds, fallbackMinimumColumnWidth);
+  const minimumWidths = options.useUniformColumnMinimum
+    ? buildUniformColumnMinimumWidths(
+        columnIds,
+        fallbackMinimumColumnWidth,
+        configuredMinimumWidths,
+      )
+    : buildMergedMinimumWidths(
+        columnIds,
+        fallbackMinimumColumnWidth,
+        configuredMinimumWidths,
+        measuredMinimumWidths,
+      );
+  const targetTotal = getTableResizeTargetWidth(table);
+  const { preferredWidths, storedWidths } = options;
+
+  let appliedWidths: ColumnWidthMap;
+
+  if (
+    storedWidths !== undefined &&
+    columnIds.every((columnId) => storedWidths[columnId] !== undefined)
+  ) {
+    appliedWidths = storedWidths;
+  } else if (
+    preferredWidths !== undefined &&
+    columnIds.every((columnId) => preferredWidths[columnId] !== undefined)
+  ) {
+    appliedWidths = preferredWidths;
+  } else {
+    appliedWidths = readColumnWidths(table, columnIds);
+  }
 
   return {
     measuredMinimumWidths,
-    widths: applyColumnMinimumWidths(
-      readColumnWidths(table, columnIds),
+    widths: normalizeColumnWidthsToTotal(
+      appliedWidths,
+      columnIds,
+      targetTotal,
       minimumWidths,
-      fallbackMinimumColumnWidth,
     ),
   };
 }
 
 export function getResizedColumnWidths({
-  adjacentColumnId,
-  adjacentColumnWidth,
   baseWidths,
   columnId,
-  columnWidth,
+  columnIds,
   delta,
   measuredMinimumWidths,
   resolveMinimumWidth,
 }: ResizedColumnWidthsOptions): ColumnWidthMap {
-  const resizedColumnPair = getResizedColumnPair({
-    adjacentColumnMinimumWidth: resolveMinimumWidth(
-      adjacentColumnId,
-      measuredMinimumWidths,
-    ),
-    adjacentColumnWidth,
-    columnMinimumWidth: resolveMinimumWidth(columnId, measuredMinimumWidths),
-    columnWidth,
+  return applyProportionalColumnResize({
+    baseWidths,
+    columnId,
+    columnIds,
     delta,
+    measuredMinimumWidths,
+    resolveMinimumWidth,
   });
-
-  return {
-    ...baseWidths,
-    [adjacentColumnId]: resizedColumnPair.adjacentColumnWidth,
-    [columnId]: resizedColumnPair.columnWidth,
-  };
 }
 
 export function getKeyboardResizeDelta(

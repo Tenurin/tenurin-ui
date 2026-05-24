@@ -7,24 +7,24 @@ type TableProps = React.ComponentProps<'table'> &
     containerClassName?: string;
   }>;
 
-function Table({
-  className,
-  containerClassName,
-  ...props
-}: TableProps) {
+const Table = React.forwardRef<HTMLTableElement, TableProps>(function Table(
+  { className, containerClassName, ...props },
+  ref,
+) {
   return (
     <div
       data-slot="table-container"
       className={cn('relative w-full overflow-x-auto', containerClassName)}
     >
       <table
+        ref={ref}
         data-slot="table"
         className={cn('w-full caption-bottom text-sm', className)}
         {...props}
       />
     </div>
   );
-}
+});
 
 function TableHeader({ className, ...props }: React.ComponentProps<'thead'>) {
   return (

@@ -3,9 +3,9 @@ import {
   useEffect,
   useRef,
   useState,
-  type CSSProperties,
   type KeyboardEvent,
   type PointerEvent as ReactPointerEvent,
+  type CSSProperties,
 } from 'react';
 
 import {
@@ -16,11 +16,12 @@ import {
 } from './table-column-resizing-measurement';
 import { startColumnResizeSession } from './table-column-resizing-session';
 import {
-  getNextResizableColumnId,
-  hasColumnWidths,
+  hasColumnWidthsForIds,
   type ColumnResizeSession,
   type ColumnWidthMap,
 } from './table-column-resizing-utils';
+
+const EMPTY_MEASURED_MINIMUM_WIDTHS: ColumnWidthMap = {};
 
 export const DEFAULT_MINIMUM_COLUMN_WIDTH = 88;
 const EMPTY_COLUMN_WIDTHS: ColumnWidthMap = {};
@@ -28,94 +29,157 @@ export const TABLE_ACTIONS_COLUMN_ID = '__table-actions';
 
 type UseTableColumnResizingOptions = Readonly<{
   columnIds: readonly string[];
+  columnPreferredWidths?: ColumnWidthMap;
   enabled?: boolean;
   minimumColumnWidths?: ColumnWidthMap;
   minimumColumnWidth?: number;
+  useUniformColumnMinimum?: boolean;
 }>;
 
 export type UseTableColumnResizingResult = Readonly<{
   canResizeColumn: (columnId: string) => boolean;
+  isColumnResizing: boolean;
   isColumnResizingEnabled: boolean;
   isColumnWidthActive: boolean;
   getColumnWidthStyle: (columnId: string, style?: CSSProperties) => CSSProperties;
-  getColumnMinimumWidthStyle: (
-    columnId: string,
-    style?: CSSProperties,
-  ) => CSSProperties;
   startColumnResize: (event: ReactPointerEvent<HTMLButtonElement>, columnId: string) => void;
   resizeColumnWithKeyboard: (event: KeyboardEvent<HTMLButtonElement>, columnId: string) => void;
+  syncColumnWidthsFromTable: (table: HTMLTableElement) => void;
 }>;
 
 export function useTableColumnResizing({
   columnIds,
+  columnPreferredWidths,
   enabled = true,
   minimumColumnWidths = EMPTY_COLUMN_WIDTHS,
   minimumColumnWidth = DEFAULT_MINIMUM_COLUMN_WIDTH,
+  useUniformColumnMinimum = false,
 }: UseTableColumnResizingOptions): UseTableColumnResizingResult {
   const [columnWidths, setColumnWidths] = useState<ColumnWidthMap>({});
+  const [isColumnResizing, setIsColumnResizing] = useState(false);
   const resizeSessionRef = useRef<ColumnResizeSession | null>(null);
+  const dragWidthsRef = useRef<ColumnWidthMap | null>(null);
+  const resizeFrameRef = useRef<number | null>(null);
+  const resizeStartFrameRef = useRef<number | null>(null);
   const isColumnResizingEnabled = enabled && columnIds.length > 1;
-  const isColumnWidthActive = hasColumnWidths(columnWidths);
+  const isColumnWidthActive = hasColumnWidthsForIds(columnIds, columnWidths);
 
   useEffect(() => {
-    return () => resizeSessionRef.current?.cleanup();
+    return () => {
+      if (resizeFrameRef.current !== null) {
+        cancelAnimationFrame(resizeFrameRef.current);
+      }
+
+      if (resizeStartFrameRef.current !== null) {
+        cancelAnimationFrame(resizeStartFrameRef.current);
+      }
+
+      resizeSessionRef.current?.cleanup();
+    };
   }, []);
 
-  const getColumnMinimumWidth = useCallback(
-    (columnId: string, measuredMinimumWidths?: ColumnWidthMap) =>
+  const flushColumnWidths = useCallback(() => {
+    if (resizeFrameRef.current !== null) {
+      cancelAnimationFrame(resizeFrameRef.current);
+      resizeFrameRef.current = null;
+    }
+
+    const widths = dragWidthsRef.current;
+
+    if (widths !== null) {
+      setColumnWidths(widths);
+    }
+  }, []);
+
+  const scheduleColumnWidthCommit = useCallback((widths: ColumnWidthMap) => {
+    dragWidthsRef.current = widths;
+
+    if (resizeFrameRef.current !== null) {
+      return;
+    }
+
+    resizeFrameRef.current = requestAnimationFrame(() => {
+      resizeFrameRef.current = null;
+      setColumnWidths(dragWidthsRef.current ?? widths);
+    });
+  }, []);
+
+  /** Measured header label widths must not cap live drag slack. */
+  const getDragColumnMinimumWidth = useCallback(
+    (columnId: string) =>
       resolveColumnMinimumWidth(
         columnId,
         minimumColumnWidth,
         minimumColumnWidths,
-        measuredMinimumWidths,
+        undefined,
       ),
     [minimumColumnWidth, minimumColumnWidths],
   );
 
-  const getColumnMinimumWidthStyle = useCallback(
-    (columnId: string, fallbackStyle?: CSSProperties) => ({
-      ...fallbackStyle,
-      minWidth: `${getColumnMinimumWidth(columnId)}px`,
-    }),
-    [getColumnMinimumWidth],
-  );
-
   const getColumnWidthStyle = useCallback(
     (columnId: string, fallbackStyle?: CSSProperties) => {
-      const width = columnWidths[columnId];
-      const minimumWidthStyle = getColumnMinimumWidthStyle(
-        columnId,
-        fallbackStyle,
-      );
+      const width =
+        dragWidthsRef.current?.[columnId] ?? columnWidths[columnId];
 
       if (width === undefined) {
-        return minimumWidthStyle;
+        return fallbackStyle ?? {};
       }
 
       return {
-        ...minimumWidthStyle,
+        ...fallbackStyle,
         width: `${width}px`,
       };
     },
-    [columnWidths, getColumnMinimumWidthStyle],
+    [columnWidths],
   );
 
   const canResizeColumn = useCallback(
     (columnId: string) =>
-      isColumnResizingEnabled &&
-      getNextResizableColumnId(columnIds, columnId) !== undefined,
+      isColumnResizingEnabled && columnIds.includes(columnId),
     [columnIds, isColumnResizingEnabled],
+  );
+
+  const readMeasurement = useCallback(
+    (table: HTMLTableElement, storedWidths?: ColumnWidthMap) =>
+      readColumnResizeMeasurement(
+        table,
+        columnIds,
+        minimumColumnWidth,
+        minimumColumnWidths,
+        {
+          preferredWidths: columnPreferredWidths,
+          storedWidths,
+          useUniformColumnMinimum,
+        },
+      ),
+    [
+      columnIds,
+      columnPreferredWidths,
+      minimumColumnWidth,
+      minimumColumnWidths,
+      useUniformColumnMinimum,
+    ],
+  );
+
+  const syncColumnWidthsFromTable = useCallback(
+    (table: HTMLTableElement) => {
+      if (!isColumnResizingEnabled || hasColumnWidthsForIds(columnIds, columnWidths)) {
+        return;
+      }
+
+      const { widths } = readMeasurement(table);
+      setColumnWidths(widths);
+    },
+    [columnIds, columnWidths, isColumnResizingEnabled, readMeasurement],
   );
 
   const startColumnResize = useCallback(
     (event: ReactPointerEvent<HTMLButtonElement>, columnId: string) => {
-      const adjacentColumnId = getNextResizableColumnId(columnIds, columnId);
+      if (!isColumnResizingEnabled) {
+        return;
+      }
 
-      if (
-        !isColumnResizingEnabled ||
-        adjacentColumnId === undefined ||
-        event.button !== 0
-      ) {
+      if (event.button !== 0) {
         return;
       }
 
@@ -125,51 +189,56 @@ export function useTableColumnResizing({
         return;
       }
 
-      const measurement = readColumnResizeMeasurement(
-        table,
-        columnIds,
-        minimumColumnWidth,
-        minimumColumnWidths,
-      );
-      const { measuredMinimumWidths, widths: startingWidths } = measurement;
-      const startingWidth = startingWidths[columnId];
-      const startingAdjacentWidth = startingWidths[adjacentColumnId];
+      const storedWidths = hasColumnWidthsForIds(columnIds, columnWidths)
+        ? columnWidths
+        : undefined;
+      const { widths: startingWidths } = readMeasurement(table, storedWidths);
 
-      if (startingWidth === undefined || startingAdjacentWidth === undefined) {
+      if (startingWidths[columnId] === undefined) {
         return;
       }
 
       resizeSessionRef.current?.cleanup();
-      setColumnWidths(startingWidths);
       resizeSessionRef.current = startColumnResizeSession({
-        adjacentColumnId,
-        adjacentColumnWidth: startingAdjacentWidth,
         columnId,
-        columnWidth: startingWidth,
+        columnIds,
         event,
-        measuredMinimumWidths,
         onEnd: () => {
+          flushColumnWidths();
+          dragWidthsRef.current = null;
           resizeSessionRef.current = null;
+          setIsColumnResizing(false);
         },
-        onResize: setColumnWidths,
-        resolveMinimumWidth: getColumnMinimumWidth,
+        onResize: scheduleColumnWidthCommit,
+        resolveMinimumWidth: getDragColumnMinimumWidth,
         startingWidths,
+      });
+      dragWidthsRef.current = startingWidths;
+
+      if (resizeStartFrameRef.current !== null) {
+        cancelAnimationFrame(resizeStartFrameRef.current);
+      }
+
+      resizeStartFrameRef.current = requestAnimationFrame(() => {
+        resizeStartFrameRef.current = null;
+        setColumnWidths(startingWidths);
+        setIsColumnResizing(true);
       });
     },
     [
       columnIds,
-      getColumnMinimumWidth,
+      columnWidths,
+      flushColumnWidths,
+      getDragColumnMinimumWidth,
       isColumnResizingEnabled,
-      minimumColumnWidth,
-      minimumColumnWidths,
+      readMeasurement,
+      scheduleColumnWidthCommit,
     ],
   );
 
   const resizeColumnWithKeyboard = useCallback(
     (event: KeyboardEvent<HTMLButtonElement>, columnId: string) => {
-      const adjacentColumnId = getNextResizableColumnId(columnIds, columnId);
-
-      if (!isColumnResizingEnabled || adjacentColumnId === undefined) {
+      if (!isColumnResizingEnabled) {
         return;
       }
 
@@ -186,57 +255,47 @@ export function useTableColumnResizing({
       }
 
       event.preventDefault();
-      const measurement = readColumnResizeMeasurement(
+      const { widths: measuredWidths } = readMeasurement(
         table,
-        columnIds,
-        minimumColumnWidth,
-        minimumColumnWidths,
+        hasColumnWidthsForIds(columnIds, columnWidths) ? columnWidths : undefined,
       );
-      const { measuredMinimumWidths, widths: measuredWidths } = measurement;
 
       setColumnWidths((currentWidths) => {
-        const baseWidths = hasColumnWidths(currentWidths)
+        const baseWidths = hasColumnWidthsForIds(columnIds, currentWidths)
           ? currentWidths
           : measuredWidths;
-        const currentWidth = baseWidths[columnId];
-        const adjacentColumnWidth = baseWidths[adjacentColumnId];
 
-        if (currentWidth === undefined || adjacentColumnWidth === undefined) {
+        if (baseWidths[columnId] === undefined) {
           return currentWidths;
         }
 
-        return {
-          ...measuredWidths,
-          ...currentWidths,
-          ...getResizedColumnWidths({
-            adjacentColumnId,
-            adjacentColumnWidth,
-            baseWidths: currentWidths,
-            columnId,
-            columnWidth: currentWidth,
-            delta,
-            measuredMinimumWidths,
-            resolveMinimumWidth: getColumnMinimumWidth,
-          }),
-        };
+        return getResizedColumnWidths({
+          baseWidths,
+          columnId,
+          columnIds,
+          delta,
+          measuredMinimumWidths: EMPTY_MEASURED_MINIMUM_WIDTHS,
+          resolveMinimumWidth: getDragColumnMinimumWidth,
+        });
       });
     },
     [
       columnIds,
-      getColumnMinimumWidth,
+      columnWidths,
+      getDragColumnMinimumWidth,
       isColumnResizingEnabled,
-      minimumColumnWidth,
-      minimumColumnWidths,
+      readMeasurement,
     ],
   );
 
   return {
     canResizeColumn,
-    getColumnMinimumWidthStyle,
     getColumnWidthStyle,
+    isColumnResizing,
     isColumnResizingEnabled,
     isColumnWidthActive,
     resizeColumnWithKeyboard,
     startColumnResize,
+    syncColumnWidthsFromTable,
   };
 }

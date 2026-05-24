@@ -52,6 +52,18 @@
     var(--sidebar) 60%
   );
 
+  --app-accent-own-border: color-mix(
+    in oklab,
+    var(--app-accent-own-fg) 20%,
+    transparent
+  );
+  --app-accent-own-bg: color-mix(
+    in oklab,
+    var(--app-accent-neutral-bg) 82%,
+    var(--foreground) 18%
+  );
+  --app-accent-own-fg: var(--app-accent-neutral-fg);
+
   --app-accent-positive-border: oklch(62.4% 0.091 161.5 / 0.34);
   --app-accent-positive-bg: oklch(84.9% 0.083 161.74 / 0.26);
   --app-accent-positive-fg: oklch(35.8% 0.071 162.58);
@@ -169,6 +181,18 @@
     var(--sidebar-accent) 40%,
     var(--sidebar) 60%
   );
+
+  --app-accent-own-border: color-mix(
+    in oklab,
+    var(--app-accent-own-fg) 20%,
+    transparent
+  );
+  --app-accent-own-bg: color-mix(
+    in oklab,
+    var(--app-accent-neutral-bg) 68%,
+    var(--foreground) 32%
+  );
+  --app-accent-own-fg: var(--app-accent-neutral-fg);
 
   --app-accent-positive-border: oklch(83.6% 0.066 162.57 / 0.28);
   --app-accent-positive-bg: oklch(69.6% 0.17 162.48 / 0.18);
@@ -417,6 +441,18 @@
 .ui-app-accent-neutral-header-surface {
   border-color: var(--app-accent-neutral-border);
   background-color: var(--app-accent-neutral-header-bg);
+}
+
+.ui-app-accent-own-surface {
+  border-color: var(--app-accent-own-border);
+  background-color: var(--app-accent-own-bg);
+  color: var(--app-accent-own-fg);
+}
+
+.ui-app-accent-own-surface:hover {
+  border-color: var(--app-accent-own-border);
+  background-color: var(--app-accent-own-bg);
+  color: var(--app-accent-own-fg);
 }
 
 .ui-app-accent-inverse-surface {
