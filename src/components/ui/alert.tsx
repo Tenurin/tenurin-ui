@@ -1,9 +1,14 @@
 import * as React from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
 
+import type { CvaFn } from '../../lib/cva';
 import { cn } from '../../lib/utils';
 
-const alertVariants = cva(
+type AlertVariantProps = {
+  variant?: 'default' | 'destructive' | null;
+};
+
+const alertVariants: CvaFn<AlertVariantProps> = cva(
   'relative w-full rounded-lg border border-neutral-200 px-4 py-3 text-sm grid has-[>svg]:grid-cols-[calc(var(--spacing)*4)_1fr] grid-cols-[0_1fr] has-[>svg]:gap-x-3 gap-y-0.5 items-start [&>svg]:size-4 [&>svg]:translate-y-0.5 [&>svg]:text-current dark:border-neutral-800',
   {
     variants: {

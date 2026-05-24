@@ -1,5 +1,11 @@
 import React, { forwardRef, useCallback, useEffect } from 'react';
-import { useEditor, EditorContent, JSONContent, Editor } from '@tiptap/react';
+import {
+  useEditor,
+  useEditorState,
+  EditorContent,
+  JSONContent,
+  Editor,
+} from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 
 import Link from '@tiptap/extension-link';
@@ -69,6 +75,45 @@ const Toolbar = ({ editor }: { editor: Editor | null }) => {
     return null;
   }
 
+  const toolbarState = useEditorState({
+    editor,
+    selector: ({ editor: currentEditor }) => ({
+      bold: currentEditor.isActive('bold'),
+      italic: currentEditor.isActive('italic'),
+      strike: currentEditor.isActive('strike'),
+      underline: currentEditor.isActive('underline'),
+      code: currentEditor.isActive('code'),
+      highlight: currentEditor.isActive('highlight'),
+      superscript: currentEditor.isActive('superscript'),
+      subscript: currentEditor.isActive('subscript'),
+      paragraph: currentEditor.isActive('paragraph'),
+      h1: currentEditor.isActive('heading', { level: 1 }),
+      h2: currentEditor.isActive('heading', { level: 2 }),
+      h3: currentEditor.isActive('heading', { level: 3 }),
+      h4: currentEditor.isActive('heading', { level: 4 }),
+      bulletList: currentEditor.isActive('bulletList'),
+      orderedList: currentEditor.isActive('orderedList'),
+      blockquote: currentEditor.isActive('blockquote'),
+      codeBlock: currentEditor.isActive('codeBlock'),
+      link: currentEditor.isActive('link'),
+      textColor: currentEditor.getAttributes('textStyle').color || '#000000',
+    }),
+  });
+
+  const handleToolbarMouseDown = (
+    event: React.MouseEvent<HTMLButtonElement>,
+    command: () => void,
+    canExecute: boolean,
+  ) => {
+    event.preventDefault();
+
+    if (!canExecute) {
+      return;
+    }
+
+    command();
+  };
+
   type ToolbarButton = {
     name: string;
     command: () => void;
@@ -84,35 +129,35 @@ const Toolbar = ({ editor }: { editor: Editor | null }) => {
       name: 'bold',
       command: () => editor.chain().focus().toggleBold().run(),
       icon: Bold,
-      isActive: editor.isActive('bold'),
+      isActive: toolbarState.bold,
       canExecute: editor.can().toggleBold(),
     },
     {
       name: 'italic',
       command: () => editor.chain().focus().toggleItalic().run(),
       icon: Italic,
-      isActive: editor.isActive('italic'),
+      isActive: toolbarState.italic,
       canExecute: editor.can().toggleItalic(),
     },
     {
       name: 'strike',
       command: () => editor.chain().focus().toggleStrike().run(),
       icon: Strikethrough,
-      isActive: editor.isActive('strike'),
+      isActive: toolbarState.strike,
       canExecute: editor.can().toggleStrike(),
     },
     {
       name: 'underline',
       command: () => editor.chain().focus().toggleUnderline().run(),
       icon: UnderlineIcon,
-      isActive: editor.isActive('underline'),
+      isActive: toolbarState.underline,
       canExecute: editor.can().toggleUnderline(),
     },
     {
       name: 'code',
       command: () => editor.chain().focus().toggleCode().run(),
       icon: Code,
-      isActive: editor.isActive('code'),
+      isActive: toolbarState.code,
       canExecute: editor.can().toggleCode(),
     },
     'separator',
@@ -121,21 +166,21 @@ const Toolbar = ({ editor }: { editor: Editor | null }) => {
       name: 'highlight',
       command: () => editor.chain().focus().toggleHighlight().run(),
       icon: Highlighter,
-      isActive: editor.isActive('highlight'),
+      isActive: toolbarState.highlight,
       canExecute: editor.can().toggleHighlight(),
     },
     {
       name: 'superscript',
       command: () => editor.chain().focus().toggleSuperscript().run(),
       icon: SuperscriptIcon,
-      isActive: editor.isActive('superscript'),
+      isActive: toolbarState.superscript,
       canExecute: editor.can().toggleSuperscript(),
     },
     {
       name: 'subscript',
       command: () => editor.chain().focus().toggleSubscript().run(),
       icon: SubscriptIcon,
-      isActive: editor.isActive('subscript'),
+      isActive: toolbarState.subscript,
       canExecute: editor.can().toggleSubscript(),
     },
     'separator',
@@ -144,35 +189,35 @@ const Toolbar = ({ editor }: { editor: Editor | null }) => {
       name: 'paragraph',
       command: () => editor.chain().focus().setParagraph().run(),
       icon: Pilcrow,
-      isActive: editor.isActive('paragraph'),
+      isActive: toolbarState.paragraph,
       canExecute: editor.can().setParagraph(),
     },
     {
       name: 'h1',
       command: () => editor.chain().focus().toggleHeading({ level: 1 }).run(),
       icon: Heading1,
-      isActive: editor.isActive('heading', { level: 1 }),
+      isActive: toolbarState.h1,
       canExecute: editor.can().toggleHeading({ level: 1 }),
     },
     {
       name: 'h2',
       command: () => editor.chain().focus().toggleHeading({ level: 2 }).run(),
       icon: Heading2,
-      isActive: editor.isActive('heading', { level: 2 }),
+      isActive: toolbarState.h2,
       canExecute: editor.can().toggleHeading({ level: 2 }),
     },
     {
       name: 'h3',
       command: () => editor.chain().focus().toggleHeading({ level: 3 }).run(),
       icon: Heading3,
-      isActive: editor.isActive('heading', { level: 3 }),
+      isActive: toolbarState.h3,
       canExecute: editor.can().toggleHeading({ level: 3 }),
     },
     {
       name: 'h4',
       command: () => editor.chain().focus().toggleHeading({ level: 4 }).run(),
       icon: Heading4,
-      isActive: editor.isActive('heading', { level: 4 }),
+      isActive: toolbarState.h4,
       canExecute: editor.can().toggleHeading({ level: 4 }),
     },
     'separator',
@@ -181,28 +226,28 @@ const Toolbar = ({ editor }: { editor: Editor | null }) => {
       name: 'bulletList',
       command: () => editor.chain().focus().toggleBulletList().run(),
       icon: List,
-      isActive: editor.isActive('bulletList'),
+      isActive: toolbarState.bulletList,
       canExecute: editor.can().toggleBulletList(),
     },
     {
       name: 'orderedList',
       command: () => editor.chain().focus().toggleOrderedList().run(),
       icon: ListOrdered,
-      isActive: editor.isActive('orderedList'),
+      isActive: toolbarState.orderedList,
       canExecute: editor.can().toggleOrderedList(),
     },
     {
       name: 'blockquote',
       command: () => editor.chain().focus().toggleBlockquote().run(),
       icon: Quote,
-      isActive: editor.isActive('blockquote'),
+      isActive: toolbarState.blockquote,
       canExecute: editor.can().toggleBlockquote(),
     },
     {
       name: 'codeBlock',
       command: () => editor.chain().focus().toggleCodeBlock().run(),
       icon: SquareCode,
-      isActive: editor.isActive('codeBlock'),
+      isActive: toolbarState.codeBlock,
       canExecute: editor.can().toggleCodeBlock(),
     },
     'separator',
@@ -211,7 +256,7 @@ const Toolbar = ({ editor }: { editor: Editor | null }) => {
       name: 'setLink',
       command: setLink,
       icon: LinkIcon,
-      isActive: editor.isActive('link'),
+      isActive: toolbarState.link,
       canExecute: true,
     },
     {
@@ -219,7 +264,7 @@ const Toolbar = ({ editor }: { editor: Editor | null }) => {
       command: () => editor.chain().focus().unsetLink().run(),
       icon: Unlink,
       isActive: false,
-      canExecute: editor.isActive('link'),
+      canExecute: toolbarState.link,
     },
     {
       name: 'horizontalRule',
@@ -346,11 +391,19 @@ const Toolbar = ({ editor }: { editor: Editor | null }) => {
           <Button
             key={item.name}
             type="button"
-            variant={item.isActive ? 'secondary' : 'ghost'}
+            variant="ghost"
             size="icon"
-            onClick={item.command}
+            onMouseDown={(event) =>
+              handleToolbarMouseDown(event, item.command, item.canExecute)
+            }
             disabled={!item.canExecute}
+            aria-pressed={item.isActive}
             title={item.name}
+            className={cn(
+              item.isActive
+                ? 'bg-primary text-primary-foreground shadow-xs hover:bg-primary/90 dark:bg-primary dark:text-primary-foreground dark:hover:bg-primary/90'
+                : 'text-neutral-600 hover:text-neutral-950 dark:text-neutral-300 dark:hover:text-neutral-50'
+            )}
           >
             <item.icon className="h-4 w-4" />
           </Button>
@@ -359,7 +412,7 @@ const Toolbar = ({ editor }: { editor: Editor | null }) => {
       <Input
         type="color"
         className="w-8 h-8 p-1"
-        value={editor.getAttributes('textStyle').color || '#000000'}
+        value={toolbarState.textColor}
         onInput={(event) =>
           editor.chain().focus().setColor(event.currentTarget.value).run()
         }

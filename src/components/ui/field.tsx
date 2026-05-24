@@ -1,7 +1,9 @@
 import { useMemo } from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
 
+import type { CvaFn } from '../../lib/cva';
 import { cn } from '../../lib/utils';
+import InlineFieldError from './inline-field-error';
 import { Label } from './label';
 import { Separator } from './separator';
 
@@ -52,7 +54,11 @@ function FieldGroup({ className, ...props }: React.ComponentProps<'div'>) {
   );
 }
 
-const fieldVariants = cva(
+type FieldVariantProps = {
+  orientation?: 'vertical' | 'horizontal' | 'responsive' | null;
+};
+
+const fieldVariants: CvaFn<FieldVariantProps> = cva(
   'group/field flex w-full gap-3 data-[invalid=true]:text-red-500 dark:data-[invalid=true]:text-red-900',
   {
     variants: {
@@ -217,17 +223,9 @@ function FieldError({
   }
 
   return (
-    <div
-      role="alert"
-      data-slot="field-error"
-      className={cn(
-        'text-red-500 text-sm font-normal dark:text-red-900',
-        className
-      )}
-      {...props}
-    >
+    <InlineFieldError data-slot="field-error" className={className} {...props}>
       {content}
-    </div>
+    </InlineFieldError>
   );
 }
 

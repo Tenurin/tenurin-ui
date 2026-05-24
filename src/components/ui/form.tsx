@@ -14,6 +14,7 @@ import {
 } from 'react-hook-form';
 
 import { cn } from '../../lib/utils';
+import InlineFieldError from './inline-field-error';
 import { Label } from './label';
 
 const Form = FormProvider;
@@ -151,14 +152,13 @@ function FormMessage({ className, ...props }: React.ComponentProps<'p'>) {
   }
 
   return (
-    <p
+    <InlineFieldError
       data-slot="form-message"
       id={formMessageId}
-      className={cn('text-red-500 text-sm dark:text-red-900', className)}
+      className={className}
+      message={body}
       {...props}
-    >
-      {body}
-    </p>
+    />
   );
 }
 
