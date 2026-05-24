@@ -35,11 +35,11 @@ export function MessagingChatConversationHeader({
                 type="button"
                 variant="ghost"
                 size="icon"
-                className="h-6 w-6 shrink-0 text-muted-foreground hover:text-[var(--foreground)]"
+                className="mx-1 h-6 w-6 shrink-0 text-muted-foreground hover:text-[var(--foreground)]"
                 onClick={onRename}
                 aria-label="Rename group"
               >
-                <Pencil className="h-2.5 w-2.5" />
+                <Pencil className="h-1 w-1" />
               </Button>
             ) : null}
           </div>

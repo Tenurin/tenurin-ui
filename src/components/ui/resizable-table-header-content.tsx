@@ -82,13 +82,20 @@ export function ResizableTableHeaderContent({
           aria-orientation="vertical"
           role="separator"
           className={cn(
-            'absolute inset-y-0 right-0 z-20 w-3 cursor-col-resize touch-none',
+            'absolute inset-y-0 -right-1 z-20 w-4 cursor-col-resize touch-none',
             'bg-transparent outline-none select-none',
             'after:absolute after:inset-y-2 after:left-1/2 after:w-px',
             'after:-translate-x-1/2 after:bg-border after:opacity-0',
             'hover:after:opacity-100 focus-visible:after:opacity-100',
           )}
-          onPointerDown={(event) => onResizePointerDown(event, columnId)}
+          onPointerDown={(event) => {
+            if (event.button !== 0) {
+              return;
+            }
+
+            event.stopPropagation();
+            onResizePointerDown(event, columnId);
+          }}
           onKeyDown={(event) => onResizeKeyDown(event, columnId)}
         />
       ) : null}

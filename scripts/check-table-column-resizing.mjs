@@ -1,7 +1,9 @@
 import {
-  applyCascadingColumnResize,
-  getResizedColumnPair,
+  applyProportionalColumnResize,
   hasConservedColumnWidthTotal,
+  normalizeColumnWidthsToTotal,
+  resolveResizeDelta,
+  sumColumnWidths,
 } from '../src/components/ui/table-column-resizing-utils.ts';
 
 const columnIds = ['a', 'b', 'c', 'd'];
@@ -27,7 +29,7 @@ function assertWidths(actual, expected, message) {
 function runChecks() {
   const baseWidths = { a: 200, b: 200, c: 200, d: 200 };
 
-  const growAdjacentOnly = applyCascadingColumnResize({
+  const growAllOthers = applyProportionalColumnResize({
     baseWidths,
     columnId: 'a',
     columnIds,
@@ -37,39 +39,16 @@ function runChecks() {
   });
 
   assertWidths(
-    growAdjacentOnly,
-    { a: 240, b: 160, c: 200, d: 200 },
-    'grow within adjacent column only',
+    growAllOthers,
+    { a: 240, b: 186, c: 187, d: 187 },
+    'grow should steal proportionally from all other columns',
   );
   assert(
-    hasConservedColumnWidthTotal(columnIds, baseWidths, growAdjacentOnly),
-    'grow adjacent only should conserve total width',
+    hasConservedColumnWidthTotal(columnIds, baseWidths, growAllOthers),
+    'grow should conserve total width',
   );
 
-  const growPastAdjacent = applyCascadingColumnResize({
-    baseWidths: { a: 200, b: 100, c: 200, d: 200 },
-    columnId: 'a',
-    columnIds,
-    delta: 40,
-    measuredMinimumWidths,
-    resolveMinimumWidth,
-  });
-
-  assertWidths(
-    growPastAdjacent,
-    { a: 240, b: 88, c: 172, d: 200 },
-    'grow past adjacent minimum cascades to next column',
-  );
-  assert(
-    hasConservedColumnWidthTotal(
-      columnIds,
-      { a: 200, b: 100, c: 200, d: 200 },
-      growPastAdjacent,
-    ),
-    'cascade grow should conserve total width',
-  );
-
-  const growAtLimit = applyCascadingColumnResize({
+  const growAtLimit = applyProportionalColumnResize({
     baseWidths: { a: 200, b: 88, c: 88, d: 88 },
     columnId: 'a',
     columnIds,
@@ -81,10 +60,10 @@ function runChecks() {
   assertWidths(
     growAtLimit,
     { a: 200, b: 88, c: 88, d: 88 },
-    'grow when all right columns are at minimum should not change widths',
+    'grow when all other columns are at minimum should not change widths',
   );
 
-  const shrinkAdjacentOnly = applyCascadingColumnResize({
+  const shrinkAllOthers = applyProportionalColumnResize({
     baseWidths,
     columnId: 'a',
     columnIds,
@@ -94,47 +73,143 @@ function runChecks() {
   });
 
   assertWidths(
-    shrinkAdjacentOnly,
-    { a: 160, b: 240, c: 200, d: 200 },
-    'shrink should grow adjacent column first',
+    shrinkAllOthers,
+    { a: 160, b: 214, c: 213, d: 213 },
+    'shrink should grow all other columns proportionally',
   );
   assert(
-    hasConservedColumnWidthTotal(columnIds, baseWidths, shrinkAdjacentOnly),
+    hasConservedColumnWidthTotal(columnIds, baseWidths, shrinkAllOthers),
     'shrink should conserve total width',
   );
 
-  const shrinkPastMinimum = applyCascadingColumnResize({
+  const shrinkLastColumn = applyProportionalColumnResize({
     baseWidths,
-    columnId: 'b',
+    columnId: 'd',
     columnIds,
-    delta: -120,
+    delta: -40,
+    measuredMinimumWidths,
+    resolveMinimumWidth,
+  });
+
+  assert(
+    shrinkLastColumn.d === 160,
+    'last column should shrink by requested amount',
+  );
+  assert(
+    hasConservedColumnWidthTotal(columnIds, baseWidths, shrinkLastColumn),
+    'last column shrink should conserve total width',
+  );
+
+  const shrinkAtMinimum = applyProportionalColumnResize({
+    baseWidths: { a: 88, b: 200, c: 200, d: 200 },
+    columnId: 'a',
+    columnIds,
+    delta: -40,
     measuredMinimumWidths,
     resolveMinimumWidth,
   });
 
   assertWidths(
-    shrinkPastMinimum,
-    { a: 192, b: 88, c: 320, d: 200 },
-    'shrink past minimum should cascade from left columns',
-  );
-  assert(
-    hasConservedColumnWidthTotal(columnIds, baseWidths, shrinkPastMinimum),
-    'shrink past minimum should conserve total width',
+    shrinkAtMinimum,
+    { a: 88, b: 200, c: 200, d: 200 },
+    'shrink at minimum should not change widths',
   );
 
-  const pairOnlyMatch = getResizedColumnPair({
-    adjacentColumnMinimumWidth: 88,
-    adjacentColumnWidth: 200,
-    columnMinimumWidth: 88,
-    columnWidth: 200,
-    delta: 40,
+  const normalized = normalizeColumnWidthsToTotal(
+    { a: 120, b: 120, c: 120, d: 120 },
+    columnIds,
+    800,
+    minimums,
+  );
+
+  assert(
+    sumColumnWidths(columnIds, normalized) === 800,
+    'normalize should match target total',
+  );
+
+  const normalizedBelowMinimums = normalizeColumnWidthsToTotal(
+    { a: 200, b: 200, c: 200, d: 200 },
+    columnIds,
+    300,
+    minimums,
+  );
+
+  assert(
+    sumColumnWidths(columnIds, normalizedBelowMinimums) === 300,
+    'normalize should fit target even when minimums exceed it',
+  );
+
+  assert(
+    resolveResizeDelta(0.43) === 1,
+    'sub-pixel grow delta should apply at least 1px',
+  );
+  assert(
+    resolveResizeDelta(-0.75) === -1,
+    'sub-pixel shrink delta should apply at least 1px',
+  );
+  assert(resolveResizeDelta(0.2) === 1, 'non-zero jitter should still apply 1px step');
+
+  const applicantsPreferred = {
+    listingRole: 200,
+    listingCompany: 150,
+    batchName: 104,
+    listingType: 120,
+    listingCompensation: 180,
+    listingStatus: 130,
+    noOfApplicants: 159,
+    createdAt: 140,
+  };
+  const uniformMinimums = Object.fromEntries(
+    Object.keys(applicantsPreferred).map((columnId) => [columnId, 88]),
+  );
+  const distributed = normalizeColumnWidthsToTotal(
+    applicantsPreferred,
+    Object.keys(applicantsPreferred),
+    1200,
+    uniformMinimums,
+  );
+
+  assert(
+    distributed.noOfApplicants > uniformMinimums.noOfApplicants,
+    'applicants should start wider than uniform minimum',
+  );
+  assert(
+    distributed.noOfApplicants < distributed.listingRole,
+    'post title should stay wider than applicants by header weight',
+  );
+
+  const shrinkApplicants = applyProportionalColumnResize({
+    baseWidths: distributed,
+    columnId: 'noOfApplicants',
+    columnIds: Object.keys(applicantsPreferred),
+    delta: -80,
+    measuredMinimumWidths: {},
+    resolveMinimumWidth: (columnId) => uniformMinimums[columnId] ?? 88,
   });
 
   assert(
-    pairOnlyMatch.columnWidth === 240 &&
-      pairOnlyMatch.adjacentColumnWidth === 160,
-    'getResizedColumnPair should still handle pair redistribution',
+    shrinkApplicants.noOfApplicants === 88,
+    'applicants should shrink to the shared minimum',
   );
+
+  const lockedMeasuredMinimums = { a: 200, b: 200, c: 200, d: 200 };
+  const dragMinimum = (columnId) => minimums[columnId] ?? 88;
+
+  const growWithLockedMeasured = applyProportionalColumnResize({
+    baseWidths,
+    columnId: 'a',
+    columnIds,
+    delta: 40,
+    measuredMinimumWidths: lockedMeasuredMinimums,
+    resolveMinimumWidth: dragMinimum,
+  });
+
+  assertWidths(
+    growWithLockedMeasured,
+    { a: 240, b: 186, c: 187, d: 187 },
+    'drag minimums should ignore measured header lock',
+  );
+
 }
 
 try {

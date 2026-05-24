@@ -1,7 +1,7 @@
 'use client';
 
 import type { ReactNode } from 'react';
-import { useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 import { Link } from 'react-router';
 
 import { cn } from '../../lib/utils';
@@ -45,6 +45,10 @@ type ListTableProps<TRow> = Readonly<{
   getRowHref?: (row: TRow) => string;
   getRowState?: (row: TRow) => unknown;
   getRowAriaLabel?: (row: TRow) => string;
+  /**
+   * Table element classes. Prefer `min-w-[XXrem]` over fixed `w-[XXrem]` when
+   * `resizableColumns` is enabled so resize locks to the container width.
+   */
   tableClassName?: string;
   surfaceClassName?: string;
   tableHeaderClassName?: string;
@@ -82,24 +86,45 @@ export default function ListTable<TRow>({
 }: ListTableProps<TRow>) {
   const effectiveMinimumColumnWidth =
     minimumColumnWidth ?? DEFAULT_MINIMUM_COLUMN_WIDTH;
-  const columnMinimumWidths = useMemo(
+  const headerWidthColumns = useMemo(
+    () =>
+      columns.map((column) => ({
+        header: column.header,
+        id: column.id,
+        minimumWidth: column.minimumWidth,
+      })),
+    [columns],
+  );
+  const headerBasedColumnWidths = useMemo(
     () =>
       buildHeaderMinimumWidths(
-        columns.map((column) => ({
-          header: column.header,
-          id: column.id,
-          minimumWidth: column.minimumWidth,
-        })),
+        headerWidthColumns,
         effectiveMinimumColumnWidth,
       ),
-    [columns, effectiveMinimumColumnWidth],
+    [headerWidthColumns, effectiveMinimumColumnWidth],
   );
+  const columnMinimumWidths = resizableColumns ? {} : headerBasedColumnWidths;
+  const columnPreferredWidths = resizableColumns
+    ? headerBasedColumnWidths
+    : undefined;
   const columnResizing = useTableColumnResizing({
     columnIds: columns.map((column) => column.id),
+    columnPreferredWidths: resizableColumns ? columnPreferredWidths : undefined,
     enabled: resizableColumns,
     minimumColumnWidths: columnMinimumWidths,
     minimumColumnWidth,
+    useUniformColumnMinimum: resizableColumns,
   });
+  const handleTableRef = useCallback(
+    (table: HTMLTableElement | null) => {
+      if (table === null) {
+        return;
+      }
+
+      columnResizing.syncColumnWidthsFromTable(table);
+    },
+    [columnResizing.syncColumnWidthsFromTable],
+  );
 
   if (!isLoading && !isError && rows.length === 0) {
     return (
@@ -115,9 +140,20 @@ export default function ListTable<TRow>({
   return (
     <div className={cn('w-full max-w-full overflow-hidden rounded-sm', surfaceClassName)}>
       <Table
+        ref={handleTableRef}
+        containerClassName={cn(
+          columnResizing.isColumnResizingEnabled ? 'min-w-0' : undefined,
+          columnResizing.isColumnResizing
+            ? 'touch-none overflow-x-hidden'
+            : columnResizing.isColumnResizingEnabled
+              ? 'overflow-x-hidden'
+              : undefined,
+        )}
         className={cn(
           tableClassName,
-          columnResizing.isColumnResizingEnabled ? 'table-fixed' : undefined,
+          columnResizing.isColumnResizingEnabled
+            ? 'w-full max-w-full min-w-0 table-fixed'
+            : undefined,
         )}
       >
         <colgroup>
@@ -135,7 +171,6 @@ export default function ListTable<TRow>({
                 <TableHead
                   key={column.id}
                   data-resizable-column-id={column.id}
-                  style={columnResizing.getColumnMinimumWidthStyle(column.id)}
                   className={cn(
                     'relative',
                     tableHeadCellClassName,

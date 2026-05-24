@@ -41,10 +41,7 @@ export function MinimalListTableHeader<TItem>({
               equalColumnWidths ? undefined : column.widthClassName,
               column.headClassName,
             )}
-            style={columnResizing.getColumnMinimumWidthStyle(
-              column.key,
-              mutedForegroundStyle,
-            )}
+            style={mutedForegroundStyle}
           >
             <ResizableTableHeaderContent
               columnId={column.key}
@@ -61,10 +58,7 @@ export function MinimalListTableHeader<TItem>({
           <TableHead
             data-resizable-column-id={TABLE_ACTIONS_COLUMN_ID}
             className={cn(tableHeadClassName, 'relative w-20')}
-            style={columnResizing.getColumnMinimumWidthStyle(
-              TABLE_ACTIONS_COLUMN_ID,
-              mutedForegroundStyle,
-            )}
+            style={mutedForegroundStyle}
           >
             <ResizableTableHeaderContent
               columnId={TABLE_ACTIONS_COLUMN_ID}

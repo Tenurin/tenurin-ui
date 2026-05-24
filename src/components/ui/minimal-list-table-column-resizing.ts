@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 
 import { buildHeaderMinimumWidths } from './table-header-width';
 import {
@@ -34,28 +34,54 @@ export function useMinimalListTableColumnResizing({
     : columnIds;
   const effectiveMinimumColumnWidth =
     minimumColumnWidth ?? DEFAULT_MINIMUM_COLUMN_WIDTH;
-  const columnMinimumWidths = useMemo(
+  const headerWidthColumns = useMemo(
+    () => [
+      ...columns.map((column) => ({
+        header: column.header,
+        id: column.key,
+        minimumWidth: column.minimumWidth,
+      })),
+      ...(showActionsColumn
+        ? [{ header: actionsLabel, id: TABLE_ACTIONS_COLUMN_ID }]
+        : []),
+    ],
+    [actionsLabel, columns, showActionsColumn],
+  );
+  const headerBasedColumnWidths = useMemo(
     () =>
       buildHeaderMinimumWidths(
-        [
-          ...columns.map((column) => ({
-            header: column.header,
-            id: column.key,
-            minimumWidth: column.minimumWidth,
-          })),
-          ...(showActionsColumn
-            ? [{ header: actionsLabel, id: TABLE_ACTIONS_COLUMN_ID }]
-            : []),
-        ],
+        headerWidthColumns,
         effectiveMinimumColumnWidth,
       ),
-    [actionsLabel, columns, effectiveMinimumColumnWidth, showActionsColumn],
+    [effectiveMinimumColumnWidth, headerWidthColumns],
   );
+  const columnMinimumWidths = resizableColumns ? {} : headerBasedColumnWidths;
+  const columnPreferredWidths = resizableColumns
+    ? headerBasedColumnWidths
+    : undefined;
 
-  return useTableColumnResizing({
+  const columnResizing = useTableColumnResizing({
     columnIds: resizableColumnIds,
+    columnPreferredWidths: resizableColumns ? columnPreferredWidths : undefined,
     enabled: resizableColumns,
     minimumColumnWidth,
     minimumColumnWidths: columnMinimumWidths,
+    useUniformColumnMinimum: resizableColumns,
   });
+
+  const handleTableRef = useCallback(
+    (table: HTMLTableElement | null) => {
+      if (table === null) {
+        return;
+      }
+
+      columnResizing.syncColumnWidthsFromTable(table);
+    },
+    [columnResizing.syncColumnWidthsFromTable],
+  );
+
+  return {
+    ...columnResizing,
+    handleTableRef,
+  };
 }
