@@ -63,7 +63,4 @@ export function DashboardContentError() {
   return <DashboardContentErrorView error={error} />;
 }
 
-/** @deprecated Use {@link DashboardContentLayout} */
-export const DashboardRouteOutlet = DashboardContentLayout;
-
 export default DefaultLoader;

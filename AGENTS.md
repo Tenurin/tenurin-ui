@@ -22,6 +22,10 @@
 - This repo does not currently use an ESLint config. The active repo checks are `pnpm run lint` and `pnpm run lint:fix`, which run the source-shape scripts in `scripts/check-tenurin-ui-source.mjs` and `scripts/fix-tenurin-ui-source.mjs`.
 - Keep `package.json` exports, `vite.config.ts` `build.lib.entry`, and emitted `dist/` artifacts in sync. Public subpath exports must have a matching Vite library entry and must emit the referenced JS and type files during `pnpm run build`.
 
+## Routes, Exports, And URLs
+
+- Do not add backward-compatibility shims for old URLs, route paths, or renamed public exports (for example legacy redirect routes, duplicate path aliases, or `@deprecated` alias re-exports). When renaming routes, paths, or package exports, update all consumers and remove the old surface in the same change.
+
 ## Consumer Compatibility
 
 - Treat `dist/` as part of the product surface for consuming apps.
