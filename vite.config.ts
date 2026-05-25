@@ -339,11 +339,12 @@ export default defineConfig({
       },
     },
     rollupOptions: {
-      external: ["react", "react-dom", "react-router"],
+      external: ["react", "react-dom", "react-router", "react-hook-form"],
       output: {
         globals: {
           react: "React",
           "react-dom": "ReactDOM",
+          "react-hook-form": "ReactHookForm",
         },
       },
     },
