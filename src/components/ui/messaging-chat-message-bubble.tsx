@@ -1,8 +1,10 @@
 import { useState } from 'react';
 import { format } from 'date-fns';
-import { FileText, Loader2 } from 'lucide-react';
-
 import { cn } from '../../lib/utils';
+import {
+  MessagingChatAttachmentRow,
+  messagingChatAttachmentContainerClassName,
+} from './messaging-chat-attachment';
 import { MessagingMessageContent } from './messaging-message-content';
 import type {
   MessagingChatMessage,
@@ -40,46 +42,6 @@ function getBubbleCornerClassName(
   }
 
   return 'rounded-sm';
-}
-
-function AttachmentButton({
-  disabled,
-  isMine,
-  isOpening,
-  onClick,
-  name,
-}: Readonly<{
-  disabled: boolean;
-  isMine: boolean;
-  isOpening: boolean;
-  onClick: () => void;
-  name: string;
-}>) {
-  return (
-    <button
-      type="button"
-      onClick={onClick}
-      disabled={disabled}
-      className={cn(
-        'flex w-full items-center gap-3 rounded-2xl border px-4 py-3 text-left text-sm transition-colors',
-        isMine
-          ? 'ui-app-accent-own-surface'
-          : 'ui-app-accent-neutral-surface',
-      )}
-    >
-      <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-border bg-background text-[var(--foreground)]">
-        {isOpening ? (
-          <Loader2 className="h-4 w-4 animate-spin" />
-        ) : (
-          <FileText className="h-4 w-4" />
-        )}
-      </span>
-      <span className="truncate font-medium">
-        {name}
-        {disabled && !isOpening ? ' (uploading...)' : ''}
-      </span>
-    </button>
-  );
 }
 
 function SenderLabel({
@@ -191,19 +153,29 @@ export function MessagingChatMessageBubble({
         ) : null}
 
         {message.attachments?.length ? (
-          <div className={cn('space-y-3', message.content && 'mt-4')}>
+          <div
+            className={cn(
+              messagingChatAttachmentContainerClassName,
+              'flex flex-col gap-0.5',
+              message.content && 'mt-2',
+            )}
+          >
             {message.attachments.map((attachment) => {
               const isPendingAttachment = !attachment.fileKey;
               const isOpening = openingAttachmentId === attachment.attachmentId;
 
               return (
-                <AttachmentButton
+                <MessagingChatAttachmentRow
                   key={attachment.attachmentId}
-                  disabled={isPendingAttachment || isOpening || !onOpenAttachment}
-                  isMine={isMine}
+                  fileName={attachment.fileName}
+                  disabled={!onOpenAttachment}
                   isOpening={isOpening}
-                  onClick={() => handleAttachmentClick(attachment.attachmentId)}
-                  name={attachment.fileName}
+                  isPending={isPendingAttachment}
+                  onClick={
+                    onOpenAttachment
+                      ? () => handleAttachmentClick(attachment.attachmentId)
+                      : undefined
+                  }
                 />
               );
             })}

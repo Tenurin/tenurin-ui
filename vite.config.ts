@@ -181,6 +181,10 @@ export default defineConfig({
           __dirname,
           "src/components/ui/messaging-chat-skeleton.tsx",
         ),
+        "messaging-chat-attachment": path.resolve(
+          __dirname,
+          "src/components/ui/messaging-chat-attachment.tsx",
+        ),
         "messaging-chat-message-bubble": path.resolve(
           __dirname,
           "src/components/ui/messaging-chat-message-bubble.tsx",

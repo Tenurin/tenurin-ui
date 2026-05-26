@@ -272,6 +272,11 @@
       "import": "./dist/components/ui/legal-dialog.es.js",
       "require": "./dist/components/ui/legal-dialog.cjs.js"
     },
+    "./messaging-chat-attachment": {
+      "types": "./dist/components/ui/messaging-chat-attachment.d.ts",
+      "import": "./dist/components/ui/messaging-chat-attachment.es.js",
+      "require": "./dist/components/ui/messaging-chat-attachment.cjs.js"
+    },
     "./messaging-chat-message-bubble": {
       "types": "./dist/components/ui/messaging-chat-message-bubble.d.ts",
       "import": "./dist/components/ui/messaging-chat-message-bubble.es.js",
