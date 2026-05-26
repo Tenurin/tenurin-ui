@@ -24,6 +24,7 @@ const tailwindSourcesOutputPath = path.resolve(
   __dirname,
   "dist/tailwind-sources",
 );
+const distSharedChunksPath = path.resolve(__dirname, "dist");
 const fontsCssSourcePath = path.resolve(__dirname, "src/styles/fonts.css");
 const fontsCssOutputPath = path.resolve(__dirname, "dist/fonts.css");
 const brandIconSourcePath = path.resolve(
@@ -390,6 +391,10 @@ export default defineConfig({
         {
           sourceDirectory: templateEntriesOutputPath,
           outputSubdirectory: "templates",
+        },
+        {
+          sourceDirectory: distSharedChunksPath,
+          outputSubdirectory: "chunks",
         },
       ],
       tailwindSourcesOutputPath,
