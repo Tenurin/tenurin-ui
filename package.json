@@ -207,6 +207,11 @@
       "import": "./dist/components/ui/file-upload-field.es.js",
       "require": "./dist/components/ui/file-upload-field.cjs.js"
     },
+    "./multi-files-field": {
+      "types": "./dist/components/ui/multi-files-field.d.ts",
+      "import": "./dist/components/ui/multi-files-field.es.js",
+      "require": "./dist/components/ui/multi-files-field.cjs.js"
+    },
     "./form": {
       "types": "./dist/components/ui/form.d.ts",
       "import": "./dist/components/ui/form.es.js",

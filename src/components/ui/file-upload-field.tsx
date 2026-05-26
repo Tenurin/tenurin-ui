@@ -139,7 +139,7 @@ export default function FileUploadField({
 
     try {
       const { uri } = await presignedKeyGetter(fieldId, value, 'get');
-      window.open(uri, '_blank', 'noopener,noreferrer');
+      globalThis.open(uri, '_blank', 'noopener,noreferrer');
     } catch (error) {
       toast.error('Could not load the file preview.');
       console.error(`Could not load the file preview. Error: ${error}`);

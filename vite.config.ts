@@ -143,6 +143,10 @@ export default defineConfig({
           __dirname,
           "src/components/ui/file-upload-field.tsx",
         ),
+        "multi-files-field": path.resolve(
+          __dirname,
+          "src/components/ui/multi-files-field.tsx",
+        ),
         form: path.resolve(__dirname, "src/components/ui/form.tsx"),
         "form-field-shell": path.resolve(
           __dirname,
