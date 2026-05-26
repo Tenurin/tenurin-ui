@@ -26,6 +26,7 @@ export type AppSidebarTemplateProps = ComponentProps<typeof Sidebar> &
     brandLabel?: string;
     sections: readonly AppSidebarNavSection[];
     user: AppSidebarUser;
+    navHintMode?: 'responsive' | 'tooltip';
   }>;
 
 export function AppSidebarTemplate({
@@ -33,6 +34,7 @@ export function AppSidebarTemplate({
   className,
   sections,
   user,
+  navHintMode = 'responsive',
   ...props
 }: AppSidebarTemplateProps) {
   return (
@@ -50,7 +52,7 @@ export function AppSidebarTemplate({
         </div>
       </SidebarHeader>
       <SidebarContent>
-        <AppSidebarNav sections={sections} />
+        <AppSidebarNav sections={sections} hintMode={navHintMode} />
       </SidebarContent>
       <SidebarFooter>
         <AppSidebarUserMenu user={user} />

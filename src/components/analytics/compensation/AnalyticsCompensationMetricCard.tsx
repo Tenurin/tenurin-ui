@@ -1,6 +1,6 @@
 import { ExternalLink, Info } from 'lucide-react';
 import { CompensationFrequencyPill } from '../../ui/compensation-frequency';
-import { Tooltip, TooltipContent, TooltipTrigger } from '../../ui/tooltip';
+import { ResponsiveHint } from '../../ui/responsive-hint';
 
 import { analyticsChartSeriesColors } from '../charts/analyticsChartConfig';
 import { formatAnalyticsCurrencyAmount } from '../analyticsFormat';
@@ -30,20 +30,19 @@ export default function AnalyticsCompensationMetricCard({
       />
       <div className="flex items-center gap-1.5">
         <p className="text-xs text-muted-foreground">{metric.label}</p>
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <button
-              type="button"
-              className="inline-flex size-3.5 items-center justify-center rounded-full text-muted-foreground transition-colors hover:text-[var(--foreground)] focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
-              aria-label={`${metric.label} definition`}
-            >
-              <Info className="size-3.5" />
-            </button>
-          </TooltipTrigger>
-          <TooltipContent side="top" className="max-w-72 text-pretty">
-            {metric.description}
-          </TooltipContent>
-        </Tooltip>
+        <ResponsiveHint
+          side="top"
+          content={metric.description}
+          contentClassName="max-w-72 text-pretty"
+        >
+          <button
+            type="button"
+            className="inline-flex size-3.5 items-center justify-center rounded-full text-muted-foreground transition-colors hover:text-[var(--foreground)] focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
+            aria-label={`${metric.label} definition`}
+          >
+            <Info className="size-3.5" />
+          </button>
+        </ResponsiveHint>
       </div>
 
       <div className="flex flex-1 flex-col pt-2">

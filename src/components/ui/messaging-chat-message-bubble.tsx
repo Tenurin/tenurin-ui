@@ -9,12 +9,14 @@ import type {
   MessagingChatOpenAttachmentArgs,
 } from './messaging-chat-message-types';
 import type { MessagingChatMessageGroupPosition } from './messagingChatMessageGrouping';
+import { Tooltip, TooltipContent, TooltipTrigger } from './tooltip';
 import { toast } from './sonner';
 
 export type MessagingChatMessageBubbleProps = Readonly<{
   message: MessagingChatMessage;
   isMine: boolean;
   senderName?: string;
+  senderEmail?: string;
   groupPosition?: MessagingChatMessageGroupPosition;
   showTimestamp?: boolean;
   showSenderLabel?: boolean;
@@ -80,6 +82,51 @@ function AttachmentButton({
   );
 }
 
+function SenderLabel({
+  label,
+  email,
+}: Readonly<{
+  label: string;
+  email?: string;
+}>) {
+  const [isEmailVisible, setIsEmailVisible] = useState(false);
+  const labelClassName = 'text-[11px] font-medium text-[var(--foreground)]';
+
+  if (!email) {
+    return <span className={cn(labelClassName, 'mb-1')}>{label}</span>;
+  }
+
+  return (
+    <div className="mb-1 flex flex-col items-start gap-0.5">
+      <button
+        type="button"
+        className={cn(labelClassName, 'text-left md:hidden')}
+        aria-expanded={isEmailVisible}
+        aria-label={`${label}, tap to show email`}
+        onClick={() => setIsEmailVisible((current) => !current)}
+      >
+        {label}
+      </button>
+      {isEmailVisible ? (
+        <span className="text-[10px] text-muted-foreground md:hidden">
+          {email}
+        </span>
+      ) : null}
+
+      <div className="hidden md:block">
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <span className={cn(labelClassName, 'cursor-default')}>
+              {label}
+            </span>
+          </TooltipTrigger>
+          <TooltipContent className="text-xs">{email}</TooltipContent>
+        </Tooltip>
+      </div>
+    </div>
+  );
+}
+
 /**
  * Renders a single chat message bubble with text, attachments, and timestamp.
  */
@@ -87,6 +134,7 @@ export function MessagingChatMessageBubble({
   message,
   isMine,
   senderName,
+  senderEmail,
   groupPosition = 'single',
   showTimestamp = true,
   showSenderLabel = !isMine,
@@ -126,9 +174,7 @@ export function MessagingChatMessageBubble({
       )}
     >
       {showSenderLabel ? (
-        <span className="mb-1 text-[11px] font-medium text-[var(--foreground)]">
-          {senderLabel}
-        </span>
+        <SenderLabel label={senderLabel} email={senderEmail} />
       ) : null}
 
       <div

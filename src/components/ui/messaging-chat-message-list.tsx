@@ -158,6 +158,7 @@ export function MessagingChatMessageList({
                 message={message}
                 isMine={message.senderId === currentUserId}
                 senderName={senderInfoByUserId?.[message.senderId]?.name}
+                senderEmail={senderInfoByUserId?.[message.senderId]?.email}
                 groupPosition={getMessageGroupPosition(item.messages, index)}
                 showTimestamp={shouldShowMessageTimestamp(item.messages, index)}
                 showSenderLabel={shouldShowSenderLabel(

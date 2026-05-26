@@ -20,3 +20,8 @@ export type MessagingContextSummaryData = Readonly<{
 
 export type MessagingConversationListItemData<TValue = unknown> =
   MessagingConversationItemData<TValue>;
+
+/** Minimal shape required for URL-backed messaging conversation selection. */
+export type MessagingConversationIdentifiable = Readonly<{
+  conversationId: string;
+}>;

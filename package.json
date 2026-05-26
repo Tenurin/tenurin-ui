@@ -512,6 +512,11 @@
       "import": "./dist/components/ui/tooltip.es.js",
       "require": "./dist/components/ui/tooltip.cjs.js"
     },
+    "./responsive-hint": {
+      "types": "./dist/components/ui/responsive-hint.d.ts",
+      "import": "./dist/components/ui/responsive-hint.es.js",
+      "require": "./dist/components/ui/responsive-hint.cjs.js"
+    },
     "./upload-surface": {
       "types": "./dist/components/ui/upload-surface.d.ts",
       "import": "./dist/components/ui/upload-surface.es.js",

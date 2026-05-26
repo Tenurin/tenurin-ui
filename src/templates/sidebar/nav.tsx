@@ -1,6 +1,6 @@
 'use client';
 
-import type { ReactNode } from 'react';
+import React, { type ReactNode } from 'react';
 import { ChevronDown } from 'lucide-react';
 import { NavLink } from 'react-router';
 import {
@@ -18,16 +18,14 @@ import {
   SidebarMenuSubItem,
   useSidebar,
 } from '../../components/ui/sidebar';
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from '../../components/ui/tooltip';
+import { ResponsiveHint } from '../../components/ui/responsive-hint';
+import { Tooltip, TooltipContent, TooltipTrigger } from '../../components/ui/tooltip';
 import { cn } from '../../lib/utils';
 import type { AppSidebarNavItem, AppSidebarNavSection } from './types';
 
 type AppSidebarNavProps = Readonly<{
   sections: readonly AppSidebarNavSection[];
+  hintMode?: 'responsive' | 'tooltip';
 }>;
 
 const sidebarLeadingIconClassName = '!size-3.5';
@@ -37,14 +35,31 @@ const inactiveSidebarItemClassName = 'h-8 cursor-pointer rounded-sm text-xs';
 const nestedSidebarItemClassName =
   'h-8 pl-3 text-xs leading-none flex-nowrap [&>span]:min-w-0 [&>span]:truncate [&>span]:whitespace-nowrap [&>span]:leading-none [&>svg:first-child]:-translate-y-px';
 
-function withSubItemTooltip(node: ReactNode, title: string): ReactNode {
+function withSubItemHint(
+  node: ReactNode,
+  title: string,
+  hintMode: NonNullable<AppSidebarNavProps['hintMode']>,
+  isMobile: boolean,
+): ReactNode {
+  if (!React.isValidElement(node)) {
+    return node;
+  }
+
+  if (hintMode === 'tooltip') {
+    return (
+      <Tooltip>
+        <TooltipTrigger asChild>{node}</TooltipTrigger>
+        <TooltipContent side="right" align="center" hidden={isMobile}>
+          {title}
+        </TooltipContent>
+      </Tooltip>
+    );
+  }
+
   return (
-    <Tooltip>
-      <TooltipTrigger asChild>{node}</TooltipTrigger>
-      <TooltipContent side="right" align="center">
-        {title}
-      </TooltipContent>
-    </Tooltip>
+    <ResponsiveHint content={title} side="right" align="center">
+      {node}
+    </ResponsiveHint>
   );
 }
 
@@ -52,6 +67,8 @@ function renderSubItems(
   items: readonly AppSidebarNavItem[],
   addIndentation: boolean,
   depth: number,
+  hintMode: NonNullable<AppSidebarNavProps['hintMode']>,
+  isMobile: boolean,
   onNavigate?: () => void,
 ): ReactNode {
   return (
@@ -81,19 +98,24 @@ function renderSubItems(
             <SidebarMenuSubItem key={item.title}>
               <Collapsible className="group/collapsible">
                 {depth >= 2 ? (
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <CollapsibleTrigger asChild>{content}</CollapsibleTrigger>
-                    </TooltipTrigger>
-                    <TooltipContent side="right" align="center">
-                      {item.title}
-                    </TooltipContent>
-                  </Tooltip>
+                  withSubItemHint(
+                    <CollapsibleTrigger asChild>{content}</CollapsibleTrigger>,
+                    item.title,
+                    hintMode,
+                    isMobile,
+                  )
                 ) : (
                   <CollapsibleTrigger asChild>{content}</CollapsibleTrigger>
                 )}
                 <CollapsibleContent>
-                  {renderSubItems(item.items, true, depth + 1, onNavigate)}
+                  {renderSubItems(
+                    item.items,
+                    true,
+                    depth + 1,
+                    hintMode,
+                    isMobile,
+                    onNavigate,
+                  )}
                 </CollapsibleContent>
               </Collapsible>
             </SidebarMenuSubItem>
@@ -115,7 +137,9 @@ function renderSubItems(
         if (itemUrl == null) {
           return (
             <SidebarMenuSubItem key={item.title}>
-              {depth >= 2 ? withSubItemTooltip(content, item.title) : content}
+              {depth >= 2
+                ? withSubItemHint(content, item.title, hintMode, isMobile)
+                : content}
             </SidebarMenuSubItem>
           );
         }
@@ -146,7 +170,7 @@ function renderSubItems(
                 );
 
                 return depth >= 2
-                  ? withSubItemTooltip(linkContent, item.title)
+                  ? withSubItemHint(linkContent, item.title, hintMode, isMobile)
                   : linkContent;
               }}
             </NavLink>
@@ -157,7 +181,10 @@ function renderSubItems(
   );
 }
 
-export function AppSidebarNav({ sections }: AppSidebarNavProps) {
+export function AppSidebarNav({
+  sections,
+  hintMode = 'responsive',
+}: AppSidebarNavProps) {
   const { isMobile, setOpenMobile, state } = useSidebar();
   const isCollapsed = state === 'collapsed';
   const handleNavigation = () => {
@@ -208,7 +235,14 @@ export function AppSidebarNav({ sections }: AppSidebarNavProps) {
                       </SidebarMenuButton>
                     </CollapsibleTrigger>
                     <CollapsibleContent>
-                      {renderSubItems(item.items, false, 1, handleNavigation)}
+                      {renderSubItems(
+                        item.items,
+                        false,
+                        1,
+                        hintMode,
+                        isMobile,
+                        handleNavigation,
+                      )}
                     </CollapsibleContent>
                   </SidebarMenuItem>
                 </Collapsible>

@@ -309,6 +309,10 @@ export default defineConfig({
         ),
         toggle: path.resolve(__dirname, "src/components/ui/toggle.tsx"),
         tooltip: path.resolve(__dirname, "src/components/ui/tooltip.tsx"),
+        "responsive-hint": path.resolve(
+          __dirname,
+          "src/components/ui/responsive-hint.tsx",
+        ),
         "upload-surface": path.resolve(
           __dirname,
           "src/components/ui/upload-surface.tsx",

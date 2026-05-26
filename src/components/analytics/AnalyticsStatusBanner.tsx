@@ -2,7 +2,7 @@ import type { ReactNode } from 'react';
 import { Clock3, CircleAlert, CircleCheck, Info, Loader2 } from 'lucide-react';
 import { Badge } from '../ui/badge';
 import { Button } from '../ui/button';
-import { Tooltip, TooltipContent, TooltipTrigger } from '../ui/tooltip';
+import { ResponsiveHint } from '../ui/responsive-hint';
 import { cn } from '../../lib/utils';
 
 import { analyticsJobStatus } from './analyticsConstants';
@@ -86,20 +86,19 @@ export default function AnalyticsStatusBanner({
         {isActionPending ? <Loader2 className="h-4 w-4 animate-spin" /> : null}
         {buttonLabel}
       </Button>
-      <Tooltip>
-        <TooltipTrigger asChild>
-          <button
-            type="button"
-            className="pointer-events-auto absolute right-1 top-1/2 z-10 inline-flex h-6 w-6 -translate-y-1/2 items-center justify-center rounded-sm text-muted-foreground transition-colors hover:text-[var(--foreground)] focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
-            aria-label={`${actionLabel} note`}
-          >
-            <Info className="h-4 w-4" />
-          </button>
-        </TooltipTrigger>
-        <TooltipContent side="top" className="max-w-sm text-pretty">
-          {actionTooltip}
-        </TooltipContent>
-      </Tooltip>
+      <ResponsiveHint
+        side="top"
+        content={actionTooltip}
+        contentClassName="max-w-sm text-pretty"
+      >
+        <button
+          type="button"
+          className="pointer-events-auto absolute right-1 top-1/2 z-10 inline-flex h-6 w-6 -translate-y-1/2 items-center justify-center rounded-sm text-muted-foreground transition-colors hover:text-[var(--foreground)] focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
+          aria-label={`${actionLabel} note`}
+        >
+          <Info className="h-4 w-4" />
+        </button>
+      </ResponsiveHint>
     </div>
   ) : (
     <Button

@@ -51,7 +51,7 @@ export function DetailMetaItem({
 }: DetailMetaItemProps) {
   return (
     <div className={cn('space-y-3', className)}>
-      <p className="text-[11px] font-semibold uppercase tracking-[0.15em] text-muted-foreground">
+      <p className="text-[11px] font-normal uppercase tracking-[0.15em] text-muted-foreground">
         {label}
       </p>
       <div className="text-sm font-medium text-[var(--foreground)]">
@@ -98,7 +98,7 @@ export function DetailField({
     <div className={cn('space-y-3', className)}>
       <Label
         htmlFor={htmlFor}
-        className="text-[11px] font-semibold uppercase tracking-[0.15em] text-muted-foreground"
+        className="text-[11px] font-normal uppercase tracking-[0.15em] text-muted-foreground"
       >
         {label}
       </Label>
