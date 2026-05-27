@@ -161,7 +161,7 @@ export function MessagingChatMessageBubble({
             )}
           >
             {message.attachments.map((attachment) => {
-              const isPendingAttachment = !attachment.fileKey;
+              const isPendingAttachment = !attachment.blobId;
               const isOpening = openingAttachmentId === attachment.attachmentId;
 
               return (

@@ -5,6 +5,12 @@ import { Progress } from './progress';
 import UploadSurface from './upload-surface';
 import { toast } from './sonner';
 import { cn } from '../../lib/utils';
+import {
+  BLOB_SCOPE_TYPE,
+  uploadBlob,
+  type BlobApi,
+  type BlobScope,
+} from '../../lib/blob-upload';
 import { Loader2, Paperclip, UploadCloud, XIcon } from 'lucide-react';
 
 const DEFAULT_MAX_FILE_SIZE_MB = 2;
@@ -17,23 +23,15 @@ const ALLOWED_FILE_MIME_TYPES = [
   'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
 ];
 
-export type PresignedKeyResponse = {
-  uri: string;
-  fields: Record<string, string>;
-  key: string;
-};
-
 export type FileUploadFieldType = 'file' | 'image';
+export type FileUploadBlobScope = BlobScope | ((fieldId: string) => BlobScope);
 
 type FileUploadFieldProps = Readonly<{
   fieldId?: string;
   fieldType: FileUploadFieldType;
   onChange: (value: string | null) => void;
-  presignedKeyGetter?: (
-    fieldId: string,
-    fileNameOrS3Key: string,
-    presignedKeyType: 'get' | 'post',
-  ) => Promise<PresignedKeyResponse>;
+  blobApi?: BlobApi;
+  blobScope?: FileUploadBlobScope;
   surfaceClassName?: string;
   value?: string | null;
 }>;
@@ -42,22 +40,29 @@ export default function FileUploadField({
   fieldId,
   fieldType,
   onChange,
-  presignedKeyGetter,
+  blobApi,
+  blobScope,
   surfaceClassName,
   value,
 }: FileUploadFieldProps) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [isUploading, setIsUploading] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState<number | undefined>();
   const [isPreviewLoading, setIsPreviewLoading] = useState(false);
 
-  const fileName =
-    typeof value === 'string' ? value.split('/').pop() || value : null;
+  const fileName = getDisplayFileName(value);
 
   const handleFileChange = async (
     event: React.ChangeEvent<HTMLInputElement>,
   ) => {
     const file = event.target.files?.[0];
-    if (!file || !presignedKeyGetter || !fieldId) {
+    if (!file) {
+      return;
+    }
+
+    const scope = resolveBlobScope(fieldId, blobScope);
+    if (!blobApi || !scope) {
+      toast.error('File uploads are not available for this field.');
       return;
     }
 
@@ -79,32 +84,16 @@ export default function FileUploadField({
     }
 
     setIsUploading(true);
+    setUploadProgress(0);
 
     try {
-      const { uri, fields, key } = await presignedKeyGetter(
-        fieldId,
-        file.name,
-        'post',
-      );
-      const formData = new FormData();
-
-      Object.entries(fields).forEach(([nextFieldKey, nextFieldValue]) =>
-        formData.append(nextFieldKey, nextFieldValue),
-      );
-
-      formData.append('Content-Type', file.type);
-      formData.append('file', file);
-
-      const response = await fetch(uri, {
-        method: 'POST',
-        body: formData,
+      const blobId = await uploadBlob({
+        file,
+        scope,
+        api: blobApi,
+        onProgress: setUploadProgress,
       });
-
-      if (!response.ok) {
-        throw new Error('Upload failed. Please try again.');
-      }
-
-      onChange(key);
+      onChange(blobId);
     } catch (error) {
       if (error instanceof Error) {
         toast.error(error.message);
@@ -115,6 +104,7 @@ export default function FileUploadField({
       onChange(null);
     } finally {
       setIsUploading(false);
+      setUploadProgress(undefined);
     }
   };
 
@@ -131,14 +121,15 @@ export default function FileUploadField({
   ) => {
     event.preventDefault();
 
-    if (!presignedKeyGetter || !fieldId || typeof value !== 'string') {
+    const scope = resolveBlobScope(fieldId, blobScope);
+    if (!blobApi?.accessBlob || !scope || typeof value !== 'string') {
       return;
     }
 
     setIsPreviewLoading(true);
 
     try {
-      const { uri } = await presignedKeyGetter(fieldId, value, 'get');
+      const { uri } = await blobApi.accessBlob(value, scope);
       globalThis.open(uri, '_blank', 'noopener,noreferrer');
     } catch (error) {
       toast.error('Could not load the file preview.');
@@ -163,7 +154,7 @@ export default function FileUploadField({
             <Loader2 className="h-3 w-3 animate-spin" />
             Uploading...
           </div>
-          <Progress value={undefined} className="h-2" />
+          <Progress value={uploadProgress} className="h-2" />
         </div>
       ) : value && fileName ? (
         <div
@@ -226,4 +217,44 @@ export default function FileUploadField({
       )}
     </div>
   );
+}
+
+const blobIdPattern = /^[a-f0-9]{64}$/i;
+
+function getDisplayFileName(value?: string | null): string | null {
+  if (typeof value !== 'string') {
+    return null;
+  }
+
+  const fileName = value.split('/').pop() || value;
+  if (blobIdPattern.test(fileName)) {
+    return 'Uploaded file';
+  }
+
+  return fileName;
+}
+
+function resolveBlobScope(
+  fieldId: string | undefined,
+  blobScope: FileUploadBlobScope | undefined,
+): BlobScope | null {
+  if (!blobScope) {
+    return null;
+  }
+
+  if (typeof blobScope === 'function') {
+    if (!fieldId) {
+      return null;
+    }
+    return blobScope(fieldId);
+  }
+
+  const isFormScope =
+    blobScope.scopeType === BLOB_SCOPE_TYPE.batchStudentField ||
+    blobScope.scopeType === BLOB_SCOPE_TYPE.listingApplicationField;
+  if (fieldId && isFormScope && !blobScope.fieldId) {
+    return { ...blobScope, fieldId };
+  }
+
+  return blobScope;
 }

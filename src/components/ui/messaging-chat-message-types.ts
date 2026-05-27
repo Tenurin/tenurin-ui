@@ -1,7 +1,7 @@
 export type MessagingChatAttachment = Readonly<{
   attachmentId: string;
   fileName: string;
-  fileKey?: string | null;
+  blobId?: string | null;
 }>;
 
 export type MessagingChatMessage = Readonly<{

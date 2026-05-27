@@ -1,21 +1,17 @@
 import type { Dispatch, SetStateAction } from 'react';
 
 import { toast } from '../sonner';
-import type { PresignedKeyResponse } from '../file-upload-field';
+import { uploadBlob, type BlobApi, type BlobScope } from '../../../lib/blob-upload';
 import {
   defaultMultiFileAllowedMimeTypes,
   defaultMultiFileMaxSizeBytes,
   defaultMultiFileMaxSizeMb,
 } from './constants';
 
-export type MultiFilePresignedKeyGetter = (
-  fileNameOrS3Key: string,
-  presignedKeyType: 'get' | 'post',
-) => Promise<PresignedKeyResponse>;
-
 type UploadFileParams = Readonly<{
   file: File;
-  presignedKeyGetter: MultiFilePresignedKeyGetter;
+  blobApi: BlobApi;
+  blobScope: BlobScope;
   setUploadProgress: Dispatch<SetStateAction<Record<string, number>>>;
 }>;
 
@@ -41,27 +37,29 @@ export function validateMultiFileUpload(file: File): boolean {
 }
 
 /**
- * Uploads one file to a presigned POST URL and reports progress by temp id.
+ * Uploads one file to blob storage and reports progress by temp id.
  */
 export async function uploadMultiFileWithProgress({
   file,
-  presignedKeyGetter,
+  blobApi,
+  blobScope,
   setUploadProgress,
 }: UploadFileParams): Promise<string | null> {
   const tempId = `${file.name}-${Date.now()}`;
   setUploadProgress((prev) => ({ ...prev, [tempId]: 0 }));
 
   try {
-    const { uri, fields, key } = await presignedKeyGetter(file.name, 'post');
-    const formData = new FormData();
-    Object.entries(fields).forEach(([fieldKey, value]) =>
-      formData.append(fieldKey, value),
-    );
-    formData.append('Content-Type', file.type);
-    formData.append('file', file);
-
-    await uploadToPresignedUri(uri, formData, tempId, setUploadProgress);
-    return key;
+    return await uploadBlob({
+      file,
+      scope: blobScope,
+      api: blobApi,
+      onProgress: (percentComplete) => {
+        setUploadProgress((prev) => ({
+          ...prev,
+          [tempId]: percentComplete,
+        }));
+      },
+    });
   } catch (error) {
     toast.error(
       error instanceof Error
@@ -76,40 +74,4 @@ export async function uploadMultiFileWithProgress({
       return nextState;
     });
   }
-}
-
-function uploadToPresignedUri(
-  uri: string,
-  formData: FormData,
-  tempId: string,
-  setUploadProgress: Dispatch<SetStateAction<Record<string, number>>>,
-): Promise<void> {
-  return new Promise((resolve, reject) => {
-    const xhr = new XMLHttpRequest();
-    xhr.open('POST', uri, true);
-
-    xhr.upload.onprogress = (event) => {
-      if (event.lengthComputable) {
-        const percentComplete = Math.round((event.loaded * 100) / event.total);
-        setUploadProgress((prev) => ({
-          ...prev,
-          [tempId]: percentComplete,
-        }));
-      }
-    };
-
-    xhr.onload = () => {
-      if (xhr.status >= 200 && xhr.status < 300) {
-        resolve();
-        return;
-      }
-      reject(new Error('Upload failed. Please try again.'));
-    };
-
-    xhr.onerror = () => {
-      reject(new Error('Upload failed. Network error.'));
-    };
-
-    xhr.send(formData);
-  });
 }

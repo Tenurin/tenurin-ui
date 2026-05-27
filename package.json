@@ -27,6 +27,11 @@
       "import": "./dist/lib/truncate-middle.es.js",
       "require": "./dist/lib/truncate-middle.cjs.js"
     },
+    "./blob-upload": {
+      "types": "./dist/lib/blob-upload.d.ts",
+      "import": "./dist/lib/blob-upload.es.js",
+      "require": "./dist/lib/blob-upload.cjs.js"
+    },
     "./accordion": {
       "types": "./dist/components/ui/accordion.d.ts",
       "import": "./dist/components/ui/accordion.es.js",

@@ -47,6 +47,7 @@ export default defineConfig({
         index: path.resolve(__dirname, "src/index.ts"),
         "font-manifest": path.resolve(__dirname, "src/lib/fontManifest.ts"),
         "truncate-middle": path.resolve(__dirname, "src/lib/truncateMiddle.ts"),
+        "blob-upload": path.resolve(__dirname, "src/lib/blob-upload.ts"),
         accordion: path.resolve(__dirname, "src/components/ui/accordion.tsx"),
         "alert-dialog": path.resolve(
           __dirname,
@@ -343,7 +344,8 @@ export default defineConfig({
         const basePath =
           entryName === "utils" ||
           entryName === "font-manifest" ||
-          entryName === "truncate-middle"
+          entryName === "truncate-middle" ||
+          entryName === "blob-upload"
             ? "lib"
             : entryName === "use-mobile"
               ? "hooks"

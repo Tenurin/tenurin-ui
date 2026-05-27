@@ -7,7 +7,7 @@ type MultiFileAttachmentListProps = Readonly<{
   isEditing: boolean;
   isPreviewLoading: Record<string, boolean>;
   isUploading: boolean;
-  onPreview: (event: React.MouseEvent, fileKey: string) => void;
+  onPreview: (event: React.MouseEvent, blobId: string) => void;
   onRemove: (index: number) => void;
 }>;
 
@@ -27,13 +27,13 @@ export function MultiFileAttachmentList({
         </div>
       ) : null}
 
-      {files.map((fileKey, index) => (
+      {files.map((blobId, index) => (
         <AttachedFileItem
-          fileKey={fileKey}
+          blobId={blobId}
           index={index}
           isEditing={isEditing}
-          isLoading={isPreviewLoading[fileKey]}
-          key={`${fileKey}-${index}`}
+          isLoading={isPreviewLoading[blobId]}
+          key={`${blobId}-${index}`}
           onPreview={onPreview}
           onRemove={onRemove}
         />
@@ -43,18 +43,18 @@ export function MultiFileAttachmentList({
 }
 
 function AttachedFileItem({
-  fileKey,
+  blobId,
   index,
   isEditing,
   isLoading,
   onPreview,
   onRemove,
 }: Readonly<{
-  fileKey: string;
+  blobId: string;
   index: number;
   isEditing: boolean;
   isLoading: boolean;
-  onPreview: (event: React.MouseEvent, fileKey: string) => void;
+  onPreview: (event: React.MouseEvent, blobId: string) => void;
   onRemove: (index: number) => void;
 }>) {
   return (
@@ -64,7 +64,7 @@ function AttachedFileItem({
         <Button
           type="button"
           variant="link"
-          onClick={(event) => onPreview(event, fileKey)}
+          onClick={(event) => onPreview(event, blobId)}
           className="h-auto min-w-0 flex-1 justify-start p-0 text-foreground"
           title={`Attachment ${index + 1}`}
           disabled={isLoading}
