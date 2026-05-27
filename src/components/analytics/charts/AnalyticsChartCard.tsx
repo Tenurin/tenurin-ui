@@ -36,6 +36,7 @@ export default function AnalyticsChartCard({
       <div
         className={cn(
           hasExplicitContentHeight ? undefined : 'h-80',
+          'min-w-0',
           contentClassName,
         )}
         style={contentStyle}

@@ -67,7 +67,7 @@ export default function AnalyticsCompensationSection({
 
   return (
     <div className="space-y-6">
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 2xl:grid-cols-4">
         {metricCards.map((metric, index) => (
           <AnalyticsCompensationMetricCard
             key={metric.label}
@@ -79,6 +79,7 @@ export default function AnalyticsCompensationSection({
 
       <Tabs defaultValue={visualTabValue} className="min-w-0 gap-0">
         <AnalyticsChartCard
+          className="min-w-0"
           title={chartTitle}
           description={chartDescription}
           contentClassName="mt-4"

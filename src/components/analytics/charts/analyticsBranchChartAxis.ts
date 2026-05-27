@@ -24,14 +24,17 @@ export function formatAnalyticsBranchTooltipLabel(label: string): string {
 /**
  * Shortens degree-prefixed branch names for chart category axes.
  */
-export function formatAnalyticsBranchAxisLabel(label: string): string {
+export function formatAnalyticsBranchAxisLabel(
+  label: string,
+  maxLength: number = analyticsBranchAxisLabelMaxLength,
+): string {
   const stripped = label.replace(degreePrefixPattern, '').trim();
 
-  if (stripped.length <= analyticsBranchAxisLabelMaxLength) {
+  if (stripped.length <= maxLength) {
     return stripped;
   }
 
-  return `${stripped.slice(0, analyticsBranchAxisLabelMaxLength - 1)}…`;
+  return `${stripped.slice(0, maxLength - 1)}…`;
 }
 
 /**
@@ -42,7 +45,7 @@ export function shouldFormatAnalyticsBranchAxisLabels(xDataKey: string): boolean
 }
 
 /**
- * Fixed width reserved for branch labels in horizontal bar layout.
+ * Fixed width reserved for branch labels in horizontal bar layout (desktop).
  */
 export function getAnalyticsBranchChartYAxisWidth(): number {
   return analyticsBranchChartYAxisWidthPx;

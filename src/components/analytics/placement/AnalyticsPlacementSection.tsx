@@ -69,7 +69,7 @@ export default function AnalyticsPlacementSection({
   const chartHeight = getAnalyticsBranchChartMinHeight(chartData.length);
 
   return (
-    <div className="grid gap-6 lg:grid-cols-[minmax(0,1.75fr)_minmax(16rem,1fr)]">
+    <div className="grid min-w-0 gap-6 xl:grid-cols-[minmax(0,1.75fr)_minmax(16rem,1fr)]">
       <Tabs defaultValue={visualTabValue} className="min-w-0 gap-0">
         <AnalyticsChartCard
           title={chartTitle}

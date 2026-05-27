@@ -3,6 +3,7 @@ import type {
   NameType,
   ValueType,
 } from 'recharts/types/component/DefaultTooltipContent';
+import { useCallback } from 'react';
 import {
   Bar,
   CartesianGrid,
@@ -29,10 +30,10 @@ import {
   formatAnalyticsBranchAxisLabel,
   formatAnalyticsBranchTooltipLabel,
   getAnalyticsBranchChartBarSize,
-  getAnalyticsBranchChartYAxisWidth,
   shouldFormatAnalyticsBranchAxisLabels,
 } from './analyticsBranchChartAxis';
 import AnalyticsChartEmptyState from './AnalyticsChartEmptyState';
+import { useAnalyticsBranchChartLayout } from './useAnalyticsBranchChartLayout';
 
 export type AnalyticsComposedChartDatum = Record<
   string,
@@ -123,6 +124,16 @@ export default function AnalyticsComposedChart({
   xDataKey,
   yAxisTickFormatter,
 }: AnalyticsComposedChartProps) {
+  const branchChartLayout = useAnalyticsBranchChartLayout();
+  const formatBranchAxisTick = useCallback(
+    (label: string) =>
+      formatAnalyticsBranchAxisLabel(
+        label,
+        branchChartLayout.axisLabelMaxLength,
+      ),
+    [branchChartLayout.axisLabelMaxLength],
+  );
+
   if (!hasComposedChartData({ barSeries, data, lineSeries })) {
     return <AnalyticsChartEmptyState>{emptyMessage}</AnalyticsChartEmptyState>;
   }
@@ -156,9 +167,9 @@ export default function AnalyticsComposedChart({
           <YAxis
             type="category"
             dataKey={xDataKey}
-            width={getAnalyticsBranchChartYAxisWidth()}
+            width={branchChartLayout.yAxisWidth}
             tick={categoryAxisTick}
-            tickFormatter={formatAnalyticsBranchAxisLabel}
+            tickFormatter={formatBranchAxisTick}
             tickLine={false}
             axisLine={{ stroke: 'var(--border)' }}
           />
