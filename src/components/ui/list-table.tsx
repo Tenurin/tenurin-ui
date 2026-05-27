@@ -179,7 +179,14 @@ export default function ListTable<TRow>({
     );
   }
 
-  const columnCount = Math.max(columns.length, 1);
+  if (!isLoading && isError) {
+    return (
+      <div className={cn('w-full overflow-hidden rounded-sm', surfaceClassName)}>
+        {errorContent}
+      </div>
+    );
+  }
+
   const showTableHeader = isLoading || isError || rows.length > 0;
 
   return (
@@ -266,16 +273,6 @@ export default function ListTable<TRow>({
                 </TableRow>
               ))
             : null}
-          {isLoading || !isError ? null : (
-            <TableRow className="border-b-0">
-              <TableCell
-                colSpan={columnCount}
-                className="px-10 py-14 text-center text-sm text-destructive"
-              >
-                {errorContent}
-              </TableCell>
-            </TableRow>
-          )}
           {isLoading || isError
             ? null
             : rows.map((row) => {

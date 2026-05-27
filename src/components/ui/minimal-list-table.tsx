@@ -143,6 +143,41 @@ export default function MinimalListTable<TItem>({
     ? { width: equalColumnWidth }
     : undefined;
 
+  /**
+   * Empty state is rendered outside the table so it centers in the viewport.
+   * Inside `table-fixed` + `<colgroup>`, mobile WebKit can mis-layout a
+   * colspan cell (wide min-width columns, no header row), so `mx-auto` in a
+   * single cell does not match “centered on screen” like the Timeline tab.
+   */
+  if (isEmptyState) {
+    return (
+      <div className="w-full overflow-x-hidden">
+        <div className="mx-auto flex w-full max-w-full flex-col items-center justify-center gap-2 px-4 py-8 text-center">
+          <div className="flex h-12 w-12 items-center justify-center rounded-full bg-muted/50">
+            <FileText className="h-6 w-6 text-muted-foreground" />
+          </div>
+          <div className="flex w-full max-w-full flex-col gap-1 text-center">
+            <p className="break-words font-medium">{emptyTitle}</p>
+            <p
+              className="break-words text-sm text-muted-foreground"
+              style={mutedForegroundStyle}
+            >
+              {emptyDescription}
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (isError) {
+    return (
+      <div className="w-full overflow-x-hidden px-4 py-8 text-center text-sm text-destructive">
+        {errorMessage}
+      </div>
+    );
+  }
+
   return (
     <Table
       ref={columnResizing.handleTableRef}
@@ -158,7 +193,6 @@ export default function MinimalListTable<TItem>({
       )}
       className={cn(
         tableClassName,
-        isEmptyState ? 'min-w-0' : undefined,
         columnResizing.isColumnResizingEnabled
           ? cn(
               'table-fixed',
@@ -239,36 +273,6 @@ export default function MinimalListTable<TItem>({
               </TableRow>
             ))
           : null}
-        {isPending || !isError ? null : (
-          <TableRow>
-            <TableCell
-              colSpan={columnCount}
-              className="text-center text-destructive"
-            >
-              {errorMessage}
-            </TableCell>
-          </TableRow>
-        )}
-        {isEmptyState ? (
-          <TableRow>
-            <TableCell
-              colSpan={columnCount}
-              className="h-24 text-center whitespace-normal"
-            >
-              <div className="mx-auto flex max-w-full flex-col items-center justify-center gap-2 px-4 py-8">
-                <div className="flex h-12 w-12 items-center justify-center rounded-full bg-muted/50">
-                  <FileText className="h-6 w-6 text-muted-foreground" />
-                </div>
-                <div className="flex max-w-full flex-col gap-1">
-                  <p className="break-words font-medium">{emptyTitle}</p>
-                  <p className="break-words text-sm text-muted-foreground">
-                    {emptyDescription}
-                  </p>
-                </div>
-              </div>
-            </TableCell>
-          </TableRow>
-        ) : null}
         {isPending || isError || items.length === 0
           ? null
           : items.map((item) => {
