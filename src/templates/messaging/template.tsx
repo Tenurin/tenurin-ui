@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, type ReactNode } from 'react';
+import type { ReactNode } from 'react';
 
 import { MessagingChatMessageListSkeleton } from '../../components/ui/messaging-chat-skeleton';
 import { MessagingEmptyState } from './empty-state';
@@ -23,13 +23,12 @@ export type MessagingTemplateRenderConversationListArgs = Readonly<{
 
 export type MessagingTemplateProps<TConversation> = Readonly<{
   activeConversation: TConversation | null;
-  compactResetKey?: string;
+  conversationIdFromRoute?: string | null;
   conversationListAction?: ReactNode;
   context: MessagingContextSummaryData;
   hasConversations: boolean;
   isConversationLoading: boolean;
   messageSearchInput: string;
-  onCompactReset?: () => void;
   onMessageSearchChange: (value: string) => void;
   onSelectNoConversation?: () => void;
   renderChatWindow: (
@@ -46,7 +45,7 @@ function ChatMessageListLoader() {
       <div
         className={`min-h-0 flex-1 overflow-y-auto ${messagingSubtleScrollbarClassName}`}
       >
-        <div className="mx-auto flex min-h-full flex-col px-6 pb-8 pt-8 md:px-10 md:pt-10">
+        <div className="mx-auto flex flex-col px-6 pb-8 pt-8 md:px-10 md:pt-10">
           <MessagingChatMessageListSkeleton />
         </div>
       </div>
@@ -56,31 +55,31 @@ function ChatMessageListLoader() {
 
 export function MessagingTemplate<TConversation>({
   activeConversation,
-  compactResetKey,
+  conversationIdFromRoute = null,
   conversationListAction,
   context,
   hasConversations,
   isConversationLoading,
   messageSearchInput,
-  onCompactReset,
   onMessageSearchChange,
   onSelectNoConversation,
   renderChatWindow,
   renderConversationList,
 }: MessagingTemplateProps<TConversation>) {
   const isMessagingCompact = useIsMessagingCompact();
+  const isHydratingConversationFromRoute =
+    Boolean(conversationIdFromRoute) && !activeConversation;
+  const showChatPane =
+    !isMessagingCompact ||
+    Boolean(activeConversation) ||
+    isHydratingConversationFromRoute;
+  const showSidebarPane =
+    !isMessagingCompact ||
+    (!activeConversation && !isHydratingConversationFromRoute);
   const shouldShowConversationLoader =
-    isConversationLoading || (!activeConversation && hasConversations);
-  const showChatPane = !isMessagingCompact || Boolean(activeConversation);
-  const showSidebarPane = !isMessagingCompact || !activeConversation;
-
-  useEffect(() => {
-    if (!isMessagingCompact || !compactResetKey) {
-      return;
-    }
-
-    onCompactReset?.();
-  }, [compactResetKey, isMessagingCompact, onCompactReset]);
+    isConversationLoading ||
+    isHydratingConversationFromRoute ||
+    (!activeConversation && hasConversations && !conversationIdFromRoute);
 
   let chatPaneContent = <MessagingEmptyState />;
 

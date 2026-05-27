@@ -60,6 +60,10 @@ export function useMessagingConversationSelectionEffects<
       return;
     }
 
+    if (activeConversationId === preferredConversation.conversationId) {
+      return;
+    }
+
     if (
       preferredConversationIdChanged &&
       activeConversationId !== preferredConversationId
@@ -99,11 +103,14 @@ export function useMessagingConversationSelectionEffects<
       (conversation) => conversation.conversationId === activeConversationId,
     );
 
+    const fallbackConversation = conversations?.[0];
+
     if (
+      fallbackConversation &&
       (!activeConversationId || !hasActiveConversationInScope) &&
-      conversations?.length
+      activeConversationId !== fallbackConversation.conversationId
     ) {
-      onSelectConversation(conversations[0]);
+      onSelectConversation(fallbackConversation);
     }
   }, [
     activeConversationId,

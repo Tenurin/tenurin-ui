@@ -32,7 +32,9 @@ export function MessagingLayoutShell({
       >
         {chatPane}
       </div>
-      {showSidebarPane ? sidebarPane : null}
+      {sidebarPane ? (
+        <div className={showSidebarPane ? 'contents' : 'hidden'}>{sidebarPane}</div>
+      ) : null}
     </div>
   );
 }
