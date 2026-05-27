@@ -1,8 +1,8 @@
 'use client';
 
-import type { ReactNode } from 'react';
+import type { KeyboardEvent, MouseEvent, ReactNode } from 'react';
 import { useCallback, useMemo } from 'react';
-import { Link } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 
 import { cn } from '../../lib/utils';
 import { Skeleton } from './skeleton';
@@ -22,6 +22,7 @@ import {
   DEFAULT_MINIMUM_COLUMN_WIDTH,
   useTableColumnResizing,
 } from './table-column-resizing';
+import { shouldIgnoreTableRowNavigation } from './table-row-navigation';
 
 export type ListTableColumn<TRow> = Readonly<{
   id: string;
@@ -42,9 +43,11 @@ type ListTableProps<TRow> = Readonly<{
   loadingRowCount?: number;
   emptyState?: ReactNode;
   errorContent?: ReactNode;
-  getRowHref?: (row: TRow) => string;
+  getRowHref?: (row: TRow) => string | undefined;
   getRowState?: (row: TRow) => unknown;
   getRowAriaLabel?: (row: TRow) => string;
+  /** Called on row activate when `getRowHref` is absent or returns undefined. */
+  onRowClick?: (row: TRow) => void;
   /**
    * Table element classes. Prefer `min-w-[XXrem]` over fixed `w-[XXrem]` when
    * `resizableColumns` is enabled so resize locks to the container width.
@@ -73,6 +76,7 @@ export default function ListTable<TRow>({
   getRowHref,
   getRowState,
   getRowAriaLabel = () => 'Open row',
+  onRowClick,
   tableClassName,
   surfaceClassName,
   tableHeaderClassName,
@@ -84,6 +88,47 @@ export default function ListTable<TRow>({
   resizableColumns = true,
   minimumColumnWidth,
 }: ListTableProps<TRow>) {
+  const navigate = useNavigate();
+  const isRowActivatable = getRowHref !== undefined || onRowClick !== undefined;
+
+  const activateRow = useCallback(
+    (row: TRow) => {
+      const href = getRowHref?.(row);
+      if (href) {
+        navigate(href, { state: getRowState?.(row) });
+        return;
+      }
+
+      onRowClick?.(row);
+    },
+    [getRowHref, getRowState, navigate, onRowClick],
+  );
+
+  const handleRowActivate = useCallback(
+    (row: TRow, event: MouseEvent<HTMLTableRowElement>) => {
+      if (shouldIgnoreTableRowNavigation(event)) {
+        return;
+      }
+
+      activateRow(row);
+    },
+    [activateRow],
+  );
+
+  const handleRowKeyDown = useCallback(
+    (row: TRow, event: KeyboardEvent<HTMLTableRowElement>) => {
+      if (!isRowActivatable || shouldIgnoreTableRowNavigation(event)) {
+        return;
+      }
+
+      if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        activateRow(row);
+      }
+    },
+    [activateRow, isRowActivatable],
+  );
+
   const effectiveMinimumColumnWidth =
     minimumColumnWidth ?? DEFAULT_MINIMUM_COLUMN_WIDTH;
   const headerWidthColumns = useMemo(
@@ -233,36 +278,48 @@ export default function ListTable<TRow>({
           )}
           {isLoading || isError
             ? null
-            : rows.map((row) => (
-                <TableRow
-                  key={getRowKey(row)}
-                  className={cn('relative border-b-0', bodyRowClassName)}
-                >
-                  {columns.map((column, columnIndex) => (
-                    <TableCell
-                      key={column.id}
-                      className={cn(
-                        'min-w-0',
-                        tableCellClassName,
-                        column.cellClassName,
-                      )}
-                    >
-                      {columnIndex === 0 && getRowHref ? (
-                        <Link
-                          to={getRowHref(row)}
-                          state={getRowState?.(row)}
-                          aria-label={getRowAriaLabel(row)}
-                          className="absolute inset-0"
-                        />
-                      ) : null}
-                      {renderTruncatedTableCellContent(
-                        column.render(row),
-                        columnResizing.isColumnWidthActive,
-                      )}
-                    </TableCell>
-                  ))}
-                </TableRow>
-              ))}
+            : rows.map((row) => {
+                const rowHref = getRowHref?.(row);
+
+                return (
+                  <TableRow
+                    key={getRowKey(row)}
+                    className={cn(
+                      'border-b-0',
+                      isRowActivatable && 'cursor-pointer',
+                      bodyRowClassName,
+                    )}
+                    tabIndex={isRowActivatable ? 0 : undefined}
+                    onClick={(event) => handleRowActivate(row, event)}
+                    onKeyDown={(event) => handleRowKeyDown(row, event)}
+                  >
+                    {columns.map((column, columnIndex) => (
+                      <TableCell
+                        key={column.id}
+                        className={cn(
+                          'min-w-0',
+                          tableCellClassName,
+                          column.cellClassName,
+                        )}
+                      >
+                        {columnIndex === 0 && rowHref ? (
+                          <Link
+                            to={rowHref}
+                            state={getRowState?.(row)}
+                            aria-label={getRowAriaLabel(row)}
+                            tabIndex={-1}
+                            className="sr-only"
+                          />
+                        ) : null}
+                        {renderTruncatedTableCellContent(
+                          column.render(row),
+                          columnResizing.isColumnWidthActive,
+                        )}
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                );
+              })}
         </TableBody>
       </Table>
     </div>
