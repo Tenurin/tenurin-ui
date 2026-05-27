@@ -1,10 +1,11 @@
-import type { ReactNode } from 'react';
+import type { CSSProperties, ReactNode } from 'react';
 import { cn } from '../../../lib/utils';
 
 type AnalyticsChartCardProps = Readonly<{
   children: ReactNode;
   className?: string;
   contentClassName?: string;
+  contentStyle?: CSSProperties;
   description: string;
   headerAction?: ReactNode;
   title: string;
@@ -14,10 +15,13 @@ export default function AnalyticsChartCard({
   children,
   className,
   contentClassName,
+  contentStyle,
   description,
   headerAction,
   title,
 }: AnalyticsChartCardProps) {
+  const hasExplicitContentHeight = contentStyle?.height !== undefined;
+
   return (
     <section className={cn('bg-sidebar rounded-sm border p-5', className)}>
       <div className="flex flex-wrap items-start justify-between gap-3">
@@ -29,7 +33,15 @@ export default function AnalyticsChartCard({
         </div>
         {headerAction}
       </div>
-      <div className={cn('h-80', contentClassName)}>{children}</div>
+      <div
+        className={cn(
+          hasExplicitContentHeight ? undefined : 'h-80',
+          contentClassName,
+        )}
+        style={contentStyle}
+      >
+        {children}
+      </div>
     </section>
   );
 }

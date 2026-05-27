@@ -22,7 +22,7 @@ export default function AnalyticsCompensationMetricCard({
     metric.studentName !== undefined || metric.listingHref !== undefined;
 
   return (
-    <article className="bg-sidebar relative flex min-h-32 flex-col overflow-hidden rounded-sm border p-4 pt-5">
+    <article className="bg-sidebar relative flex min-h-28 flex-col overflow-hidden rounded-sm border p-3 pt-4">
       <div
         aria-hidden="true"
         className="absolute inset-x-0 top-0 h-0.5"

@@ -5,6 +5,7 @@ import AnalyticsComposedChart, {
   type AnalyticsComposedChartDatum,
   type AnalyticsComposedChartSeries,
 } from '../charts/AnalyticsComposedChart';
+import { getAnalyticsBranchChartMinHeight } from '../charts/analyticsBranchChartAxis';
 import {
   analyticsChartSeriesColors,
   analyticsChartTabsListClassName,
@@ -62,18 +63,26 @@ export default function AnalyticsCompensationSection({
   tableEmptyTitle,
 }: AnalyticsCompensationSectionProps) {
   const chartData = getCompensationBranchChartData(branchRows);
+  const chartHeight = getAnalyticsBranchChartMinHeight(chartData.length);
 
   return (
-    <div className="grid gap-6 2xl:grid-cols-[minmax(0,1.15fr)_minmax(28rem,0.85fr)]">
-      <Tabs
-        defaultValue={visualTabValue}
-        className="order-2 h-full min-w-0 gap-0 2xl:order-1"
-      >
+    <div className="space-y-6">
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        {metricCards.map((metric, index) => (
+          <AnalyticsCompensationMetricCard
+            key={metric.label}
+            accentColor={analyticsChartSeriesColors[index]}
+            metric={metric}
+          />
+        ))}
+      </div>
+
+      <Tabs defaultValue={visualTabValue} className="min-w-0 gap-0">
         <AnalyticsChartCard
-          className="h-full"
           title={chartTitle}
           description={chartDescription}
-          contentClassName="mt-4 h-[18rem]"
+          contentClassName="mt-4"
+          contentStyle={{ height: chartHeight }}
           headerAction={
             <TabsList className={analyticsChartTabsListClassName}>
               <TabsTrigger
@@ -111,16 +120,6 @@ export default function AnalyticsCompensationSection({
           </TabsContent>
         </AnalyticsChartCard>
       </Tabs>
-
-      <div className="order-1 grid gap-6 sm:grid-cols-2 2xl:order-2">
-        {metricCards.map((metric, index) => (
-          <AnalyticsCompensationMetricCard
-            key={metric.label}
-            accentColor={analyticsChartSeriesColors[index]}
-            metric={metric}
-          />
-        ))}
-      </div>
     </div>
   );
 }

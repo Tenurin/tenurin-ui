@@ -23,6 +23,13 @@ import {
   analyticsChartTooltipItemStyle,
   analyticsChartTooltipLabelStyle,
 } from './analyticsChartConfig';
+import {
+  formatAnalyticsBranchAxisLabel,
+  formatAnalyticsBranchTooltipLabel,
+  getAnalyticsBranchChartBarSize,
+  getAnalyticsBranchChartYAxisWidth,
+  shouldFormatAnalyticsBranchAxisLabels,
+} from './analyticsBranchChartAxis';
 import AnalyticsChartEmptyState from './AnalyticsChartEmptyState';
 
 export type AnalyticsStackedBarChartDatum = Record<
@@ -46,10 +53,21 @@ type AnalyticsStackedBarChartProps = Readonly<{
 }>;
 
 const stackedBarChartMargin = { top: 24, right: 24, bottom: 8, left: 0 };
+const stackedBarChartBranchMargin = {
+  top: 16,
+  right: 24,
+  bottom: 8,
+  left: 4,
+};
 const gridDashPattern = '3 3';
 const stackId = 'analytics-stack';
 const flatRadius: [number, number, number, number] = [0, 0, 0, 0];
-const topRadius: [number, number, number, number] = [4, 4, 0, 0];
+const verticalStackEndRadius: [number, number, number, number] = [0, 4, 4, 0];
+const horizontalStackTopRadius: [number, number, number, number] = [4, 4, 0, 0];
+const categoryAxisTick = {
+  fill: 'var(--muted-foreground)',
+  fontSize: analyticsChartAxisTickSize,
+};
 
 function getSeriesColor(
   series: AnalyticsStackedBarChartSeries,
@@ -102,6 +120,68 @@ export default function AnalyticsStackedBarChart({
     formatTooltipValue(value, tooltipValueFormatter),
     name,
   ];
+  const usesBranchAxis = shouldFormatAnalyticsBranchAxisLabels(xDataKey);
+
+  if (usesBranchAxis) {
+    return (
+      <ResponsiveContainer width="100%" height="100%">
+        <BarChart
+          data={data}
+          layout="vertical"
+          margin={stackedBarChartBranchMargin}
+        >
+          <CartesianGrid
+            stroke="var(--border)"
+            strokeDasharray={gridDashPattern}
+            horizontal={false}
+          />
+          <XAxis
+            type="number"
+            allowDecimals={false}
+            tick={categoryAxisTick}
+            tickFormatter={yAxisTickFormatter}
+            tickLine={false}
+            axisLine={{ stroke: 'var(--border)' }}
+          />
+          <YAxis
+            type="category"
+            dataKey={xDataKey}
+            width={getAnalyticsBranchChartYAxisWidth()}
+            tick={categoryAxisTick}
+            tickFormatter={formatAnalyticsBranchAxisLabel}
+            tickLine={false}
+            axisLine={{ stroke: 'var(--border)' }}
+          />
+          <Tooltip
+            contentStyle={analyticsChartTooltipContentStyle}
+            formatter={tooltipFormatter}
+            itemStyle={analyticsChartTooltipItemStyle}
+            labelFormatter={(label) => formatAnalyticsBranchTooltipLabel(String(label))}
+            labelStyle={analyticsChartTooltipLabelStyle}
+          />
+          <Legend
+            iconSize={analyticsChartLegendIconSize}
+            wrapperStyle={analyticsChartLegendWrapperStyle}
+          />
+          {series.map((entry, index) => (
+            <Bar
+              key={entry.dataKey}
+              dataKey={entry.dataKey}
+              name={entry.label}
+              fill={getSeriesColor(entry, index)}
+              barSize={getAnalyticsBranchChartBarSize()}
+              radius={
+                index === series.length - 1
+                  ? verticalStackEndRadius
+                  : flatRadius
+              }
+              stackId={stackId}
+            />
+          ))}
+        </BarChart>
+      </ResponsiveContainer>
+    );
+  }
 
   return (
     <ResponsiveContainer width="100%" height="100%">
@@ -113,19 +193,13 @@ export default function AnalyticsStackedBarChart({
         />
         <XAxis
           dataKey={xDataKey}
-          tick={{
-            fill: 'var(--muted-foreground)',
-            fontSize: analyticsChartAxisTickSize,
-          }}
+          tick={categoryAxisTick}
           tickLine={false}
           axisLine={{ stroke: 'var(--border)' }}
         />
         <YAxis
           allowDecimals={false}
-          tick={{
-            fill: 'var(--muted-foreground)',
-            fontSize: analyticsChartAxisTickSize,
-          }}
+          tick={categoryAxisTick}
           tickFormatter={yAxisTickFormatter}
           tickLine={false}
           axisLine={{ stroke: 'var(--border)' }}
@@ -146,7 +220,9 @@ export default function AnalyticsStackedBarChart({
             dataKey={entry.dataKey}
             name={entry.label}
             fill={getSeriesColor(entry, index)}
-            radius={index === series.length - 1 ? topRadius : flatRadius}
+            radius={
+              index === series.length - 1 ? horizontalStackTopRadius : flatRadius
+            }
             stackId={stackId}
           />
         ))}

@@ -85,6 +85,8 @@ export function formatAnalyticsRatioAsPercent(
   return formatAnalyticsPercent(value * 100);
 }
 
+export { formatAnalyticsBranchAxisLabel } from './charts/analyticsBranchChartAxis';
+
 export function formatAnalyticsSnapshotTimestamp(
   value: string | undefined,
 ): string {
