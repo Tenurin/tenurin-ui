@@ -20,6 +20,11 @@ export type MessagingChatOpenAttachmentArgs = Readonly<{
   attachmentId: string;
 }>;
 
+/** Resolves to a presigned URL to open, or void when the handler opens the file itself. */
+export type MessagingChatOpenAttachmentHandler = (
+  args: MessagingChatOpenAttachmentArgs,
+) => Promise<string | void>;
+
 export type MessagingChatSenderInfo = Readonly<{
   name?: string;
   email?: string;

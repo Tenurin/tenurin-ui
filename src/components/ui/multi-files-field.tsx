@@ -2,6 +2,11 @@ import { useRef, useState } from 'react';
 import { Loader2, UploadCloud } from 'lucide-react';
 import { useController, useFormContext } from 'react-hook-form';
 
+import {
+  closeTransientBrowsingContext,
+  navigateToExternalUrl,
+  openTransientBrowsingContext,
+} from '../../lib/openExternalUrl';
 import { Input } from './input';
 import { toast } from './sonner';
 import UploadSurface from './upload-surface';
@@ -99,11 +104,13 @@ export default function MultiFilesField({
   ) => {
     event.preventDefault();
     setIsPreviewLoading((prev) => ({ ...prev, [fileKey]: true }));
+    const popup = openTransientBrowsingContext();
 
     try {
       const { uri } = await presignedKeyGetter(fileKey, 'get');
-      globalThis.open(uri, '_blank', 'noopener,noreferrer');
+      navigateToExternalUrl(uri, popup);
     } catch (error) {
+      closeTransientBrowsingContext(popup);
       toast.error('Could not load the file preview.');
       console.error(`Could not load the file preview. Error: ${error}`);
     } finally {

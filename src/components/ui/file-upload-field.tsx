@@ -4,6 +4,11 @@ import { Input } from './input';
 import { Progress } from './progress';
 import UploadSurface from './upload-surface';
 import { toast } from './sonner';
+import {
+  closeTransientBrowsingContext,
+  navigateToExternalUrl,
+  openTransientBrowsingContext,
+} from '../../lib/openExternalUrl';
 import { cn } from '../../lib/utils';
 import { Loader2, Paperclip, UploadCloud, XIcon } from 'lucide-react';
 
@@ -136,11 +141,13 @@ export default function FileUploadField({
     }
 
     setIsPreviewLoading(true);
+    const popup = openTransientBrowsingContext();
 
     try {
       const { uri } = await presignedKeyGetter(fieldId, value, 'get');
-      globalThis.open(uri, '_blank', 'noopener,noreferrer');
+      navigateToExternalUrl(uri, popup);
     } catch (error) {
+      closeTransientBrowsingContext(popup);
       toast.error('Could not load the file preview.');
       console.error(`Could not load the file preview. Error: ${error}`);
     } finally {

@@ -6,9 +6,14 @@ import {
   messagingChatAttachmentContainerClassName,
 } from './messaging-chat-attachment';
 import { MessagingMessageContent } from './messaging-message-content';
+import {
+  closeTransientBrowsingContext,
+  navigateToExternalUrl,
+  openTransientBrowsingContext,
+} from '../../lib/openExternalUrl';
 import type {
   MessagingChatMessage,
-  MessagingChatOpenAttachmentArgs,
+  MessagingChatOpenAttachmentHandler,
 } from './messaging-chat-message-types';
 import type { MessagingChatMessageGroupPosition } from './messagingChatMessageGrouping';
 import { Tooltip, TooltipContent, TooltipTrigger } from './tooltip';
@@ -22,7 +27,7 @@ export type MessagingChatMessageBubbleProps = Readonly<{
   groupPosition?: MessagingChatMessageGroupPosition;
   showTimestamp?: boolean;
   showSenderLabel?: boolean;
-  onOpenAttachment?: (args: MessagingChatOpenAttachmentArgs) => Promise<void>;
+  onOpenAttachment?: MessagingChatOpenAttachmentHandler;
 }>;
 
 function getBubbleCornerClassName(
@@ -112,14 +117,22 @@ export function MessagingChatMessageBubble({
     }
 
     setOpeningAttachmentId(attachmentId);
+    const popup = openTransientBrowsingContext();
 
     try {
-      await onOpenAttachment({
+      const uri = await onOpenAttachment({
         conversationId: message.conversationId,
         messageId: message.messageId,
         attachmentId,
       });
+
+      if (uri) {
+        navigateToExternalUrl(uri, popup);
+      } else {
+        closeTransientBrowsingContext(popup);
+      }
     } catch {
+      closeTransientBrowsingContext(popup);
       toast.error('Unable to open the attachment right now.');
     } finally {
       setOpeningAttachmentId(null);

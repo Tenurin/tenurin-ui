@@ -5,7 +5,7 @@ import { Button } from './button';
 import { MessagingChatMessageBubble } from './messaging-chat-message-bubble';
 import type {
   MessagingChatMessage,
-  MessagingChatOpenAttachmentArgs,
+  MessagingChatOpenAttachmentHandler,
   MessagingChatSenderInfo,
 } from './messaging-chat-message-types';
 import {
@@ -25,7 +25,7 @@ export type MessagingChatMessageListProps = Readonly<{
   onLoadMore: () => void;
   isLoading: boolean;
   isSearchActive: boolean;
-  onOpenAttachment?: (args: MessagingChatOpenAttachmentArgs) => Promise<void>;
+  onOpenAttachment?: MessagingChatOpenAttachmentHandler;
 }>;
 
 type ChatTimelineItem =
