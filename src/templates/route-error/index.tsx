@@ -2,6 +2,8 @@
 
 import { isRouteErrorResponse, Link, useRouteError } from 'react-router';
 import { Button } from '../../components/ui/button';
+import DefaultLoader from '../../components/ui/default-loader';
+import { useStaleChunkReload } from '../../lib/useStaleChunkReload';
 
 export type ErrorStateContent = Readonly<{
   title: string;
@@ -98,6 +100,12 @@ export function RouteErrorTemplate({
   stateContent = DEFAULT_ROUTE_ERROR_STATE_CONTENT,
 }: RouteErrorTemplateProps) {
   const error = useRouteError();
+  const isStaleChunk = useStaleChunkReload(error);
+
+  if (isStaleChunk) {
+    return <DefaultLoader label="Updating app…" />;
+  }
+
   const { message, statusCode, title } = resolveRouteErrorState(
     error,
     stateContent,

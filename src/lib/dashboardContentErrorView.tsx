@@ -1,5 +1,8 @@
+'use client';
+
 import DefaultLoader from '../components/ui/default-loader';
 import { isTransientDevRenderError } from './transientDevRenderError';
+import { useStaleChunkReload } from './useStaleChunkReload';
 
 /**
  * Renders dashboard content-column error UI from a route error value.
@@ -7,8 +10,10 @@ import { isTransientDevRenderError } from './transientDevRenderError';
 export function DashboardContentErrorView({
   error,
 }: Readonly<{ error: unknown }>) {
-  if (isTransientDevRenderError(error)) {
-    return <DefaultLoader />;
+  const isStaleChunk = useStaleChunkReload(error);
+
+  if (isTransientDevRenderError(error) || isStaleChunk) {
+    return <DefaultLoader label={isStaleChunk ? 'Updating app…' : undefined} />;
   }
 
   const message =
