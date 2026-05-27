@@ -135,19 +135,25 @@ export function MessagingChatMessageBubble({
         isMine ? 'items-end' : 'items-start',
       )}
     >
-      {showSenderLabel ? (
-        <SenderLabel label={senderLabel} email={senderEmail} />
-      ) : null}
-
       <div
         className={cn(
-          'w-fit rounded-sm px-3 py-1 text-base md:max-w-4/5',
-          getBubbleCornerClassName(isMine, groupPosition),
-          isMine
-            ? 'ui-app-accent-own-surface'
-            : 'ui-app-accent-neutral-surface',
+          'flex max-w-4/5 flex-col',
+          isMine ? 'items-end' : 'items-start',
         )}
       >
+        {showSenderLabel ? (
+          <SenderLabel label={senderLabel} email={senderEmail} />
+        ) : null}
+
+        <div
+          className={cn(
+            'w-fit max-w-full rounded-sm px-3 py-1 text-base',
+            getBubbleCornerClassName(isMine, groupPosition),
+            isMine
+              ? 'ui-app-accent-own-surface'
+              : 'ui-app-accent-neutral-surface',
+          )}
+        >
         {message.content ? (
           <MessagingMessageContent content={message.content} />
         ) : null}
@@ -181,13 +187,14 @@ export function MessagingChatMessageBubble({
             })}
           </div>
         ) : null}
-      </div>
+        </div>
 
-      {showTimestamp ? (
-        <span className="mt-1 text-[11px] font-medium text-muted-foreground">
-          {format(new Date(message.createdAt), 'p')}
-        </span>
-      ) : null}
+        {showTimestamp ? (
+          <span className="mt-1 text-[11px] font-medium text-muted-foreground">
+            {format(new Date(message.createdAt), 'p')}
+          </span>
+        ) : null}
+      </div>
     </div>
   );
 }

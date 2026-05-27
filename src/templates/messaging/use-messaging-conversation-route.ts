@@ -22,6 +22,10 @@ export function useMessagingConversationRoute() {
 
   const setConversationIdInRoute = useCallback(
     (conversationId: string) => {
+      if (conversationIdFromRoute === conversationId) {
+        return;
+      }
+
       setSearchParams(
         (previous) => {
           const next = new URLSearchParams(previous);
@@ -31,7 +35,7 @@ export function useMessagingConversationRoute() {
         { replace: true },
       );
     },
-    [setSearchParams],
+    [conversationIdFromRoute, setSearchParams],
   );
 
   const clearConversationIdInRoute = useCallback(() => {

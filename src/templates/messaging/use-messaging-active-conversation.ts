@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useLayoutEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 
 import type { MessagingConversationIdentifiable } from './types';
 import { useMessagingConversationRoute } from './use-messaging-conversation-route';
@@ -28,7 +28,13 @@ export function useMessagingActiveConversation<
 
   const handleSelectConversation = useCallback(
     (conversation: TConversation) => {
-      setActiveConversation(conversation);
+      setActiveConversation((current) => {
+        if (current?.conversationId === conversation.conversationId) {
+          return current;
+        }
+
+        return conversation;
+      });
       setConversationIdInRoute(conversation.conversationId);
     },
     [setConversationIdInRoute],
@@ -42,6 +48,14 @@ export function useMessagingActiveConversation<
     clearActiveConversation();
     clearConversationIdInRoute();
   }, [clearActiveConversation, clearConversationIdInRoute]);
+
+  useEffect(() => {
+    if (conversationIdFromRoute || !activeConversation) {
+      return;
+    }
+
+    clearActiveConversation();
+  }, [activeConversation, clearActiveConversation, conversationIdFromRoute]);
 
   const messagingScopeKey = `${scope}:${listingId ?? ''}:${batchId ?? ''}`;
   const previousMessagingScopeKeyRef = useRef(messagingScopeKey);

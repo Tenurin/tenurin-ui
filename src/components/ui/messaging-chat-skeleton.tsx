@@ -82,37 +82,48 @@ export function MessagingChatMessageListSkeleton() {
         <div
           key={`chat-message-skeleton-group-${groupIndex}`}
           className={cn(
-            'flex w-full flex-col gap-1 text-sm',
+            'flex w-full flex-col text-sm',
             group.isMine ? 'items-end' : 'items-start',
           )}
         >
-          {group.showLabel ? (
-            <Skeleton className={cn('h-4 rounded-sm', group.labelWidth)} />
-          ) : null}
+          <div
+            className={cn(
+              'flex max-w-4/5 flex-col gap-1',
+              group.isMine ? 'items-end' : 'items-start',
+            )}
+          >
+            {group.showLabel ? (
+              <Skeleton
+                className={cn('h-4 max-w-full rounded-sm', group.labelWidth)}
+              />
+            ) : null}
 
-          {group.bubbles.map((bubble, bubbleIndex) => (
-            <div
-              key={`chat-message-skeleton-bubble-${groupIndex}-${bubbleIndex}`}
-              className={cn(
-                'w-fit rounded-lg px-3 py-3 md:max-w-4/5',
-                getSkeletonBubbleCornerClassName(group.isMine, bubble.corner),
-                group.isMine
-                  ? 'ui-app-accent-own-surface'
-                  : 'ui-app-accent-neutral-surface',
-              )}
-            >
-              <div className="space-y-2">
-                {bubble.lineWidths.map((width, lineIndex) => (
-                  <Skeleton
-                    key={`chat-message-line-${groupIndex}-${bubbleIndex}-${lineIndex}`}
-                    className={cn('h-4 rounded-sm', width)}
-                  />
-                ))}
+            {group.bubbles.map((bubble, bubbleIndex) => (
+              <div
+                key={`chat-message-skeleton-bubble-${groupIndex}-${bubbleIndex}`}
+                className={cn(
+                  'w-fit max-w-full rounded-lg px-3 py-3',
+                  getSkeletonBubbleCornerClassName(group.isMine, bubble.corner),
+                  group.isMine
+                    ? 'ui-app-accent-own-surface'
+                    : 'ui-app-accent-neutral-surface',
+                )}
+              >
+                <div className="space-y-2">
+                  {bubble.lineWidths.map((width, lineIndex) => (
+                    <Skeleton
+                      key={`chat-message-line-${groupIndex}-${bubbleIndex}-${lineIndex}`}
+                      className={cn('h-4 max-w-full rounded-sm', width)}
+                    />
+                  ))}
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
 
-          <Skeleton className={cn('mt-1 h-3 rounded-sm', group.timeWidth)} />
+            <Skeleton
+              className={cn('mt-1 h-3 max-w-full rounded-sm', group.timeWidth)}
+            />
+          </div>
         </div>
       ))}
     </div>
