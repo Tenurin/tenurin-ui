@@ -7,6 +7,7 @@ import {
   useFieldArray,
   useFormContext,
 } from "react-hook-form";
+import type { ReactNode } from "react";
 
 import { cn } from "../../lib/utils";
 import EditableFormFieldInput, { type FormFieldData } from "./form-field-input";
@@ -24,6 +25,10 @@ type EditableFormFieldListProps<TFormValues extends FieldValues> = Readonly<{
   formData: FormFieldData[] | null;
   emptyMessage: string;
   placeholder?: string;
+  renderFieldFooter?: (
+    field: FormFieldData,
+    index: number,
+  ) => ReactNode;
   presignedKeyGetter?: (
     fieldId: string,
     fileName: string,
@@ -36,6 +41,7 @@ export default function EditableFormFieldList<TFormValues extends FieldValues>({
   formData,
   emptyMessage,
   placeholder,
+  renderFieldFooter,
   presignedKeyGetter,
 }: EditableFormFieldListProps<TFormValues>) {
   const {
@@ -72,6 +78,7 @@ export default function EditableFormFieldList<TFormValues extends FieldValues>({
                   presignedKeyGetter={presignedKeyGetter}
                 />
               </FormFieldShell>
+              {renderFieldFooter?.(field, index) ?? null}
             </div>
           );
         })}
