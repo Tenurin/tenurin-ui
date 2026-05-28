@@ -6,7 +6,7 @@ import UploadSurface from './upload-surface';
 import { toast } from './sonner';
 import { cn } from '../../lib/utils';
 import {
-  BLOB_SCOPE_TYPE,
+  BLOB_OWNER_TYPE,
   uploadBlob,
   type BlobApi,
   type BlobScope,
@@ -253,9 +253,12 @@ function resolveBlobScope(
   }
 
   const isFormScope =
-    blobScope.scopeType === BLOB_SCOPE_TYPE.batchStudentField ||
-    blobScope.scopeType === BLOB_SCOPE_TYPE.listingApplicationField;
-  if (fieldId && isFormScope && !blobScope.fieldId) {
+    blobScope.ownerType === BLOB_OWNER_TYPE.batchRequiredData ||
+    blobScope.ownerType === BLOB_OWNER_TYPE.listingApplicationData;
+  if (fieldId && isFormScope && !blobScope.ownerKey && !blobScope.fieldId) {
+    if (blobScope.ownerType === BLOB_OWNER_TYPE.listingApplicationData) {
+      return { ...blobScope, ownerKey: `listing:${fieldId}` };
+    }
     return { ...blobScope, fieldId };
   }
 

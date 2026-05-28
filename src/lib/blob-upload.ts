@@ -1,9 +1,13 @@
-export const BLOB_SCOPE_TYPE = {
-  batchStudentField: 'batch_student_field',
-  listingApplicationField: 'listing_application_field',
+export const BLOB_OWNER_TYPE = {
+  batchRequiredData: 'batch_required_data',
+  listingApplicationData: 'listing_application_data',
+  applicationSnapshotData: 'application_snapshot_data',
   listingAttachment: 'listing_attachment',
   messageAttachment: 'message_attachment',
   userAvatar: 'user_avatar',
+  listingDownload: 'listing_download',
+  provisionalListing: 'provisional_listing',
+  provisionalBatchRelation: 'provisional_batch_relation',
 } as const;
 
 export const BLOB_FORM_TYPE = {
@@ -11,14 +15,16 @@ export const BLOB_FORM_TYPE = {
   college: 'college',
 } as const;
 
-export type BlobScopeType =
-  (typeof BLOB_SCOPE_TYPE)[keyof typeof BLOB_SCOPE_TYPE];
+export type BlobOwnerType =
+  (typeof BLOB_OWNER_TYPE)[keyof typeof BLOB_OWNER_TYPE];
 
 export type BlobFormType = (typeof BLOB_FORM_TYPE)[keyof typeof BLOB_FORM_TYPE];
 
 export type BlobScope = Readonly<{
-  scopeType: BlobScopeType;
-  scopeId: string;
+  ownerType?: BlobOwnerType;
+  ownerId?: string;
+  ownerKey?: string;
+  /** Used by file-upload-field to derive ownerKey when not set explicitly. */
   fieldId?: string;
   formType?: BlobFormType;
 }>;
