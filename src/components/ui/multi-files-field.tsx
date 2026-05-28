@@ -62,7 +62,9 @@ export default function MultiFilesField({
       return;
     }
 
-    const validFiles = Array.from(selectedFiles).filter(validateMultiFileUpload);
+    const validFiles = Array.from(selectedFiles).filter(
+      validateMultiFileUpload,
+    );
     if (validFiles.length === 0) {
       return;
     }
