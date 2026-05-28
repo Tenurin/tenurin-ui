@@ -102,6 +102,9 @@ export default function FileUploadField({
       }
 
       onChange(null);
+      if (inputRef.current) {
+        inputRef.current.value = '';
+      }
     } finally {
       setIsUploading(false);
       setUploadProgress(undefined);
