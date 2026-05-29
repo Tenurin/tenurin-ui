@@ -12,7 +12,8 @@ import type { ReactNode } from "react";
 import { cn } from "../../lib/utils";
 import EditableFormFieldInput, { type FormFieldData } from "./form-field-input";
 import FormFieldShell from "./form-field-shell";
-import type { PresignedKeyResponse } from "./file-upload-field";
+import type { FileUploadBlobScope } from "./file-upload-field";
+import type { BlobApi } from "../../lib/blob-upload";
 
 type FieldErrorLike = Readonly<{
   fieldValue?: Readonly<{
@@ -25,15 +26,12 @@ type EditableFormFieldListProps<TFormValues extends FieldValues> = Readonly<{
   formData: FormFieldData[] | null;
   emptyMessage: string;
   placeholder?: string;
+  blobApi?: BlobApi;
+  blobScope?: FileUploadBlobScope;
   renderFieldFooter?: (
     field: FormFieldData,
     index: number,
   ) => ReactNode;
-  presignedKeyGetter?: (
-    fieldId: string,
-    fileName: string,
-    presignedKeyType: "get" | "post",
-  ) => Promise<PresignedKeyResponse>;
 }>;
 
 export default function EditableFormFieldList<TFormValues extends FieldValues>({
@@ -41,8 +39,9 @@ export default function EditableFormFieldList<TFormValues extends FieldValues>({
   formData,
   emptyMessage,
   placeholder,
+  blobApi,
+  blobScope,
   renderFieldFooter,
-  presignedKeyGetter,
 }: EditableFormFieldListProps<TFormValues>) {
   const {
     control,
@@ -75,7 +74,8 @@ export default function EditableFormFieldList<TFormValues extends FieldValues>({
                   fieldPath={fieldPath}
                   formField={field}
                   placeholder={placeholder}
-                  presignedKeyGetter={presignedKeyGetter}
+                  blobApi={blobApi}
+                  blobScope={blobScope}
                 />
               </FormFieldShell>
               {renderFieldFooter?.(field, index) ?? null}

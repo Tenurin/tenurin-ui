@@ -14,24 +14,26 @@ import { MultiFileUploadProgressList } from './multi-file-upload/multi-file-uplo
 import {
   uploadMultiFileWithProgress,
   validateMultiFileUpload,
-  type MultiFilePresignedKeyGetter,
 } from './multi-file-upload/actions';
+import type { BlobApi, BlobScope } from '../../lib/blob-upload';
 
-export type { MultiFilePresignedKeyGetter } from './multi-file-upload/actions';
+export type MultiFileBlobScope = BlobScope;
 
 type MultiFilesFieldProps = Readonly<{
   /** React-hook-form path to a string array field, e.g. listingDetails.listingAttachments */
   name: string;
-  presignedKeyGetter: MultiFilePresignedKeyGetter;
+  blobApi: BlobApi;
+  blobScope: MultiFileBlobScope;
   isEditing: boolean;
 }>;
 
 /**
- * Manages a react-hook-form string array for multiple presigned file uploads.
+ * Manages a react-hook-form string array for multiple blob uploads.
  */
 export default function MultiFilesField({
   name,
-  presignedKeyGetter,
+  blobApi,
+  blobScope,
   isEditing,
 }: MultiFilesFieldProps) {
   const { control } = useFormContext();
@@ -60,27 +62,30 @@ export default function MultiFilesField({
       return;
     }
 
-    const validFiles = Array.from(selectedFiles).filter(validateMultiFileUpload);
+    const validFiles = Array.from(selectedFiles).filter(
+      validateMultiFileUpload,
+    );
     if (validFiles.length === 0) {
       return;
     }
 
-    const uploadedKeys: string[] = [];
+    const uploadedBlobIds: string[] = [];
     for (const file of validFiles) {
-      const uploadedKey = await uploadMultiFileWithProgress({
+      const uploadedBlobId = await uploadMultiFileWithProgress({
         file,
-        presignedKeyGetter,
+        blobApi,
+        blobScope,
         setUploadProgress,
       });
-      if (uploadedKey) {
-        uploadedKeys.push(uploadedKey);
+      if (uploadedBlobId) {
+        uploadedBlobIds.push(uploadedBlobId);
       }
     }
 
-    if (uploadedKeys.length > 0) {
-      field.onChange([...files, ...uploadedKeys]);
+    if (uploadedBlobIds.length > 0) {
+      field.onChange([...files, ...uploadedBlobIds]);
       toast.success(
-        `${uploadedKeys.length} file${uploadedKeys.length > 1 ? 's' : ''} uploaded successfully.`,
+        `${uploadedBlobIds.length} file${uploadedBlobIds.length > 1 ? 's' : ''} uploaded successfully.`,
       );
     }
 
@@ -95,19 +100,23 @@ export default function MultiFilesField({
 
   const handlePreviewClick = async (
     event: React.MouseEvent,
-    fileKey: string,
+    blobId: string,
   ) => {
     event.preventDefault();
-    setIsPreviewLoading((prev) => ({ ...prev, [fileKey]: true }));
+    setIsPreviewLoading((prev) => ({ ...prev, [blobId]: true }));
 
     try {
-      const { uri } = await presignedKeyGetter(fileKey, 'get');
+      if (!blobApi.accessBlob) {
+        throw new Error('File previews are not available.');
+      }
+
+      const { uri } = await blobApi.accessBlob(blobId, blobScope);
       globalThis.open(uri, '_blank', 'noopener,noreferrer');
     } catch (error) {
       toast.error('Could not load the file preview.');
       console.error(`Could not load the file preview. Error: ${error}`);
     } finally {
-      setIsPreviewLoading((prev) => ({ ...prev, [fileKey]: false }));
+      setIsPreviewLoading((prev) => ({ ...prev, [blobId]: false }));
     }
   };
 

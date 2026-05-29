@@ -15,12 +15,13 @@ import { Button } from "./button";
 import { Calendar } from "./calendar";
 import { Checkbox } from "./checkbox";
 import FileUploadFieldBase, {
-  type PresignedKeyResponse,
+  type FileUploadBlobScope,
 } from "./file-upload-field";
 import { Input } from "./input";
 import { Popover, PopoverContent, PopoverTrigger } from "./popover";
 import { RadioGroup, RadioGroupItem } from "./radio-group";
 import { Textarea } from "./textarea";
+import type { BlobApi } from "../../lib/blob-upload";
 
 export type FormFieldData = Readonly<{
   fieldId?: string;
@@ -48,18 +49,16 @@ type FormFieldInputProps<TFormValues extends FieldValues> = Readonly<{
   fieldPath: Path<TFormValues>;
   formField: FormFieldData;
   placeholder?: string;
-  presignedKeyGetter?: (
-    fieldId: string,
-    fileName: string,
-    presignedKeyType: "get" | "post",
-  ) => Promise<PresignedKeyResponse>;
+  blobApi?: BlobApi;
+  blobScope?: FileUploadBlobScope;
 }>;
 
 export default function FormFieldInput<TFormValues extends FieldValues>({
   fieldPath,
   formField,
   placeholder = "Add your response here...",
-  presignedKeyGetter,
+  blobApi,
+  blobScope,
 }: FormFieldInputProps<TFormValues>) {
   const { control } = useFormContext<TFormValues>();
 
@@ -76,7 +75,8 @@ export default function FormFieldInput<TFormValues extends FieldValues>({
               onChange={field.onChange}
               fieldId={formField.fieldId}
               fieldType={formField.fieldType === "image" ? "image" : "file"}
-              presignedKeyGetter={presignedKeyGetter}
+              blobApi={blobApi}
+              blobScope={blobScope}
               surfaceClassName={fileUploadSurfaceClassName}
             />
           )}
