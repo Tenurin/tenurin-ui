@@ -29,7 +29,15 @@ function buildFallbackLabel(user: AppSidebarUser): string {
 }
 
 export function AppSidebarUserMenu({ user }: AppSidebarUserMenuProps) {
-  const { isMobile } = useSidebar();
+  const { isMobile, setOpenMobile } = useSidebar();
+
+  const handleMenuSelect = (onSelect: () => void) => {
+    if (isMobile) {
+      setOpenMobile(false);
+    }
+
+    onSelect();
+  };
 
   return (
     <SidebarMenu>
@@ -76,7 +84,7 @@ export function AppSidebarUserMenu({ user }: AppSidebarUserMenuProps) {
                 <DropdownMenuItem
                   key={`${entry.label}-${index}`}
                   className="cursor-pointer"
-                  onClick={entry.onSelect}
+                  onClick={() => handleMenuSelect(entry.onSelect)}
                 >
                   <entry.icon className="mr-2 inline" />
                   {entry.label}

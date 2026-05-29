@@ -38,6 +38,34 @@ export function DetailPanel({
   );
 }
 
+/** Use on `DetailMetaItem` when it is a direct child of `DetailMetaRow`. */
+export const detailMetaItemInRowClassName =
+  'row-span-2 grid-rows-subgrid gap-0';
+
+/** Stack multiple `DetailMetaRow`s with the same rhythm as a spaced meta grid. */
+export const detailMetaRowsStackClassName = 'flex flex-col gap-12';
+
+type DetailMetaRowProps = Readonly<{
+  children: ReactNode;
+  className?: string;
+}>;
+
+/**
+ * Aligns labels and values across columns in the same row without fixed label height.
+ */
+export function DetailMetaRow({ children, className }: DetailMetaRowProps) {
+  return (
+    <div
+      className={cn(
+        'grid grid-cols-1 gap-x-8 gap-y-12 sm:grid-cols-2 sm:grid-rows-[auto_auto] sm:gap-y-3',
+        className,
+      )}
+    >
+      {children}
+    </div>
+  );
+}
+
 type DetailMetaItemProps = Readonly<{
   label: string;
   value: ReactNode;
@@ -50,12 +78,12 @@ export function DetailMetaItem({
   className,
 }: DetailMetaItemProps) {
   return (
-    <div className={cn('space-y-3', className)}>
-      <p className="text-[11px] font-normal uppercase tracking-[0.15em] text-muted-foreground">
+    <div className={cn('grid min-w-0 gap-3', className)}>
+      <p className="text-[11px] leading-snug font-normal uppercase tracking-[0.15em] text-muted-foreground">
         {label}
       </p>
-      <div className="text-sm font-medium text-[var(--foreground)]">
-        {value}
+      <div className="overflow-x-auto text-sm font-medium text-[var(--foreground)]">
+        <div className="w-max min-w-full whitespace-nowrap">{value}</div>
       </div>
     </div>
   );

@@ -21,6 +21,7 @@ export {
   formatAnalyticsPercent,
   formatAnalyticsRatioAsPercent,
   formatAnalyticsSnapshotTimestamp,
+  formatAnalyticsBranchAxisLabel,
 } from './analyticsFormat';
 
 export { default as AnalyticsChartCard } from './charts/AnalyticsChartCard';
@@ -30,6 +31,12 @@ export { default as AnalyticsLineChart } from './charts/AnalyticsLineChart';
 export { default as AnalyticsPieChart } from './charts/AnalyticsPieChart';
 export { default as AnalyticsRadialProgressChart } from './charts/AnalyticsRadialProgressChart';
 export { default as AnalyticsStackedBarChart } from './charts/AnalyticsStackedBarChart';
+export {
+  analyticsBranchChartXAxisKey,
+  getAnalyticsBranchChartBarSize,
+  getAnalyticsBranchChartMinHeight,
+  getAnalyticsBranchChartYAxisWidth,
+} from './charts/analyticsBranchChartAxis';
 export {
   analyticsChartAxisTickSize,
   analyticsChartLegendIconSize,

@@ -6,6 +6,7 @@ import AnalyticsStackedBarChart, {
   type AnalyticsStackedBarChartDatum,
   type AnalyticsStackedBarChartSeries,
 } from '../charts/AnalyticsStackedBarChart';
+import { getAnalyticsBranchChartMinHeight } from '../charts/analyticsBranchChartAxis';
 import {
   analyticsChartTabsListClassName,
   analyticsChartTabsTriggerClassName,
@@ -36,6 +37,7 @@ type AnalyticsPlacementSectionProps = Readonly<{
 const visualTabValue = 'visual';
 const dataTabValue = 'data';
 const placementBranchXAxisKey = 'branchName';
+const placementRadialContentClassName = 'mt-4 h-[18rem]';
 const placementBranchSeries: readonly AnalyticsStackedBarChartSeries[] = [
   { dataKey: 'placedStudents', label: 'Placed' },
   { dataKey: 'unplacedAppliedStudents', label: 'Applied but not placed' },
@@ -64,18 +66,16 @@ export default function AnalyticsPlacementSection({
   tableEmptyTitle,
 }: AnalyticsPlacementSectionProps) {
   const chartData = getPlacementBranchChartData(branchRows);
+  const chartHeight = getAnalyticsBranchChartMinHeight(chartData.length);
 
   return (
-    <div className="grid gap-6 2xl:grid-cols-[minmax(0,1.45fr)_minmax(16rem,0.55fr)]">
-      <Tabs
-        defaultValue={visualTabValue}
-        className="order-2 h-full min-w-0 gap-0 2xl:order-1"
-      >
+    <div className="grid min-w-0 gap-6 xl:grid-cols-[minmax(0,1.75fr)_minmax(16rem,1fr)]">
+      <Tabs defaultValue={visualTabValue} className="min-w-0 gap-0">
         <AnalyticsChartCard
-          className="h-full"
           title={chartTitle}
           description={chartDescription}
-          contentClassName="mt-4 h-[18rem]"
+          contentClassName="mt-4"
+          contentStyle={{ height: chartHeight }}
           headerAction={
             <TabsList className={analyticsChartTabsListClassName}>
               <TabsTrigger
@@ -114,10 +114,10 @@ export default function AnalyticsPlacementSection({
       </Tabs>
 
       <AnalyticsChartCard
-        className="order-1 2xl:order-2"
+        className="self-start"
         title={radialTitle}
         description={radialDescription}
-        contentClassName="mt-4 h-[18rem]"
+        contentClassName={placementRadialContentClassName}
       >
         <AnalyticsRadialProgressChart
           label={radialLabel}

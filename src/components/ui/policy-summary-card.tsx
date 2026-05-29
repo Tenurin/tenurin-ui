@@ -38,7 +38,7 @@ export function PolicySummaryCard({
         className,
       )}
     >
-      <div className="flex flex-col items-start gap-2 lg:flex-row lg:flex-wrap lg:items-center lg:justify-between">
+      <div className="flex flex-col items-start gap-2 2xl:flex-row 2xl:flex-wrap 2xl:items-center 2xl:justify-between">
         <p className="min-w-0 w-full flex-1 text-base font-medium leading-tight">
           {title}
         </p>

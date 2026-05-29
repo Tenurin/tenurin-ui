@@ -22,7 +22,7 @@ export default function AnalyticsCompensationMetricCard({
     metric.studentName !== undefined || metric.listingHref !== undefined;
 
   return (
-    <article className="bg-sidebar relative flex min-h-32 flex-col overflow-hidden rounded-sm border p-4 pt-5">
+    <article className="bg-sidebar relative flex min-h-32 min-w-0 flex-col overflow-hidden rounded-sm border p-4 pt-5">
       <div
         aria-hidden="true"
         className="absolute inset-x-0 top-0 h-0.5"
@@ -45,23 +45,25 @@ export default function AnalyticsCompensationMetricCard({
         </ResponsiveHint>
       </div>
 
-      <div className="flex flex-1 flex-col pt-2">
-        <div className="flex flex-1 flex-wrap items-center gap-2">
-          <span className="text-xl leading-none text-[var(--foreground)]">
-            {displayValue}
-          </span>
-          {hasFrequency ? (
-            <CompensationFrequencyPill frequency={metric.frequency} />
-          ) : null}
-          {metric.secondaryValue ? (
-            <span className="text-xs text-muted-foreground">
-              {metric.secondaryValue}
-            </span>
-          ) : null}
-        </div>
+      <div className="flex min-w-0 flex-1 flex-col gap-2 pt-2">
+        <span className="text-lg leading-tight font-medium tabular-nums text-[var(--foreground)] 2xl:text-xl">
+          {displayValue}
+        </span>
+        {hasFrequency || metric.secondaryValue ? (
+          <div className="flex flex-wrap items-center gap-2">
+            {hasFrequency ? (
+              <CompensationFrequencyPill frequency={metric.frequency} />
+            ) : null}
+            {metric.secondaryValue ? (
+              <span className="text-xs text-muted-foreground">
+                {metric.secondaryValue}
+              </span>
+            ) : null}
+          </div>
+        ) : null}
 
         {hasFooter ? (
-          <div className="mt-auto flex min-h-5 flex-wrap items-center justify-between gap-x-3 gap-y-1 text-xs">
+          <div className="mt-auto flex min-h-5 flex-wrap items-center justify-between gap-x-3 gap-y-1.5 pt-1 text-xs">
             {metric.studentName ? (
               <span
                 className="max-w-full truncate text-muted-foreground"

@@ -1,8 +1,7 @@
+import { isStaleChunkLoadError } from './staleChunkLoadError';
+
 const TRANSIENT_DEV_HOOK_ERROR =
   /Cannot read properties of null \(reading 'use[A-Z][a-zA-Z]*'\)/;
-
-const TRANSIENT_DEV_IMPORT_ERROR =
-  /(Failed to fetch dynamically imported module|Importing a module script failed|error loading dynamically imported module)/i;
 
 /**
  * Detects short-lived render failures that only happen during Vite HMR or dep
@@ -19,6 +18,6 @@ export function isTransientDevRenderError(error: unknown): boolean {
 
   return (
     TRANSIENT_DEV_HOOK_ERROR.test(error.message) ||
-    TRANSIENT_DEV_IMPORT_ERROR.test(error.message)
+    isStaleChunkLoadError(error)
   );
 }

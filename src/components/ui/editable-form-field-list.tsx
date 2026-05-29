@@ -7,6 +7,7 @@ import {
   useFieldArray,
   useFormContext,
 } from "react-hook-form";
+import type { ReactNode } from "react";
 
 import { cn } from "../../lib/utils";
 import EditableFormFieldInput, { type FormFieldData } from "./form-field-input";
@@ -27,6 +28,10 @@ type EditableFormFieldListProps<TFormValues extends FieldValues> = Readonly<{
   placeholder?: string;
   blobApi?: BlobApi;
   blobScope?: FileUploadBlobScope;
+  renderFieldFooter?: (
+    field: FormFieldData,
+    index: number,
+  ) => ReactNode;
 }>;
 
 export default function EditableFormFieldList<TFormValues extends FieldValues>({
@@ -36,6 +41,7 @@ export default function EditableFormFieldList<TFormValues extends FieldValues>({
   placeholder,
   blobApi,
   blobScope,
+  renderFieldFooter,
 }: EditableFormFieldListProps<TFormValues>) {
   const {
     control,
@@ -72,6 +78,7 @@ export default function EditableFormFieldList<TFormValues extends FieldValues>({
                   blobScope={blobScope}
                 />
               </FormFieldShell>
+              {renderFieldFooter?.(field, index) ?? null}
             </div>
           );
         })}
