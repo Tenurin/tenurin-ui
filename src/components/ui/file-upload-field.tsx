@@ -7,15 +7,13 @@ import { toast } from './sonner';
 import { cn } from '../../lib/utils';
 import {
   BLOB_OWNER_TYPE,
+  MAX_BLOB_UPLOAD_BYTES,
+  MAX_BLOB_UPLOAD_MB,
   uploadBlob,
   type BlobApi,
   type BlobScope,
 } from '../../lib/blob-upload';
 import { Loader2, Paperclip, UploadCloud, XIcon } from 'lucide-react';
-
-const DEFAULT_MAX_FILE_SIZE_MB = 2;
-const BYTES_PER_MB = 1024 * 1024;
-const DEFAULT_MAX_FILE_SIZE_BYTES = DEFAULT_MAX_FILE_SIZE_MB * BYTES_PER_MB;
 const ALLOWED_IMAGE_MIME_TYPES = ['image/jpeg', 'image/png', 'image/gif'];
 const ALLOWED_FILE_MIME_TYPES = [
   'application/pdf',
@@ -66,9 +64,9 @@ export default function FileUploadField({
       return;
     }
 
-    if (file.size > DEFAULT_MAX_FILE_SIZE_BYTES) {
+    if (file.size > MAX_BLOB_UPLOAD_BYTES) {
       toast.error(
-        `File is too large. Max size is ${DEFAULT_MAX_FILE_SIZE_MB}MB.`,
+        `File is too large. Max size is ${MAX_BLOB_UPLOAD_MB}MB.`,
       );
       return;
     }
@@ -215,7 +213,7 @@ export default function FileUploadField({
           )}
           icon={<UploadCloud className="size-4 text-muted-foreground" />}
           title={`Upload ${fieldType === 'image' ? 'Image' : 'File'}`}
-          description={`${fieldType === 'image' ? 'JPEG, PNG, GIF' : 'PDF, DOC, DOCX'} (Max ${DEFAULT_MAX_FILE_SIZE_MB}MB)`}
+          description={`${fieldType === 'image' ? 'JPEG, PNG, GIF' : 'PDF, DOC, DOCX'} (Max ${MAX_BLOB_UPLOAD_MB}MB)`}
         />
       )}
     </div>
