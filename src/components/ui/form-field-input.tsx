@@ -45,12 +45,25 @@ const formFieldSurfaceClassName =
 const fileUploadSurfaceClassName =
   "border-border/60 bg-neutral-50 hover:bg-neutral-100 dark:!bg-neutral-800/30 dark:hover:!bg-neutral-800/40";
 
+export type FileFieldRenderProps<TFormValues extends FieldValues = FieldValues> =
+  Readonly<{
+    fieldPath: Path<TFormValues>;
+    formField: FormFieldData;
+    blobApi?: BlobApi;
+    blobScope?: FileUploadBlobScope;
+  }>;
+
+export type RenderFileField<TFormValues extends FieldValues = FieldValues> = (
+  props: FileFieldRenderProps<TFormValues>,
+) => ReactNode | null | undefined;
+
 type FormFieldInputProps<TFormValues extends FieldValues> = Readonly<{
   fieldPath: Path<TFormValues>;
   formField: FormFieldData;
   placeholder?: string;
   blobApi?: BlobApi;
   blobScope?: FileUploadBlobScope;
+  renderFileField?: RenderFileField<TFormValues>;
 }>;
 
 export default function FormFieldInput<TFormValues extends FieldValues>({
@@ -59,12 +72,25 @@ export default function FormFieldInput<TFormValues extends FieldValues>({
   placeholder = "Add your response here...",
   blobApi,
   blobScope,
+  renderFileField,
 }: FormFieldInputProps<TFormValues>) {
   const { control } = useFormContext<TFormValues>();
 
   switch (formField.fieldType) {
     case "file":
-    case "image":
+    case "image": {
+      if (formField.fieldType === "file" && renderFileField) {
+        const customField = renderFileField({
+          fieldPath,
+          formField,
+          blobApi,
+          blobScope,
+        });
+        if (customField != null) {
+          return customField;
+        }
+      }
+
       return (
         <Controller
           name={fieldPath}
@@ -82,6 +108,7 @@ export default function FormFieldInput<TFormValues extends FieldValues>({
           )}
         />
       );
+    }
 
     case "textarea":
       return (
