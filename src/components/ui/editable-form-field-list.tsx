@@ -10,10 +10,15 @@ import {
 import type { ReactNode } from "react";
 
 import { cn } from "../../lib/utils";
-import EditableFormFieldInput, { type FormFieldData } from "./form-field-input";
+import EditableFormFieldInput, {
+  type FormFieldData,
+  type RenderFileField,
+} from "./form-field-input";
 import FormFieldShell from "./form-field-shell";
 import type { FileUploadBlobScope } from "./file-upload-field";
 import type { BlobApi } from "../../lib/blob-upload";
+
+export type { FileFieldRenderProps, RenderFileField } from "./form-field-input";
 
 type FieldErrorLike = Readonly<{
   fieldValue?: Readonly<{
@@ -28,6 +33,7 @@ type EditableFormFieldListProps<TFormValues extends FieldValues> = Readonly<{
   placeholder?: string;
   blobApi?: BlobApi;
   blobScope?: FileUploadBlobScope;
+  renderFileField?: RenderFileField<TFormValues>;
   renderFieldFooter?: (
     field: FormFieldData,
     index: number,
@@ -41,6 +47,7 @@ export default function EditableFormFieldList<TFormValues extends FieldValues>({
   placeholder,
   blobApi,
   blobScope,
+  renderFileField,
   renderFieldFooter,
 }: EditableFormFieldListProps<TFormValues>) {
   const {
@@ -79,6 +86,7 @@ export default function EditableFormFieldList<TFormValues extends FieldValues>({
                   placeholder={placeholder}
                   blobApi={blobApi}
                   blobScope={blobScope}
+                  renderFileField={renderFileField}
                 />
               </FormFieldShell>
               {renderFieldFooter?.(field, index) ?? null}

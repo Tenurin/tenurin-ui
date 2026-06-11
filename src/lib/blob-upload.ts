@@ -1,3 +1,6 @@
+export const MAX_BLOB_UPLOAD_MB = 2;
+export const MAX_BLOB_UPLOAD_BYTES = MAX_BLOB_UPLOAD_MB * 1024 * 1024;
+
 export const BLOB_OWNER_TYPE = {
   batchRequiredData: 'batch_required_data',
   listingApplicationData: 'listing_application_data',
@@ -60,7 +63,10 @@ export type BlobApi = Readonly<{
     blobId: string,
     request: { sessionId: string },
   ) => Promise<BlobConfirmResponse>;
-  accessBlob?: (blobId: string, scope: BlobScope) => Promise<BlobAccessResponse>;
+  accessBlob?: (
+    blobId: string,
+    scope: BlobScope,
+  ) => Promise<BlobAccessResponse>;
 }>;
 
 export type UploadBlobOptions = Readonly<{
