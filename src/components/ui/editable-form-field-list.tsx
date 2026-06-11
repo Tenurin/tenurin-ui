@@ -63,7 +63,10 @@ export default function EditableFormFieldList<TFormValues extends FieldValues>({
             : undefined;
 
           return (
-            <div key={fields[index]?.id ?? field.fieldId ?? field.fieldName}>
+            <div
+              key={fields[index]?.id ?? field.fieldId ?? field.fieldName}
+              className="space-y-3"
+            >
               <FormFieldShell
                 label={field.fieldName}
                 required={field.isRequired}
