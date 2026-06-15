@@ -67,7 +67,7 @@ function AlertSurface({
       className={cn(
         alertSurfaceBaseClassName,
         alertSurfaceToneClassNames[tone],
-        'flex w-full items-start gap-3 px-5 py-4',
+        'flex w-full items-center gap-3 px-5 py-4',
         className,
       )}
       {...props}
@@ -75,7 +75,7 @@ function AlertSurface({
       {icon ? (
         <span
           data-slot="alert-surface-icon"
-          className="mt-0.5 shrink-0 text-current"
+          className="shrink-0 text-current"
         >
           {icon}
         </span>
