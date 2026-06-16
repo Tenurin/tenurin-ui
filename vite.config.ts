@@ -252,6 +252,10 @@ export default defineConfig({
           __dirname,
           "src/components/ui/search-input.tsx",
         ),
+        "searchable-pill-picker": path.resolve(
+          __dirname,
+          "src/components/ui/searchable-pill-picker.tsx",
+        ),
         select: path.resolve(__dirname, "src/components/ui/select.tsx"),
         "select-filter": path.resolve(
           __dirname,

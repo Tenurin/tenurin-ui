@@ -432,6 +432,11 @@
       "import": "./dist/components/ui/search-input.es.js",
       "require": "./dist/components/ui/search-input.cjs.js"
     },
+    "./searchable-pill-picker": {
+      "types": "./dist/components/ui/searchable-pill-picker.d.ts",
+      "import": "./dist/components/ui/searchable-pill-picker.es.js",
+      "require": "./dist/components/ui/searchable-pill-picker.cjs.js"
+    },
     "./select": {
       "types": "./dist/components/ui/select.d.ts",
       "import": "./dist/components/ui/select.es.js",
