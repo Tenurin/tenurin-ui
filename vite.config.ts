@@ -243,6 +243,10 @@ export default defineConfig({
           __dirname,
           "src/components/ui/results-pagination.tsx",
         ),
+        "results-empty-layout": path.resolve(
+          __dirname,
+          "src/components/ui/results-empty-layout.tsx",
+        ),
         resizable: path.resolve(__dirname, "src/components/ui/resizable.tsx"),
         "scroll-area": path.resolve(
           __dirname,

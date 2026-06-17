@@ -417,6 +417,11 @@
       "import": "./dist/components/ui/results-pagination.es.js",
       "require": "./dist/components/ui/results-pagination.cjs.js"
     },
+    "./results-empty-layout": {
+      "types": "./dist/components/ui/results-empty-layout.d.ts",
+      "import": "./dist/components/ui/results-empty-layout.es.js",
+      "require": "./dist/components/ui/results-empty-layout.cjs.js"
+    },
     "./resizable": {
       "types": "./dist/components/ui/resizable.d.ts",
       "import": "./dist/components/ui/resizable.es.js",

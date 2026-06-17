@@ -6,6 +6,10 @@ import { useCallback } from 'react';
 import { Link, useNavigate } from 'react-router';
 
 import { cn } from '../../lib/utils';
+import {
+  resultsEmptyListClassName,
+  resultsEmptyStateClassName,
+} from './results-empty-layout';
 import { Skeleton } from './skeleton';
 import {
   Table,
@@ -151,8 +155,8 @@ export default function MinimalListTable<TItem>({
    */
   if (isEmptyState) {
     return (
-      <div className="w-full overflow-x-hidden">
-        <div className="mx-auto flex w-full max-w-full flex-col items-center justify-center gap-2 px-4 py-8 text-center">
+      <div className={resultsEmptyListClassName}>
+        <div className={cn(resultsEmptyStateClassName, 'gap-2 px-4 text-center')}>
           <div className="flex h-12 w-12 items-center justify-center rounded-full bg-muted/50">
             <FileText className="h-6 w-6 text-muted-foreground" />
           </div>

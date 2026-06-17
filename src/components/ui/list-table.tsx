@@ -5,6 +5,7 @@ import { useCallback, useMemo } from 'react';
 import { Link, useNavigate } from 'react-router';
 
 import { cn } from '../../lib/utils';
+import { resultsEmptyListClassName } from './results-empty-layout';
 import { Skeleton } from './skeleton';
 import {
   Table,
@@ -173,7 +174,13 @@ export default function ListTable<TRow>({
 
   if (!isLoading && !isError && rows.length === 0) {
     return (
-      <div className={cn('w-full overflow-hidden rounded-sm', surfaceClassName)}>
+      <div
+        className={cn(
+          resultsEmptyListClassName,
+          'rounded-sm',
+          surfaceClassName,
+        )}
+      >
         {emptyState}
       </div>
     );

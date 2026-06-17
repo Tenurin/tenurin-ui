@@ -5,8 +5,10 @@ import { cn } from '../../lib/utils';
 
 type AlertSurfaceTone = 'default' | 'negative' | 'warm' | 'positive';
 
-const alertSurfaceBaseClassName =
-  'rounded-sm border shadow-none';
+const alertSurfaceBaseClassName = 'rounded-sm border shadow-none';
+
+const alertSurfaceLayoutClassName =
+  'inline-grid w-fit max-w-full grid-cols-[auto_minmax(0,1fr)] items-start gap-x-2 px-3 py-2';
 
 const alertSurfaceToneClassNames: Record<AlertSurfaceTone, string> = {
   default:
@@ -24,6 +26,7 @@ type AlertSurfaceProps = Omit<ComponentProps<'div'>, 'title'> &
     contentClassName?: string;
     description?: ReactNode;
     icon?: ReactNode;
+    iconClassName?: string;
     title?: ReactNode;
     tone?: AlertSurfaceTone;
   }>;
@@ -33,7 +36,8 @@ function AlertSurface({
   className,
   contentClassName,
   description,
-  icon = <CircleAlert className="size-5" />,
+  icon = <CircleAlert className="size-4" />,
+  iconClassName,
   role = 'alert',
   title,
   tone = 'default',
@@ -44,7 +48,7 @@ function AlertSurface({
       {title ? (
         <div
           data-slot="alert-surface-title"
-          className="text-base font-medium leading-6 text-current"
+          className="text-sm font-medium leading-5 text-current"
         >
           {title}
         </div>
@@ -66,8 +70,8 @@ function AlertSurface({
       role={role}
       className={cn(
         alertSurfaceBaseClassName,
+        alertSurfaceLayoutClassName,
         alertSurfaceToneClassNames[tone],
-        'flex w-full items-center gap-3 px-5 py-4',
         className,
       )}
       {...props}
@@ -75,7 +79,10 @@ function AlertSurface({
       {icon ? (
         <span
           data-slot="alert-surface-icon"
-          className="shrink-0 text-current"
+          className={cn(
+            'col-start-1 row-start-1 flex shrink-0 items-center self-start text-current',
+            iconClassName ?? 'h-5',
+          )}
         >
           {icon}
         </span>
@@ -83,7 +90,8 @@ function AlertSurface({
       <div
         data-slot="alert-surface-content"
         className={cn(
-          'min-w-0 text-sm font-medium leading-6 text-current',
+          'col-start-2 row-start-1 min-w-0 text-sm font-medium leading-5 text-current',
+          icon == null && 'col-start-1',
           contentClassName,
         )}
       >
@@ -96,6 +104,7 @@ function AlertSurface({
 export {
   AlertSurface,
   alertSurfaceBaseClassName,
+  alertSurfaceLayoutClassName,
   type AlertSurfaceProps,
   type AlertSurfaceTone,
 };
