@@ -9,7 +9,7 @@ import { cn } from '../../lib/utils';
 import {
   resultsEmptyListClassName,
   resultsEmptyStateClassName,
-} from './results-empty-layout';
+} from './results-page-layout';
 import { Skeleton } from './skeleton';
 import {
   Table,

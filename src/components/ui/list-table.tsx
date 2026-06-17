@@ -5,7 +5,7 @@ import { useCallback, useMemo } from 'react';
 import { Link, useNavigate } from 'react-router';
 
 import { cn } from '../../lib/utils';
-import { resultsEmptyListClassName } from './results-empty-layout';
+import { resultsEmptyListClassName } from './results-page-layout';
 import { Skeleton } from './skeleton';
 import {
   Table,

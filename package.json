@@ -417,10 +417,10 @@
       "import": "./dist/components/ui/results-pagination.es.js",
       "require": "./dist/components/ui/results-pagination.cjs.js"
     },
-    "./results-empty-layout": {
-      "types": "./dist/components/ui/results-empty-layout.d.ts",
-      "import": "./dist/components/ui/results-empty-layout.es.js",
-      "require": "./dist/components/ui/results-empty-layout.cjs.js"
+    "./results-page-layout": {
+      "types": "./dist/components/ui/results-page-layout.d.ts",
+      "import": "./dist/components/ui/results-page-layout.es.js",
+      "require": "./dist/components/ui/results-page-layout.cjs.js"
     },
     "./resizable": {
       "types": "./dist/components/ui/resizable.d.ts",

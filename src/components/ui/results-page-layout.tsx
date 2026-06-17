@@ -23,11 +23,11 @@ export const resultsEmptyFooterClassName = 'shrink-0';
 export const resultsEmptyStateClassName =
   'flex min-h-0 flex-1 flex-col items-center justify-center w-full';
 
-/** Wrapper for list-table empty output inside a results-empty layout. */
+/** Wrapper for list-table empty output inside a results page layout. */
 export const resultsEmptyListClassName =
   'flex min-h-0 flex-1 flex-col w-full overflow-hidden';
 
-type ResultsEmptyLayoutProps = Readonly<{
+type ResultsPageLayoutProps = Readonly<{
   isEmpty: boolean;
   filters: ReactNode;
   contentClassName?: string;
@@ -39,13 +39,13 @@ type ResultsEmptyLayoutProps = Readonly<{
  * Page shell for filterable list routes. When empty, fills the viewport without
  * scroll and keeps pagination pinned above bottom padding.
  */
-export function ResultsEmptyLayout({
+export function ResultsPageLayout({
   isEmpty,
   filters,
   contentClassName,
   children,
   footer,
-}: ResultsEmptyLayoutProps) {
+}: ResultsPageLayoutProps) {
   return (
     <div
       className={cn(
