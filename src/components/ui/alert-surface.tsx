@@ -3,7 +3,7 @@ import { CircleAlert } from 'lucide-react';
 
 import { cn } from '../../lib/utils';
 
-type AlertSurfaceTone = 'default' | 'negative' | 'warm' | 'positive';
+type AlertSurfaceTone = 'default' | 'negative' | 'warm' | 'positive' | 'info';
 
 const alertSurfaceBaseClassName = 'rounded-sm border shadow-none';
 
@@ -19,6 +19,8 @@ const alertSurfaceToneClassNames: Record<AlertSurfaceTone, string> = {
     'ui-app-accent-warm-surface [&_[data-slot=alert-surface-icon]]:text-current',
   positive:
     'ui-app-accent-positive-surface [&_[data-slot=alert-surface-icon]]:text-current',
+  info:
+    'ui-app-accent-triad-c-surface [&_[data-slot=alert-surface-icon]]:text-current',
 };
 
 type AlertSurfaceProps = Omit<ComponentProps<'div'>, 'title'> &
@@ -36,7 +38,7 @@ function AlertSurface({
   className,
   contentClassName,
   description,
-  icon = <CircleAlert className="size-4" />,
+  icon = <CircleAlert />,
   iconClassName,
   role = 'alert',
   title,
@@ -80,8 +82,8 @@ function AlertSurface({
         <span
           data-slot="alert-surface-icon"
           className={cn(
-            'col-start-1 row-start-1 flex shrink-0 items-center self-start text-current',
-            iconClassName ?? 'h-5',
+            'col-start-1 row-start-1 mt-0.5 flex size-4 shrink-0 items-center justify-center self-start text-current [&_svg]:size-full',
+            iconClassName,
           )}
         >
           {icon}
