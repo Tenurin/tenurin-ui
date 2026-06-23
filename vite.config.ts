@@ -234,6 +234,10 @@ export default defineConfig({
           __dirname,
           "src/components/ui/policy-summary-card.tsx",
         ),
+        "profile-display": path.resolve(
+          __dirname,
+          "src/components/ui/profile-display/index.tsx",
+        ),
         progress: path.resolve(__dirname, "src/components/ui/progress.tsx"),
         "radio-group": path.resolve(
           __dirname,

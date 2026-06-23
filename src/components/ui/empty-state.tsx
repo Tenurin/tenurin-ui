@@ -3,7 +3,7 @@ import type { ReactNode } from 'react';
 import { cn } from '../../lib/utils';
 
 type EmptyStateProps = Readonly<{
-  icon: ReactNode;
+  icon?: ReactNode;
   title: ReactNode;
   description?: ReactNode;
   className?: string;
@@ -37,13 +37,22 @@ export default function EmptyState({
         className,
       )}
     >
-      <div
-        className={cn(defaultIconContainerClassName, iconContainerClassName)}
-      >
-        {icon}
-      </div>
+      {icon ? (
+        <div
+          className={cn(defaultIconContainerClassName, iconContainerClassName)}
+        >
+          {icon}
+        </div>
+      ) : null}
       <div className={contentClassName}>
-        <h3 className={cn(defaultTitleClassName, titleClassName)}>{title}</h3>
+        <h3
+          className={cn(
+            icon ? defaultTitleClassName : 'text-lg text-[var(--foreground)]',
+            titleClassName,
+          )}
+        >
+          {title}
+        </h3>
         {description ? (
           <p className={cn(defaultDescriptionClassName, descriptionClassName)}>
             {description}

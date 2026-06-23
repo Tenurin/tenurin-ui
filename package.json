@@ -402,6 +402,11 @@
       "import": "./dist/components/ui/policy-summary-card.es.js",
       "require": "./dist/components/ui/policy-summary-card.cjs.js"
     },
+    "./profile-display": {
+      "types": "./dist/components/ui/profile-display/index.d.ts",
+      "import": "./dist/components/ui/profile-display.es.js",
+      "require": "./dist/components/ui/profile-display.cjs.js"
+    },
     "./progress": {
       "types": "./dist/components/ui/progress.d.ts",
       "import": "./dist/components/ui/progress.es.js",
