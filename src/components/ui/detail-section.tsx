@@ -184,6 +184,9 @@ const pillToneClassName: Record<
   cool: 'ui-app-accent-cool-surface',
 };
 
+/** Use on branch, tag, and other entity labels shown in detail panels. */
+export const detailEntityPillClassName = 'normal-case tracking-normal';
+
 export function DetailPill({
   label,
   tone = 'default',
@@ -193,7 +196,7 @@ export function DetailPill({
     <Badge
       variant="outline"
       className={cn(
-        'rounded-sm border px-2.5 py-1 text-sm uppercase',
+        'rounded-sm border px-2 py-0.5 text-xs font-medium uppercase',
         pillToneClassName[tone],
         className,
       )}

@@ -427,6 +427,11 @@
       "import": "./dist/components/ui/results-page-layout.es.js",
       "require": "./dist/components/ui/results-page-layout.cjs.js"
     },
+    "./responsive-line-tabs": {
+      "types": "./dist/components/ui/responsive-line-tabs.d.ts",
+      "import": "./dist/components/ui/responsive-line-tabs.es.js",
+      "require": "./dist/components/ui/responsive-line-tabs.cjs.js"
+    },
     "./resizable": {
       "types": "./dist/components/ui/resizable.d.ts",
       "import": "./dist/components/ui/resizable.es.js",

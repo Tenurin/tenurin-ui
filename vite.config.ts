@@ -251,6 +251,10 @@ export default defineConfig({
           __dirname,
           "src/components/ui/results-page-layout.tsx",
         ),
+        "responsive-line-tabs": path.resolve(
+          __dirname,
+          "src/components/ui/responsive-line-tabs.tsx",
+        ),
         resizable: path.resolve(__dirname, "src/components/ui/resizable.tsx"),
         "scroll-area": path.resolve(
           __dirname,
