@@ -17,11 +17,6 @@ export { ProfileExperienceContent } from './profile-experience-content';
 export { ProfileProjectContent } from './profile-project-content';
 export { ProfilePublicationContent } from './profile-publication-content';
 export { ProfileSocialContent } from './profile-social-content';
-export { ProfileEducationDisplayCard } from './profile-education-display-card';
-export { ProfileExperienceDisplayCard } from './profile-experience-display-card';
-export { ProfileProjectDisplayCard } from './profile-project-display-card';
-export { ProfilePublicationDisplayCard } from './profile-publication-display-card';
-export { ProfileSocialDisplayCard } from './profile-social-display-card';
 export {
   ProfileDisplaySection,
   ProfileDisplaySections,
