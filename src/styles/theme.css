@@ -383,6 +383,10 @@ body,
   color: var(--app-accent-warm-fg);
 }
 
+.ui-app-accent-positive-fg {
+  color: var(--app-accent-positive-fg);
+}
+
 .ui-app-accent-triad-a-fg {
   color: var(--app-accent-triad-a-fg);
 }
