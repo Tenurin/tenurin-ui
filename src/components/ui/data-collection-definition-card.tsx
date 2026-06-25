@@ -43,11 +43,11 @@ function DataCollectionDefinitionCard({
     <div ref={rootRef} style={style} className={cn("group", className)}>
       <Card
         className={cn(
-          "relative overflow-hidden transition-all duration-200",
+          "relative overflow-hidden rounded-sm shadow-none transition-all duration-200",
           isDragging
             ? "border-primary bg-primary/5 ring-2 ring-primary/40"
             : "bg-card",
-          showDragHandle ? "hover:border-primary/50 hover:shadow-md" : "",
+          showDragHandle ? "hover:border-primary/50" : "",
           cardClassName,
         )}
       >

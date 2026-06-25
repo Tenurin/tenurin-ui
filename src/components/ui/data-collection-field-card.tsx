@@ -40,10 +40,8 @@ function DataCollectionFieldCard({
   return (
     <Card
       className={cn(
-        "relative overflow-hidden transition-all duration-200",
-        isSelectable
-          ? "cursor-pointer hover:border-primary/50 hover:shadow-md"
-          : "",
+        "relative overflow-hidden rounded-sm shadow-none transition-all duration-200",
+        isSelectable ? "cursor-pointer hover:border-primary/50" : "",
         selected && isSelectable
           ? "border-primary bg-primary/5 ring-2 ring-primary"
           : "bg-card",
