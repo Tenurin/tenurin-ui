@@ -3,6 +3,8 @@ export type ProfileDisplaySkill = Readonly<{
   name?: string;
 }>;
 
+export type ProfileContentVariant = 'full' | 'details-only';
+
 export type ProfileEducationDisplayProps = Readonly<{
   instituteName: string;
   typeLabel: string;

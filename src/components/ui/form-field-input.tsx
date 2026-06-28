@@ -40,10 +40,10 @@ export type FormFieldData = Readonly<{
   isRequired: boolean;
 }>;
 
-const formFieldSurfaceClassName =
-  "rounded-sm border-border/60 bg-neutral-50 text-sm shadow-none dark:!bg-neutral-800/30";
-const fileUploadSurfaceClassName =
-  "border-border/60 bg-neutral-50 hover:bg-neutral-100 dark:!bg-neutral-800/30 dark:hover:!bg-neutral-800/40";
+import {
+  fieldSurfaceClassName,
+  fieldSurfaceInteractiveClassName,
+} from "./field-surface";
 
 export type FileFieldRenderProps<TFormValues extends FieldValues = FieldValues> =
   Readonly<{
@@ -103,7 +103,7 @@ export default function FormFieldInput<TFormValues extends FieldValues>({
               fieldType={formField.fieldType === "image" ? "image" : "file"}
               blobApi={blobApi}
               blobScope={blobScope}
-              surfaceClassName={fileUploadSurfaceClassName}
+              surfaceClassName={fieldSurfaceInteractiveClassName}
             />
           )}
         />
@@ -119,7 +119,7 @@ export default function FormFieldInput<TFormValues extends FieldValues>({
             <Textarea
               {...field}
               value={field.value ?? ""}
-              className={`min-h-[140px] ${formFieldSurfaceClassName}`}
+              className={`min-h-[140px] ${fieldSurfaceClassName}`}
               placeholder={placeholder}
             />
           )}
@@ -220,7 +220,7 @@ export default function FormFieldInput<TFormValues extends FieldValues>({
               {...field}
               value={field.value ?? ""}
               type={formField.fieldType}
-              className={`h-10 ${formFieldSurfaceClassName}`}
+              className={`h-10 ${fieldSurfaceClassName}`}
               placeholder={placeholder}
             />
           )}
@@ -274,7 +274,7 @@ function DateField({ value, onChange }: DateFieldProps) {
         <Button
           variant="outline"
           className={cn(
-            `h-10 px-4 ${formFieldSurfaceClassName}`,
+            `h-10 px-4 ${fieldSurfaceClassName}`,
             "w-full justify-start text-left font-normal",
             date == null ? "text-muted-foreground" : null,
           )}

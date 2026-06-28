@@ -45,7 +45,9 @@ export function AuthPanel({
             variant="ghost"
             onClick={onOAuth}
             disabled={isOAuthDisabled}
-            className="mt-7 h-11 w-full rounded-sm border border-sidebar-border bg-neutral-50 px-4 text-sm font-medium text-[var(--foreground)] shadow-none hover:bg-sidebar-accent hover:text-sidebar-accent-foreground dark:!bg-neutral-800/30"
+            className={cn(
+              'mt-7 h-11 w-full rounded-sm border border-sidebar-border bg-field-surface px-4 text-sm font-medium text-[var(--foreground)] shadow-none hover:bg-sidebar-accent hover:text-sidebar-accent-foreground',
+            )}
           >
             {oauthIcon}
             {oauthLabel}

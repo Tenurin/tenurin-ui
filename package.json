@@ -197,6 +197,11 @@
       "import": "./dist/components/ui/empty.es.js",
       "require": "./dist/components/ui/empty.cjs.js"
     },
+    "./external-link-icon": {
+      "types": "./dist/components/ui/external-link-icon.d.ts",
+      "import": "./dist/components/ui/external-link-icon.es.js",
+      "require": "./dist/components/ui/external-link-icon.cjs.js"
+    },
     "./field": {
       "types": "./dist/components/ui/field.d.ts",
       "import": "./dist/components/ui/field.es.js",
@@ -226,6 +231,11 @@
       "types": "./dist/components/ui/form-field-shell.d.ts",
       "import": "./dist/components/ui/form-field-shell.es.js",
       "require": "./dist/components/ui/form-field-shell.cjs.js"
+    },
+    "./field-surface": {
+      "types": "./dist/components/ui/field-surface.d.ts",
+      "import": "./dist/components/ui/field-surface.es.js",
+      "require": "./dist/components/ui/field-surface.cjs.js"
     },
     "./form-field-input": {
       "types": "./dist/components/ui/form-field-input.d.ts",

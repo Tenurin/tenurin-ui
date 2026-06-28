@@ -1,8 +1,8 @@
 'use client';
 
 import type { ReactNode } from 'react';
-import { cn } from '../../../lib/utils';
-import { useProfileSectionNav } from './use-profile-section-nav';
+import { cn } from '../../../../lib/utils';
+import { useProfileSectionNav } from './use-section-nav';
 
 export type ProfileDisplaySectionNavItem = Readonly<{
   id: string;

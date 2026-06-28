@@ -10,7 +10,7 @@ import { Input } from './input';
 import { Label } from './label';
 
 export const authInputClassName =
-  'h-12 rounded-sm border border-border/80 bg-neutral-50 px-4 text-sm text-[var(--foreground)] shadow-none placeholder:text-neutral-500 focus-visible:border-ring/60 focus-visible:ring-2 focus-visible:ring-ring/20 dark:!bg-neutral-800/30 dark:placeholder:text-neutral-400';
+  'h-12 rounded-sm border border-border/80 bg-field-surface px-4 text-sm text-[var(--foreground)] shadow-none placeholder:text-neutral-500 focus-visible:border-ring/60 focus-visible:ring-2 focus-visible:ring-ring/20 dark:placeholder:text-neutral-400';
 
 export const authInputErrorClassName = 'ui-app-accent-negative-input';
 

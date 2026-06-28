@@ -14,7 +14,7 @@ function Checkbox({
     <CheckboxPrimitive.Root
       data-slot="checkbox"
       className={cn(
-        'peer size-4 shrink-0 rounded-[4px] border border-neutral-200 bg-neutral-50 shadow-xs transition-shadow outline-none focus-visible:border-neutral-950 focus-visible:ring-[3px] focus-visible:ring-neutral-950/50 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:border-neutral-900 data-[state=checked]:bg-neutral-900 data-[state=checked]:text-neutral-50 aria-invalid:border-red-500 aria-invalid:ring-red-500/20 dark:border-neutral-800 dark:bg-neutral-200/30 dark:data-[state=checked]:border-neutral-50 dark:data-[state=checked]:bg-neutral-50 dark:data-[state=checked]:text-neutral-900 dark:aria-invalid:border-red-900 dark:aria-invalid:ring-red-900/20 dark:focus-visible:border-neutral-300 dark:focus-visible:ring-neutral-300/50 dark:dark:bg-neutral-800/30 dark:dark:data-[state=checked]:bg-neutral-50',
+        `peer size-4 shrink-0 rounded-[4px] border border-neutral-200 bg-field-surface shadow-xs transition-shadow outline-none focus-visible:border-neutral-950 focus-visible:ring-[3px] focus-visible:ring-neutral-950/50 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:border-neutral-900 data-[state=checked]:bg-neutral-900 data-[state=checked]:text-neutral-50 aria-invalid:border-red-500 aria-invalid:ring-red-500/20 dark:border-neutral-800 dark:data-[state=checked]:border-neutral-50 dark:data-[state=checked]:bg-neutral-50 dark:data-[state=checked]:text-neutral-900 dark:aria-invalid:border-red-900 dark:aria-invalid:ring-red-900/20 dark:focus-visible:border-neutral-300 dark:focus-visible:ring-neutral-300/50 dark:dark:data-[state=checked]:bg-neutral-50`,
         className
       )}
       {...props}

@@ -1,9 +1,9 @@
 import { Award, CalendarDays } from 'lucide-react';
-import { Badge } from '../badge';
-import { ProfileCurrentBadge } from './profile-current-badge';
-import { ProfileMetaChip } from './profile-meta-chip';
-import { ProfileSkillsList } from './profile-skills-list';
-import type { ProfileEducationDisplayProps } from './types';
+import { Badge } from '../../badge';
+import { ProfileCurrentBadge } from '../primitives/current-badge';
+import { ProfileMetaChip } from '../primitives/meta-chip';
+import { ProfileSkillsList } from '../primitives/skills-list';
+import type { ProfileContentVariant, ProfileEducationDisplayProps } from '../types';
 
 export function ProfileEducationContent({
   instituteName,
@@ -14,9 +14,32 @@ export function ProfileEducationContent({
   score,
   details,
   skills = [],
-}: ProfileEducationDisplayProps) {
-  const hasMeta = Boolean(yearRange) || Boolean(score);
+  variant = 'full',
+}: ProfileEducationDisplayProps & { variant?: ProfileContentVariant }) {
   const hasFooter = Boolean(details) || skills.length > 0;
+  const hasTimeline = Boolean(yearRange);
+
+  if (variant === 'details-only') {
+    if (!hasTimeline && !hasFooter) {
+      return null;
+    }
+
+    return (
+      <div className="space-y-3">
+        {yearRange ? (
+          <ProfileMetaChip icon={CalendarDays} label={yearRange} />
+        ) : null}
+        {details ? (
+          <p className="text-sm leading-relaxed text-muted-foreground">
+            {details}
+          </p>
+        ) : null}
+        <ProfileSkillsList skills={skills} />
+      </div>
+    );
+  }
+
+  const hasMeta = Boolean(yearRange) || Boolean(score);
 
   return (
     <div className="space-y-4">

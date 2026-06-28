@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
-import { SettingsAccountRoot } from '../settings-account';
-import { cn } from '../../../lib/utils';
-import { profileDisplaySectionLabelClassName } from './profile-display-typography';
+import { SettingsAccountRoot } from '../../settings-account';
+import { cn } from '../../../../lib/utils';
+import { profileDisplaySectionLabelClassName } from '../primitives/typography';
 
 type ProfileDisplaySectionProps = Readonly<{
   sectionId: string;
@@ -11,6 +11,7 @@ type ProfileDisplaySectionProps = Readonly<{
   isEmpty: boolean;
   children: ReactNode;
   className?: string;
+  stackClassName?: string;
 }>;
 
 function ProfileDisplaySectionEmptyState({
@@ -31,6 +32,7 @@ export function ProfileDisplaySection({
   isEmpty,
   children,
   className,
+  stackClassName,
 }: ProfileDisplaySectionProps) {
   return (
     <section
@@ -44,7 +46,7 @@ export function ProfileDisplaySection({
       {isEmpty ? (
         <ProfileDisplaySectionEmptyState message={emptyMessage} />
       ) : (
-        <SettingsAccountRoot>{children}</SettingsAccountRoot>
+        <SettingsAccountRoot className={stackClassName}>{children}</SettingsAccountRoot>
       )}
     </section>
   );

@@ -1,4 +1,5 @@
 import { cn } from "../../lib/utils";
+import { fieldSurfaceBorderClassName } from "./field-surface";
 import type { ReactNode } from "react";
 
 type FormSectionProps = Readonly<{
@@ -54,7 +55,7 @@ export function FormReadonlyValue({
       </p>
       <div
         className={cn(
-          "min-h-12 rounded-sm border border-border/60 bg-[color:color-mix(in_oklab,var(--sidebar)_90%,var(--background))] px-4 py-3 text-sm text-[color-mix(in_oklab,var(--foreground)_58%,transparent)] shadow-none",
+          `min-h-12 ${fieldSurfaceBorderClassName} px-4 py-3 text-sm text-[color-mix(in_oklab,var(--foreground)_58%,transparent)]`,
           contentClassName,
         )}
       >

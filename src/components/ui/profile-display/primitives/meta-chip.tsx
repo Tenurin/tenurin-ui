@@ -1,6 +1,6 @@
 import type { LucideIcon } from 'lucide-react';
-import { badgeVariants } from '../badge';
-import { cn } from '../../../lib/utils';
+import { badgeVariants } from '../../badge';
+import { cn } from '../../../../lib/utils';
 
 type ProfileMetaChipProps = Readonly<{
   icon: LucideIcon;

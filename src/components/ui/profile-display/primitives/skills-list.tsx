@@ -1,7 +1,7 @@
-import { authLabelClassName } from '../auth-form';
-import { badgeVariants } from '../badge';
-import { cn } from '../../../lib/utils';
-import type { ProfileDisplaySkill } from './types';
+import { authLabelClassName } from '../../auth-form';
+import { badgeVariants } from '../../badge';
+import { cn } from '../../../../lib/utils';
+import type { ProfileDisplaySkill } from '../types';
 
 type ProfileSkillsListProps = Readonly<{
   skills: readonly ProfileDisplaySkill[];

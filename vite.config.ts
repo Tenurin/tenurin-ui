@@ -135,6 +135,10 @@ export default defineConfig({
           "src/components/ui/empty-state.tsx",
         ),
         empty: path.resolve(__dirname, "src/components/ui/empty.tsx"),
+        "external-link-icon": path.resolve(
+          __dirname,
+          "src/components/ui/external-link-icon.tsx",
+        ),
         field: path.resolve(__dirname, "src/components/ui/field.tsx"),
         "editable-form-field-list": path.resolve(
           __dirname,
@@ -152,6 +156,10 @@ export default defineConfig({
         "form-field-shell": path.resolve(
           __dirname,
           "src/components/ui/form-field-shell.tsx",
+        ),
+        "field-surface": path.resolve(
+          __dirname,
+          "src/components/ui/field-surface.ts",
         ),
         "form-field-input": path.resolve(
           __dirname,

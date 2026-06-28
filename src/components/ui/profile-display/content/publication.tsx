@@ -1,7 +1,7 @@
 import { CalendarDays, ExternalLink } from 'lucide-react';
-import { ProfileMetaChip } from './profile-meta-chip';
-import { ProfileSkillsList } from './profile-skills-list';
-import type { ProfilePublicationDisplayProps } from './types';
+import { ProfileMetaChip } from '../primitives/meta-chip';
+import { ProfileSkillsList } from '../primitives/skills-list';
+import type { ProfileContentVariant, ProfilePublicationDisplayProps } from '../types';
 
 export function ProfilePublicationContent({
   title,
@@ -11,8 +11,26 @@ export function ProfilePublicationContent({
   linkLabel = 'View publication',
   description,
   skills = [],
-}: ProfilePublicationDisplayProps) {
+  variant = 'full',
+}: ProfilePublicationDisplayProps & { variant?: ProfileContentVariant }) {
   const hasFooter = Boolean(description) || skills.length > 0;
+
+  if (variant === 'details-only') {
+    if (!hasFooter) {
+      return null;
+    }
+
+    return (
+      <div className="space-y-3">
+        {description ? (
+          <p className="text-sm leading-relaxed text-muted-foreground">
+            {description}
+          </p>
+        ) : null}
+        <ProfileSkillsList skills={skills} />
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-4">

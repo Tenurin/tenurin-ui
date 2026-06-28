@@ -1,8 +1,8 @@
 import type { ComponentProps, ReactNode } from 'react';
 import { GripVertical, Pencil, Trash2 } from 'lucide-react';
-import { Button } from '../button';
-import { settingsAccountSectionSurfaceClassName } from '../settings-account';
-import { cn } from '../../../lib/utils';
+import { Button } from '../../button';
+import { settingsAccountSectionSurfaceClassName } from '../../settings-account';
+import { cn } from '../../../../lib/utils';
 
 type DragHandleProps = ComponentProps<'button'>;
 

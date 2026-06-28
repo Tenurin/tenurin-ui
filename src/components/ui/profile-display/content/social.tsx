@@ -1,11 +1,22 @@
 import { ExternalLink } from 'lucide-react';
-import type { ProfileSocialDisplayProps } from './types';
+import type { ProfileContentVariant, ProfileSocialDisplayProps } from '../types';
 
 export function ProfileSocialContent({
   platformLabel,
   url,
   linkHref,
-}: ProfileSocialDisplayProps) {
+  variant = 'full',
+}: ProfileSocialDisplayProps & { variant?: ProfileContentVariant }) {
+  if (variant === 'details-only') {
+    if (!url?.trim()) {
+      return null;
+    }
+
+    return (
+      <p className="text-sm text-muted-foreground break-all">{url}</p>
+    );
+  }
+
   return (
     <div className="space-y-2">
       <h3 className="text-base font-medium tracking-[-0.02em] text-[var(--foreground)]">

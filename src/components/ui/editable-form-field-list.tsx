@@ -10,6 +10,7 @@ import {
 import type { ReactNode } from "react";
 
 import { cn } from "../../lib/utils";
+import { fieldSurfaceBorderClassName } from "./field-surface";
 import EditableFormFieldInput, {
   type FormFieldData,
   type RenderFileField,
@@ -66,7 +67,7 @@ export default function EditableFormFieldList<TFormValues extends FieldValues>({
           const isChoiceField =
             field.fieldType === "checkbox" || field.fieldType === "radio";
           const shellClassName = isChoiceField
-            ? "rounded-sm border border-border/60 bg-neutral-50 p-4 shadow-none dark:!bg-neutral-800/30"
+            ? `${fieldSurfaceBorderClassName} p-4`
             : undefined;
 
           return (
