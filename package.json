@@ -242,6 +242,11 @@
       "import": "./dist/components/ui/form-field-input.es.js",
       "require": "./dist/components/ui/form-field-input.cjs.js"
     },
+    "./form-checkbox-tile": {
+      "types": "./dist/components/ui/form-checkbox-tile.d.ts",
+      "import": "./dist/components/ui/form-checkbox-tile.es.js",
+      "require": "./dist/components/ui/form-checkbox-tile.cjs.js"
+    },
     "./form-section": {
       "types": "./dist/components/ui/form-section.d.ts",
       "import": "./dist/components/ui/form-section.es.js",

@@ -50,6 +50,7 @@ type MinimalListTableProps<TItem> = Readonly<{
   onRowClick?: (item: TItem) => void;
   emptyTitle?: string;
   emptyDescription?: string;
+  showEmptyIcon?: boolean;
   errorMessage?: string;
   tableClassName?: string;
   rowClassName?: string;
@@ -80,6 +81,7 @@ export default function MinimalListTable<TItem>({
   onRowClick,
   emptyTitle = 'No results found',
   emptyDescription = 'There are no items to display at the moment.',
+  showEmptyIcon = true,
   errorMessage = 'Failed to load items. Please try again.',
   tableClassName = 'mt-10 min-w-[30rem] w-full table-fixed',
   rowClassName = 'relative',
@@ -155,11 +157,19 @@ export default function MinimalListTable<TItem>({
    */
   if (isEmptyState) {
     return (
-      <div className={resultsEmptyListClassName}>
-        <div className={cn(resultsEmptyStateClassName, 'gap-2 px-4 text-center')}>
-          <div className="flex h-12 w-12 items-center justify-center rounded-full bg-muted/50">
-            <FileText className="h-6 w-6 text-muted-foreground" />
-          </div>
+      <div className={cn(resultsEmptyListClassName, 'min-h-full')}>
+        <div
+          className={cn(
+            resultsEmptyStateClassName,
+            'px-4 py-10 text-center',
+            showEmptyIcon ? 'gap-2' : 'gap-1',
+          )}
+        >
+          {showEmptyIcon ? (
+            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-muted/50">
+              <FileText className="h-6 w-6 text-muted-foreground" />
+            </div>
+          ) : null}
           <div className="flex w-full max-w-full flex-col gap-1 text-center">
             <p className="break-words font-medium">{emptyTitle}</p>
             <p

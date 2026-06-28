@@ -165,6 +165,10 @@ export default defineConfig({
           __dirname,
           "src/components/ui/form-field-input.tsx",
         ),
+        "form-checkbox-tile": path.resolve(
+          __dirname,
+          "src/components/ui/form-checkbox-tile.tsx",
+        ),
         "form-section": path.resolve(
           __dirname,
           "src/components/ui/form-section.tsx",

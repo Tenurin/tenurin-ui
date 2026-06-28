@@ -2,10 +2,20 @@ import { cn } from "../../lib/utils";
 import { fieldSurfaceBorderClassName } from "./field-surface";
 import type { ReactNode } from "react";
 
+export {
+  FormCheckboxTile,
+  type FormCheckboxTileProps,
+} from "./form-checkbox-tile";
+
+export const formSectionEyebrowClassName =
+  'text-[11px] uppercase tracking-[0.24em] text-muted-foreground';
+
 type FormSectionProps = Readonly<{
   eyebrow: string;
   description?: string;
   eyebrowClassName?: string;
+  className?: string;
+  contentClassName?: string;
   children: ReactNode;
 }>;
 
@@ -13,16 +23,15 @@ export default function FormSection({
   eyebrow,
   description,
   eyebrowClassName,
+  className,
+  contentClassName,
   children,
 }: FormSectionProps) {
   return (
-    <section className="space-y-4">
+    <section className={cn('space-y-4', className)}>
       <div className="space-y-2">
         <p
-          className={cn(
-            "text-[11px] uppercase tracking-[0.24em] text-muted-foreground",
-            eyebrowClassName,
-          )}
+          className={cn(formSectionEyebrowClassName, eyebrowClassName)}
         >
           {eyebrow}
         </p>
@@ -32,7 +41,7 @@ export default function FormSection({
           </p>
         ) : null}
       </div>
-      <div className="space-y-8">{children}</div>
+      <div className={cn('space-y-8', contentClassName)}>{children}</div>
     </section>
   );
 }
