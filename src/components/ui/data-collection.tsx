@@ -6,11 +6,14 @@ import { AlertSurface } from "./alert-surface";
 import { DataCollectionDefinitionCard } from "./data-collection-definition-card";
 import { DataCollectionFieldCard } from "./data-collection-field-card";
 import { getDataCollectionFieldId } from "./data-collection-field-utils";
+import { DataCollectionProfileImportSection } from "./data-collection-profile-import-section";
 import {
   type DataCollectionField,
   type DataCollectionFieldDisplay,
   type DataCollectionFieldTypeLabels,
   type DataCollectionPanelProps,
+  type DataCollectionProfileImportLabelMaps,
+  type DataCollectionStudentProfileImport,
   type DataCollectionTabKey,
   type DataCollectionTabsProps,
 } from "./data-collection-types";
@@ -34,6 +37,7 @@ function DataCollectionPanel({
   lockedMessage = "Data fields cannot be changed after the listing is created.",
   panelClassName,
   panelTitle = "Data Collection",
+  profileImportLabelMaps,
   requiredData,
   showLockedAlert = true,
 }: DataCollectionPanelProps) {
@@ -59,6 +63,7 @@ function DataCollectionPanel({
           emptyMessage={emptyMessage}
           fieldTypeLabels={fieldTypeLabels}
           listingFieldDisplay={listingFieldDisplay}
+          profileImportLabelMaps={profileImportLabelMaps}
           requiredData={requiredData}
         />
       </div>
@@ -71,6 +76,7 @@ function DataCollectionTabs({
   emptyMessage = "No fields have been selected.",
   fieldTypeLabels,
   listingFieldDisplay = "compact",
+  profileImportLabelMaps,
   requiredData,
 }: DataCollectionTabsProps) {
   return (
@@ -83,12 +89,13 @@ function DataCollectionTabs({
         ))}
       </TabsList>
 
-      <DataCollectionTabContent
-        value="listing"
-        fields={requiredData.listingData}
+      <DataCollectionListingTabContent
         emptyMessage={emptyMessage}
         fieldDisplay={listingFieldDisplay}
         fieldTypeLabels={fieldTypeLabels}
+        fields={requiredData.listingData}
+        profileImport={requiredData.studentProfileImport}
+        profileImportLabelMaps={profileImportLabelMaps}
       />
       <DataCollectionTabContent
         value="student"
@@ -105,6 +112,56 @@ function DataCollectionTabs({
         fieldTypeLabels={fieldTypeLabels}
       />
     </Tabs>
+  );
+}
+
+function DataCollectionListingTabContent({
+  emptyMessage,
+  fieldDisplay,
+  fieldTypeLabels,
+  fields,
+  profileImport,
+  profileImportLabelMaps,
+}: Readonly<{
+  emptyMessage: string;
+  fieldDisplay: DataCollectionFieldDisplay;
+  fieldTypeLabels?: DataCollectionFieldTypeLabels;
+  fields: readonly DataCollectionField[];
+  profileImport?: DataCollectionStudentProfileImport | null;
+  profileImportLabelMaps?: DataCollectionProfileImportLabelMaps;
+}>) {
+  const showProfileImport =
+    profileImport != null && profileImportLabelMaps != null;
+  const hasListingFields = fields.length > 0;
+
+  return (
+    <TabsContent value="listing" className="mt-4">
+      <div className="space-y-4">
+        {showProfileImport ? (
+          <DataCollectionProfileImportSection
+            profileImport={profileImport}
+            labelMaps={profileImportLabelMaps}
+          />
+        ) : null}
+
+        {hasListingFields ? (
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+            {fields.map((field) => (
+              <DataCollectionTabField
+                key={getDataCollectionFieldId(field)}
+                fieldDisplay={fieldDisplay}
+                field={field}
+                fieldTypeLabels={fieldTypeLabels}
+              />
+            ))}
+          </div>
+        ) : showProfileImport ? null : (
+          <div className="flex flex-col items-center justify-center rounded-lg border border-dashed bg-muted/10 p-6 text-center">
+            <p className="text-sm text-muted-foreground">{emptyMessage}</p>
+          </div>
+        )}
+      </div>
+    </TabsContent>
   );
 }
 
@@ -174,6 +231,7 @@ export {
   DataCollectionDefinitionCard,
   DataCollectionFieldCard,
   DataCollectionPanel,
+  DataCollectionProfileImportSection,
   DataCollectionTabs,
 };
 export type {
@@ -184,6 +242,8 @@ export type {
   DataCollectionFieldCardProps,
   DataCollectionFieldTypeLabels,
   DataCollectionPanelProps,
+  DataCollectionProfileImportLabelMaps,
+  DataCollectionStudentProfileImport,
   DataCollectionTabsProps,
   DataCollectionTabKey,
 } from "./data-collection-types";

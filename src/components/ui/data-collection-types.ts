@@ -15,10 +15,44 @@ type DataCollectionField = Readonly<{
   isRequired?: boolean;
 }>;
 
+type DataCollectionStudentProfileImportEducation = Readonly<{
+  enabled: boolean;
+  selectedTypes: readonly string[];
+}>;
+
+type DataCollectionStudentProfileImportCategoryLimit = Readonly<{
+  enabled: boolean;
+  limit: number;
+}>;
+
+type DataCollectionStudentProfileImportSocialLinks = Readonly<{
+  enabled: boolean;
+  selectedPlatforms: readonly string[];
+}>;
+
+type DataCollectionStudentProfileImport = Readonly<{
+  education: DataCollectionStudentProfileImportEducation;
+  experience: DataCollectionStudentProfileImportCategoryLimit;
+  publications: DataCollectionStudentProfileImportCategoryLimit;
+  projects: DataCollectionStudentProfileImportCategoryLimit;
+  socialLinks: DataCollectionStudentProfileImportSocialLinks;
+}>;
+
+type DataCollectionProfileImportLabelMaps = Readonly<{
+  educationTypeLabel: (type: string) => string;
+  limitCategoryLabels: Readonly<{
+    experience: string;
+    publications: string;
+    projects: string;
+  }>;
+  socialPlatformLabel: (platform: string) => string;
+}>;
+
 type DataCollectionFields = Readonly<{
   collegeData: readonly DataCollectionField[];
   listingData: readonly DataCollectionField[];
   studentData: readonly DataCollectionField[];
+  studentProfileImport?: DataCollectionStudentProfileImport | null;
 }>;
 
 type DataCollectionFieldTypeLabels = Readonly<Record<string, string>>;
@@ -58,6 +92,7 @@ type DataCollectionTabsProps = Readonly<{
   emptyMessage?: string;
   fieldTypeLabels?: DataCollectionFieldTypeLabels;
   listingFieldDisplay?: DataCollectionFieldDisplay;
+  profileImportLabelMaps?: DataCollectionProfileImportLabelMaps;
   requiredData: DataCollectionFields;
 }>;
 
@@ -90,6 +125,8 @@ export {
   type DataCollectionFieldCardProps,
   type DataCollectionFieldTypeLabels,
   type DataCollectionPanelProps,
+  type DataCollectionProfileImportLabelMaps,
+  type DataCollectionStudentProfileImport,
   type DataCollectionTabsProps,
   type DataCollectionTabKey,
 };
